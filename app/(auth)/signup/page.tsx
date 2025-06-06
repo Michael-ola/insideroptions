@@ -1,5 +1,5 @@
 "use client";
-import { Button, buttonVariants } from "@/components/button";
+import { Button, buttonVariants } from "@/components/Button1";
 import Link from "next/link";
 import { Label } from "@/components/label";
 import { Input } from "@/components/input";

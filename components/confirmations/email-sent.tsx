@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { buttonVariants, Button } from "../button";
+import { buttonVariants, Button } from "../Button1";
 import { RiArrowLeftSLine } from "@remixicon/react";
 import Image from "next/image";
 import mailSentIcon from "@/lib/assets/mail-sent-icon.png";

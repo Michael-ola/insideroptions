@@ -1,8 +1,8 @@
 "use client";
 import Link from "next/link";
-import { buttonVariants } from "../button";
+import { buttonVariants } from "../Button1";
 import { RiArrowLeftSLine } from "@remixicon/react";
-import { Button } from "../button";
+import { Button } from "../Button1";
 
 export function LegalAgreementConfirmation() {
   return (
