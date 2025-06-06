@@ -2,7 +2,7 @@ import React from "react";
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import Button from "@/components/Button";
+import Button from "@/components/Button2";
 
 export default function Navbar() {
   return (
@@ -45,7 +45,7 @@ export default function Navbar() {
           <button className="cursor-pointer">Login</button>
         </Link>
 
-        <Button link="/register" caret>
+        <Button link="/signup" caret>
           Register
         </Button>
       </div>
