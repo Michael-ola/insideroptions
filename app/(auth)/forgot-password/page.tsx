@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { RiArrowLeftSLine, RiArrowRightSLine } from "@remixicon/react";
 import { Input } from "@/components/input";
 import { Label } from "@/components/label";
-import { Button } from "@/components/button";
+import { Button } from "@/components/Button1";
 import React from "react";
 import { EmailSentConfirmation } from "@/components/confirmations/email-sent";
 

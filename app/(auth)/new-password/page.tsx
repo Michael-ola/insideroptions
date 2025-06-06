@@ -4,7 +4,7 @@ import { Label } from "@radix-ui/react-label";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Button } from "@/components/button";
+import { Button } from "@/components/Button1";
 import Image from "next/image";
 import hexDeco from "@/lib/assets/hex_deco.png";
 import { PasswordResetConfirmation } from "@/components/confirmations/password-reset";

@@ -1,5 +1,5 @@
 "use client";
-import { Button, buttonVariants } from "@/components/button";
+import { Button, buttonVariants } from "@/components/Button1";
 import Link from "next/link";
 import hexDeco from "@/lib/assets/hex_deco.png";
 import Image from "next/image";
