@@ -1,5 +1,76 @@
 @import "tailwindcss";
 
+@layer utilities {
+  @keyframes updown {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  @keyframes downup {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(20px);
+    }
+  }
+
+  .animate-up-down {
+    animation: updown 3s ease-in-out infinite;
+  }
+
+  .animate-down-up {
+    animation: downup 3s ease-in-out infinite;
+  }
+}
+
+.nav-bottom-line {
+  border: 1px solid;
+  border-image-source: linear-gradient(
+    90deg,
+    #000510 0%,
+    rgba(77, 142, 80, 0.5) 50%,
+    #000510 100%
+  );
+  border-image-slice: 1;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-30px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.animate-float-delay {
+  animation: float 3s ease-in-out infinite;
+  animation-delay: 0.3s;
+}
+
+@keyframes up {
+  0% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+.animate-up {
+  animation: up 2s linear forwards;
+  animation-delay: 0.3s;
+}
+
 :root {
   --primary: hsla(123, 57%, 66%, 1);
   --primary-btn-gradient-start: hsla(123, 57%, 66%, 1);
@@ -42,6 +113,7 @@
 body {
   color: var(--text-primary);
   /* background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif; */
+  color: var(--foreground);*/
+  font-family: Arial, Helvetica, sans-serif; 
+
 }
