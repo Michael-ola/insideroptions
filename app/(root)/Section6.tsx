@@ -72,9 +72,19 @@ export default function HowItWorksSection() {
       { threshold: 0.3 }
     );
 
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => sectionRef.current && observer.unobserve(sectionRef.current);
+    const currentSection = sectionRef.current;
+
+    if (currentSection) {
+      observer.observe(currentSection);
+    }
+
+    return () => {
+      if (currentSection) {
+        observer.unobserve(currentSection);
+      }
+    };
   }, []);
+
   return (
     <section className="bg-[#050B11] py-16 px-[12%] text-white">
       <h2 className="text-center text-3xl md:text-4xl font-medium mb-14">
