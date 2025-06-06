@@ -1,12 +1,5 @@
 @import "tailwindcss";
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 @layer utilities {
   @keyframes updown {
     0%,
@@ -78,6 +71,49 @@
   animation-delay: 0.3s;
 }
 
+:root {
+  --primary: hsla(123, 57%, 66%, 1);
+  --primary-btn-gradient-start: hsla(123, 57%, 66%, 1);
+  --primary-btn-gradient-end: hsla(124, 100%, 85%, 1);
+  --primary-container: "";
+  --primary-container-overlay: "";
+  --secondary: hsla(222, 34%, 11%, 1);
+  --light: hsla(0, 0%, 100%, 0.06);
+  --text-primary: hsla(0, 0%, 95%, 1);
+  --text-secondary: hsla(0, 0%, 46%, 1);
+
+  --bg-gradient-end: hsla(123, 57%, 66%, 1);
+  --bg-gradient-start: hsla(221, 100%, 3%, 1);
+  --bg-card-gradient-start: hsla(0, 0%, 0%, 1);
+  --bg-card-gradient-end: hsla(0, 0%, 94%, 1);
+}
+
+@theme inline {
+  --color-primary: var(--primary);
+  --color-primary-btn-gradient-start: var(--primary-btn-gradient-start);
+  --color-primary-btn-gradient-end: var(--primary-btn-gradient-end);
+
+  --color-primary-container: var(--primary-container);
+  --color-primary-container-overlay: var(--primary-container-overlay);
+  --color-secondary: var(--secondary);
+  --color-border: var(--light) / 20;
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-light: var(--light);
+
+  --color-bg-gradient-end: var(--bg-gradient-end);
+  --color-bg-gradient-start: var(--bg-gradient-start);
+  --color-bg-card-gradient-start: var(--bg-card-gradient-start);
+  --color-bg-card-gradient-end: var(--bg-card-gradient-end);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text-primary);
+  /* background: var(--background);
+  color: var(--foreground);*/
+  font-family: Arial, Helvetica, sans-serif; 
+
 }
