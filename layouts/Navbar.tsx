@@ -26,23 +26,24 @@ export default function Navbar() {
                 alt="text"
               />
             </div>
-            <span className="text-sm">Online chat</span>
+            <span className="text-sm max-sm:hidden">Online chat</span>
           </div>
         </div>
       </div>
-
-      <div className="flex items-center gap-2">
-        <Image
-          width={186}
-          height={32}
-          src="/images/logo.png"
-          alt="Insider Options"
-        />
-      </div>
-
+      <Link href="/">
+        <div className="flex items-center max-sm:hidden cursor-pointer">
+          <Image
+            width={186}
+            height={32}
+            src="/images/logo-extended.png"
+            alt="Insider Options"
+            className="w-[186px] h-[32px]"
+          />
+        </div>
+      </Link>
       <div className="flex items-center gap-6">
         <Link href="/login">
-          <button className="cursor-pointer">Login</button>
+          <button className="cursor-pointer max-sm:hidden">Login</button>
         </Link>
 
         <Button link="/signup" caret>
