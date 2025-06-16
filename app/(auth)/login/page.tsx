@@ -1,5 +1,5 @@
 "use client";
-import { Button, buttonVariants } from "@/components/Button1";
+import { SharedButton, buttonVariants } from "@/components/shared-button";
 import hexDeco from "@/lib/assets/hex_deco.png";
 import Image from "next/image";
 import { z } from "zod";
@@ -51,9 +51,14 @@ export default function LoginPage() {
               >
                 Register
               </Link>
-              <Button size="sm" variant={"default"} className="flex-1">
+              <SharedButton
+                type="button"
+                size="sm"
+                variant={"default"}
+                className="flex-1"
+              >
                 Login
-              </Button>
+              </SharedButton>
             </div>
 
             <h2 className="font-medium text-2xl md:text-[28px]">
@@ -86,9 +91,9 @@ export default function LoginPage() {
                   Forgot password?
                 </Link>
               </div>
-              <Button className="w-full" type="submit">
+              <SharedButton className="w-full" type="submit">
                 Login <RiArrowRightSLine className="h-4 w-4" />
-              </Button>
+              </SharedButton>
               <Divider>Or continue with</Divider>
               <div className="flex items-center justify-center gap-5">
                 <button

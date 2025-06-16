@@ -41,6 +41,12 @@ class AuthenticationService {
   public logout(): void {
     console.log("User logged out");
   }
+
+  public resetPassword() {}
+
+  public sendPasswordRecoveryMail() {}
+
+  public refreshAccessToken() {}
 }
 
 export default AuthenticationService;

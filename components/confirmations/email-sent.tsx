@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { buttonVariants, Button } from "../Button1";
+import { buttonVariants, SharedButton } from "../shared-button";
 import { RiArrowLeftSLine } from "@remixicon/react";
 import Image from "next/image";
 import mailSentIcon from "@/lib/assets/mail-sent-icon.png";
@@ -20,9 +20,9 @@ export function EmailSentConfirmation({ email }: { email: string }) {
           <RiArrowLeftSLine className="h-4 w-4" />
           Back to Login
         </Link>
-        <Button className="w-full" variant={"ghost"}>
+        <SharedButton className="w-full" variant={"ghost"}>
           Send Again
-        </Button>
+        </SharedButton>
       </div>
     </div>
   );

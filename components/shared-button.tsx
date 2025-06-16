@@ -38,7 +38,7 @@ export const buttonVariants = cva(
   }
 );
 
-export function Button(
+export function SharedButton(
   props: React.ComponentProps<"button"> &
     VariantProps<typeof buttonVariants> & { asChild?: boolean }
 ) {
