@@ -39,7 +39,7 @@ function HowItWorksCard({
           alt="num"
           className={`absolute before:content-none before:absolute before:block before:z-10 before:inset-0 before:bg-[red] -top-[22%] md:-top-[19%] z-30 -right-9 select-none w-[180px] h-[180px] transition-opacity duration-4500 ${
             observed ? "opacity-100" : "opacity-0"
-          } ${number == 2 && "md:top-0 -mt-14 max-sm:-mt-22"}`}
+          } ${number == 2 && "md:top-0 -mt-14 max-sm:-mt-0"}`}
         />
 
         <div className="text-left w-full">
