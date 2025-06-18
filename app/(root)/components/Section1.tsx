@@ -15,17 +15,17 @@ const Section1 = () => {
         src="/images/group-bg.png"
         alt="img"
       />
-      <div className="w-1/2 max-sm:w-full pl-[7%] text-white">
-        <div className="max-w-xl w-full space-y-6 text-left">
-          <p className="text-5xl font-[400] leading-tight max-sm:text-3xl max-sm:leading-snug">
-            Trade Smarter
+      <div className="w-1/2 max-sm:w-full pl-[7%] md:pl-[10%] text-white">
+        <div className="max-sm:max-w-sm max-w-2xl w-full space-y-6 text-left">
+          <p className="text-[68px] font-[400] leading-[1.2] md:tracking-tight max-sm:text-4xl max-sm:leading-snug">
+            Trade Smarter,
             <br />
             Win Better
             <br />
             <span className="font-bold">With In-Built AI</span>
           </p>
 
-          <p className="text-gray-300 text-base max-sm:text-sm max-sm:leading-relaxed">
+          <p className="text-gray-300 text-base  max-sm:leading-relaxed">
             Providing you with the opportunity to invest
             <br className="max-sm:hidden" />
             in more than 100 assets for continuous income
@@ -82,7 +82,7 @@ const SocialIcons = () => {
         />
       ))}
 
-      <div className="ml-6 px-4 py-1 h-[48px] w-[140px] rounded-full bg-[#1d292b] text-white text-center flex gap-1 items-center justify-center">
+      <div className="ml-6 px-4 py-1 h-[48px] w-[140px] rounded-full bg-[#1d292b] border border-white/10 text-white text-center flex gap-1 items-center justify-center">
         <span className="font-semibold">+100</span>assets
       </div>
     </div>
