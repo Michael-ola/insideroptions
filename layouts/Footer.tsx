@@ -7,41 +7,50 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   const navLinks = [
-    {
-      title: "Home",
-      links: ["Free demo", "Login", "Register"],
-    },
-    {
-      title: "Trading",
-      links: ["Features", "Social trading", "FAQs"],
-    },
-    {
-      title: "Education",
-      links: [
-        "Glossary",
-        "Technical Analysis",
-        "Graphical analysis",
-        "Fundamental analysis",
-        "Psychology of trading",
-        "Trading strategies",
-        "Webinars",
-        "Tutorials",
-      ],
-    },
-    {
-      title: "Other Pages",
-      links: [
-        "About company",
-        "Terms",
-        "Payment policy",
-        "Return policy",
-        "Privacy policy",
-        "AML & KYC",
-        "Referral Program Terms & Conditions",
-        "Regulation",
-      ],
-    },
-  ];
+  {
+    title: "Home",
+    links: [
+      { name: "Free demo", href: "/demo" },
+      { name: "Login", href: "/login" },
+      { name: "Register", href: "/signup" },
+    ],
+  },
+  {
+    title: "Trading",
+    links: [
+      { name: "Features", href: "/features" },
+      { name: "Social trading", href: "/social-trading" },
+      { name: "FAQs", href: "/faqs" },
+    ],
+  },
+  {
+    title: "Education",
+    links: [
+      { name: "Glossary", href: "" },
+      { name: "Technical Analysis", href: "" },
+      { name: "Graphical analysis", href: "" },
+      { name: "Fundamental analysis", href:""},
+      { name: "Psychology of trading", href:"" },
+      { name: "Trading strategies", href: "" },
+      { name: "Webinars", href: "" },
+      { name: "Tutorials", href: "" },
+    ],
+  },
+  {
+    title: "Other Pages",
+    links: [
+      { name: "About company", href: "" },
+      { name: "Terms", href: "" },
+      { name: "Payment policy", href: "" },
+      { name: "Return policy", href: "/return-policy" },
+      { name: "Privacy policy", href: "/privacy-policy" },
+      { name: "AML & KYC", href: "/aml-kyc" },
+      { name: "Referral Program Terms & Conditions", href: "/referral-terms" },
+      { name: "Regulation", href: "/regulation" },
+    ],
+  },
+];
+
 
   const socialIcons = ["IG", "FB", "X", "TEL", "TIKTOK"];
 
@@ -77,13 +86,13 @@ export default function Footer() {
             <div key={title}>
               <h4 className="font-semibold mb-3 text-white/90">{title}</h4>
               <ul className="space-y-1">
-                {links.map((link) => (
-                  <li key={link}>
+                {links.map(({name,href}) => (
+                  <li key={name}>
                     <Link
-                      href="#"
+                      href={href}
                       className="text-[#B3B8C1] hover:text-white transition"
                     >
-                      {link}
+                      {name}
                     </Link>
                   </li>
                 ))}

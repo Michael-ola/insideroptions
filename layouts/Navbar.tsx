@@ -32,12 +32,14 @@ export default function Navbar() {
       </div>
 
       <div className="flex items-center gap-2">
-        <Image
+        <Link href="/">
+          <Image
           width={186}
           height={32}
           src="/images/logo.png"
           alt="Insider Options"
         />
+        </Link>
       </div>
 
       <div className="flex items-center gap-6">

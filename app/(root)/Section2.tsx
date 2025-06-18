@@ -60,7 +60,7 @@ function DeviceCard({
         alt={`${title} icon`}
         width={48}
         height={48}
-        className="w-10 h-10 object-contain"
+        className="w-15 h-15 object-contain"
       />
       <div className="flex flex-col text-left">
         <h3 className="text-white font-medium">{title}</h3>
