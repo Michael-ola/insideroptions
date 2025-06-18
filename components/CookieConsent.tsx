@@ -40,7 +40,7 @@ export default function CookieConsent() {
               <div className="flex justify-end mb-3">
                 <button
                   onClick={close}
-                  className="text-white text-xl font-bold hover:opacity-80"
+                  className="cursor-pointer text-white text-xl font-bold hover:opacity-80"
                 >
                   &times;
                 </button>
