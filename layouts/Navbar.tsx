@@ -38,17 +38,18 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-      <Link href="/">
-        <div className="flex items-center max-sm:hidden cursor-pointer">
+
+      <div className="flex items-center gap-2">
+        <Link href="/">
           <Image
-            width={186}
-            height={32}
-            src="/images/logo-extended.png"
-            alt="Insider Options"
-            className="w-[186px] h-[32px]"
-          />
-        </div>
-      </Link>
+          width={186}
+          height={32}
+          src="/images/logo.png"
+          alt="Insider Options"
+        />
+        </Link>
+      </div>
+
       <div className="flex items-center gap-6">
         <Link href="/login">
           <button className="cursor-pointer max-sm:hidden">Login</button>
