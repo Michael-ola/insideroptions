@@ -1,14 +1,22 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import Button from "@/components/Button2";
+import OverlayNav from "@/components/OverlayNav";
 
 export default function Navbar() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   return (
     <nav className="w-full absolute z-50 max-w-screen top-0 bg-[#335E350D] backdrop-blur-[40px] text-white px-[7%] py-4 flex items-center justify-between">
+      <OverlayNav
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+      />
       <div className="flex items-center gap-6">
-        <Menu className="w-5 h-5" />
+        <Menu onClick={() => setIsMobileMenuOpen(true)} className="w-5 h-5" />
         <div className="flex items-center gap-6">
           <Image
             src="/images/uk-flag.png"
@@ -26,23 +34,24 @@ export default function Navbar() {
                 alt="text"
               />
             </div>
-            <span className="text-sm">Online chat</span>
+            <span className="text-sm max-sm:hidden">Online chat</span>
           </div>
         </div>
       </div>
-
-      <div className="flex items-center gap-2">
-        <Image
-          width={186}
-          height={32}
-          src="/images/logo.png"
-          alt="Insider Options"
-        />
-      </div>
-
+      <Link href="/">
+        <div className="flex items-center max-sm:hidden cursor-pointer">
+          <Image
+            width={186}
+            height={32}
+            src="/images/logo-extended.png"
+            alt="Insider Options"
+            className="w-[186px] h-[32px]"
+          />
+        </div>
+      </Link>
       <div className="flex items-center gap-6">
         <Link href="/login">
-          <button className="cursor-pointer">Login</button>
+          <button className="cursor-pointer max-sm:hidden">Login</button>
         </Link>
 
         <Button link="/signup" caret>

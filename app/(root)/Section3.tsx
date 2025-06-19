@@ -25,16 +25,16 @@ const Section3 = () => {
       <div className="absolute right-40 top-30 w-[200px] h-[200px] bg-[#79DA7E] opacity-30 blur-[273px] pointer-events-none z-0" />
 
       <div className="relative max-w-5xl mx-auto space-y-6 z-10">
-        <h2 className="text-4xl sm:text-5xl font-light">
+        <h2 className="text-4xl sm:text-5xl font-light leading-12">
           Trusted{" "}
           <span className="font-bold text-[#99E39E]">Trading Platform</span>
         </h2>
-        <p className="text-sm sm:text-base text-gray-400 max-w-xl mx-auto">
+        <p className=" sm:text-base text-gray-400 max-w-xl mx-auto">
           InsiderOption is a leader in the online trading industry. <br />
           We are trusted by more than 50,000 clients.
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 pt-10">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6 pt-10">
           {stats.map((stat, index) => (
             <div
               key={index}

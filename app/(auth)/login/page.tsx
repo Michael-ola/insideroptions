@@ -7,13 +7,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/input";
 import { Label } from "@/components/label";
-import { RiArrowRightSLine } from "@remixicon/react";
+import { RiArrowRightSLine, RiLoader4Line } from "@remixicon/react";
 import { Divider } from "@/components/divider";
 import appleLogo from "@/lib/assets/apple_icon.png";
 import googleLogo from "@/lib/assets/google_logo_logos_icon.png";
 import facebookLogo from "@/lib/assets/facebook_logo_icon.png";
 import Link from "next/link";
 import AuthenticationService from "@/services/authentication.services";
+import { useRouter } from "next/navigation";
 
 const schema = z.object({
   email: z.string().email("Invalid email address"),
@@ -21,19 +22,28 @@ const schema = z.object({
 });
 
 export default function LoginPage() {
+  const router = useRouter();
   const authService = AuthenticationService.getInstance();
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     mode: "onSubmit",
   });
 
-  const onSubmit = (data: z.infer<typeof schema>) => {
-    console.log("data", data);
-    authService.login(data);
+  const onSubmit = async (data: z.infer<typeof schema>) => {
+    await authService
+      .login(data)
+      .then(() => {
+        // Redirect to the home page after successful login
+        router.push("/");
+      })
+      .catch((error) => {
+        // Handle login error (e.g., show a notification)
+        console.error("Login failed:", error);
+      });
   };
 
   return (
-    <section className="z-0 bg-secondary relative h-screen overflow-hidden">
+    <section className="z-0 bg-secondary relative h-screen overflow-hidden pt-8">
       <section className="h-screen bg-gradient-to-t from-bg-gradient-start/20 to-bg-gradient-end/20 grid place-items-center px-4">
         <section className="z-10 w-full max-w-[792px] rounded-2xl p-5 py-12 bg-gradient-to-b from-bg-card-gradient-end/5 to-bg-card-gradient-start/5 text-white border-2 border-white/5">
           <form
@@ -91,8 +101,18 @@ export default function LoginPage() {
                   Forgot password?
                 </Link>
               </div>
-              <SharedButton className="w-full" type="submit">
-                Login <RiArrowRightSLine className="h-4 w-4" />
+              <SharedButton
+                withGradient={form.formState.isSubmitting}
+                className="w-full"
+                type="submit"
+              >
+                {form.formState.isSubmitting ? (
+                  <RiLoader4Line className="size-5 mr-2 animate-spin" />
+                ) : null}
+                Login{" "}
+                {form.formState.isSubmitting ? null : (
+                  <RiArrowRightSLine className="h-4 w-4" />
+                )}
               </SharedButton>
               <Divider>Or continue with</Divider>
               <div className="flex items-center justify-center gap-5">

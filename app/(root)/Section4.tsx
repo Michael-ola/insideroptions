@@ -7,7 +7,7 @@ export default function SectionMarkets() {
   return (
     <section className="relative bg-[#090f1a] text-white py-24 pb-35 px-6 md:px-20 overflow-hidden">
       <div
-        className="absolute top-[60%] right-[25%] -translate-y-1/2 pointer-events-none z-0"
+        className="absolute top-[60%] max-sm:top-[25%] right-[25%] -translate-y-1/2 pointer-events-none z-0"
         style={{
           width: "200px",
           height: "260px",
@@ -18,7 +18,7 @@ export default function SectionMarkets() {
       />
 
       <div
-        className="absolute top-[40%] right-[15%] -translate-y-1/2 pointer-events-none z-0"
+        className="absolute top-[40%] max-sm:top-[15%] right-[15%] -translate-y-1/2 pointer-events-none z-0"
         style={{
           width: "700px",
           height: "700px",
@@ -28,14 +28,14 @@ export default function SectionMarkets() {
         }}
       />
 
-      <div className="w-full px-[8%] relative z-10">
-        <h2 className="text-3xl md:text-5xl font-light text-center mb-32">
+      <div className="w-full px-[8%] max-sm:px-[3%] relative z-10">
+        <h2 className="text-3xl md:text-5xl font-light text-center mb-32 leading-12">
           All your markets in{" "}
           <span className="text-[#99E39E] font-bold">One Place</span>
         </h2>
 
-        <div className="flex">
-          <div className="space-y-10 max-w-md">
+        <div className="flex max-sm:flex-col-reverse">
+          <div className="space-y-10 max-w-md max-sm:max-w-full max-sm:w-full">
             <MarketItem
               title="Currencies"
               description="Trade the most popular currency pairs with high leverage, tight spreads, and fast execution."
@@ -53,7 +53,7 @@ export default function SectionMarkets() {
               description="Trade gold, silver, oil, natural gas, sugar, and more."
             />
           </div>
-          <div className="flex justify-center items-center pl-[13%] pr-[10%]">
+          <div className="flex justify-center items-center pl-[13%] pr-[10%] max-sm:pl-[1%]">
             <AnimatedSection />
           </div>
         </div>
@@ -82,7 +82,7 @@ function MarketItem({
       </div>
       <div>
         <h3 className="text-lg md:text-xl font-medium">{title}</h3>
-        <p className="text-sm md:text-base text-gray-400 mt-1">{description}</p>
+        <p className=" md:text-base text-gray-400 mt-1">{description}</p>
       </div>
     </div>
   );
@@ -115,7 +115,10 @@ function AnimatedSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative flex items-center -mt-12">
+    <section
+      ref={sectionRef}
+      className="relative flex items-center -mt-12 max-sm:-mt-8 max-sm:mb-[20%]"
+    >
       <div
         className={`z-20 transition-opacity duration-6000 ${
           inView ? "opacity-100" : "opacity-0"
@@ -156,7 +159,7 @@ function AnimatedSection() {
         {assetLabels.map((label) => (
           <div
             key={label}
-            className={`bg-[#99E39E] text-black px-6 -mr-60 py-2 rounded-lg shadow-md font-semibold transform transition-all duration-700 ease-out ${
+            className={`bg-[#99E39E] text-black px-6 max-sm:px-3 max-sm:text-sm -mr-60 py-2 rounded-lg shadow-md font-semibold transform transition-all duration-700 ease-out ${
               inView
                 ? "translate-x-0 opacity-100"
                 : "translate-x-full opacity-0"

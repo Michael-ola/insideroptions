@@ -1,4 +1,5 @@
 import { ApiClient, apiClient } from "@/lib/api-client";
+import { AxiosError } from "axios";
 
 class AuthenticationService {
   private static instance: AuthenticationService;
@@ -21,16 +22,20 @@ class AuthenticationService {
   }: {
     email: string;
     password: string;
-  }): Promise<unknown> {
+  }): Promise<void> {
     try {
-      await this.apiClient.post("auth/login", {
+      const res = await this.apiClient.post("auth/login", {
         email,
         password,
       });
-      console.log(`Logging in user: ${email} with password: ${password}`);
-      return true;
+      // TODO: Handle successful login, e.g., store tokens or user data
+      console.log(res.data);
     } catch (error) {
-      console.log("error ", error);
+      console.log("authentication.services.ts: Error during login:", error);
+      if (error instanceof AxiosError) {
+        throw error.response?.data ?? error.message;
+      }
+      throw error;
     }
   }
 

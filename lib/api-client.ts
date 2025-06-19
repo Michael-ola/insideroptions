@@ -1,9 +1,13 @@
 import axios from "axios";
 
+const baseUrl =
+  process.env.NEXT_PUBLIC_API_URL || "https://insider-option-api.onrender.com";
+
 export const apiClient = axios.create({
-  baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api/v1/`,
-  timeout: 5000,
+  baseURL: `${baseUrl}/api/v1/`,
+  // timeout: 5000,
   headers: { "Content-Type": "application/json" },
+  withCredentials: true,
 });
 
 // apiClient.interceptors.request.use(
