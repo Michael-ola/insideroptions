@@ -54,7 +54,7 @@ function DeviceCard({
   subtitle: string;
 }) {
   return (
-    <div className="flex items-center gap-4 justify-center bg-white/5 border border-white/10 rounded-xl p-6 w-[282px] h-[148px] backdrop-blur-sm">
+    <div className="flex items-center gap-4 max-sm:gap-6 justify-center bg-white/5 border border-white/10 rounded-xl p-6 w-[282px] max-sm:w-[80%] h-[148px] backdrop-blur-sm">
       <Image
         src={icon}
         alt={`${title} icon`}

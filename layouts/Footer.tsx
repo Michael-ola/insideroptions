@@ -59,12 +59,13 @@ export default function Footer() {
       <div className="border-t border-b border-[#1B242D] py-12 flex flex-col lg:flex-row gap-12 justify-between">
         <div className="max-w-xl">
           <Link href="/">
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center mb-4">
               <Image
-                src="/images/logo.png"
+                src="/images/logo-extended.png"
                 alt="Logo"
                 width={182}
                 height={32}
+                className="w-[182px] h-[32px]"
               />
             </div>
           </Link>
@@ -145,7 +146,7 @@ export default function Footer() {
           </p>
         </div>
 
-        <div className="flex flex-col items-start justify-center py-8 gap-16 w-full md:w-auto">
+        <div className="flex flex-col  items-start max-sm:items-center justify-center py-8 gap-16 w-full md:w-auto">
           <p className="text-sm text-[#B3B8C1] text-center md:text-left">
             ©2021–{currentYear} InsiderOption LLC.{" "}
             <br className="block md:hidden" />
