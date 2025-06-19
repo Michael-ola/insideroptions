@@ -34,8 +34,8 @@ export default function LoginPage() {
 
   return (
     <section className="z-0 bg-secondary relative h-screen overflow-hidden">
-      <section className="h-screen bg-gradient-to-t from-bg-gradient-start/20 to-bg-gradient-end/20 grid place-items-center px-4">
-        <section className="z-10 w-full max-w-[792px] rounded-2xl p-5 py-12 bg-gradient-to-b from-bg-card-gradient-end/5 to-bg-card-gradient-start/5 text-white border-2 border-white/5 mt-20">
+      <section className="h-screen bg-gradient-to-t from-bg-gradient-start/20 to-bg-gradient-end/20 grid place-items-center px-4 py-10">
+        <section className="z-10 w-full max-w-[792px] rounded-2xl p-5 py-12 bg-gradient-to-b from-bg-card-gradient-end/5 to-bg-card-gradient-start/5 text-white border-2 border-white/5 mt-24">
           <form
             className="space-y-6 max-w-[442px] mx-auto"
             onSubmit={form.handleSubmit(onSubmit)}
