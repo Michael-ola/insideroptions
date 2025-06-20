@@ -34,7 +34,7 @@ export default function SectionMarkets() {
           <span className="text-[#99E39E] font-bold">One Place</span>
         </h2>
 
-        <div className="flex max-sm:flex-col-reverse">
+        <div className="flex justify-center max-sm:flex-col-reverse">
           <div className="space-y-10 max-w-md max-sm:max-w-full max-sm:w-full">
             <MarketItem
               title="Currencies"
@@ -81,8 +81,8 @@ function MarketItem({
         />
       </div>
       <div>
-        <h3 className="text-lg md:text-xl font-medium">{title}</h3>
-        <p className=" md:text-base text-gray-400 mt-1">{description}</p>
+        <h3 className="text-lg md:text-[22px] font-medium">{title}</h3>
+        <p className=" md:text-[17px] text-gray-400 mt-1">{description}</p>
       </div>
     </div>
   );
