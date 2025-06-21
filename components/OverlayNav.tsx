@@ -3,39 +3,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import React from "react";
-
-const navItems = [
-  { label: "Home", href: "/" },
-  {
-    label: "Trading",
-    submenu: [
-      { label: "Features", href: "/trading/features" },
-      { label: "FAQ", href: "/trading/faq" },
-    ],
-  },
-  {
-    label: "Company",
-    submenu: [
-      { label: "About Us", href: "/company/about" },
-      { label: "Contact Us", href: "/company/contact" },
-      { label: "Terms & Conditions", href: "/company/terms-and-conditions" },
-      { label: "Payment Policy", href: "/company/payment-policy" },
-      { label: "Return Policy", href: "/company/return-policy" },
-      { label: "AML & KYC", href: "/company/aml-and-kyc" },
-      {
-        label: "Referral Program Terms & Conditions",
-        href: "/company/referral-program-terms-and-conditions",
-      },
-      {
-        label: "Regulatory Environment",
-        href: "/company/regulatory-environment",
-      },
-    ],
-  },
-];
+import { navItems } from "@/lib/utils";
 
 export default function MobileNav({
-  isOpen,
   onClose,
 }: {
   isOpen: boolean;
