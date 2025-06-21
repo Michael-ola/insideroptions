@@ -55,8 +55,8 @@ function Card({ icon, title }: { icon: string; title: string }) {
 export default function FAQPage() {
   const breadcrumbList = [
     { label: "Home", href: "/" },
-    { label: "Trading", href: "/trading" },
-    { label: "FAQs", href: "/faq" },
+    { label: "Trading" },
+    { label: "FAQs", href: "/trading/faq" },
   ];
 
   const details = [

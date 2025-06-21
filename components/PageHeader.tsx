@@ -4,7 +4,7 @@ import Breadcrumb from "@/components/BreadcrumbUI";
 
 interface propTypes {
   title: string;
-  breadcrumbList: { label: string; href: string }[];
+  breadcrumbList: { label: string; href?: string }[];
   className?: string;
 }
 const PageHeader = ({ title, breadcrumbList, className }: propTypes) => {

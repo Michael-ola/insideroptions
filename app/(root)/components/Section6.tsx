@@ -46,7 +46,7 @@ function HowItWorksCard({
           <h3 className="text-xl font-semibold mb-2">{title}</h3>
           <p className=" text-[#B3B8C1]">{description}</p>
         </div>
-        <div className="w-full h-[270px] mt-auto flex flex-col">
+        <div className="w-full h-[290px] mt-auto flex flex-col">
           <Image
             src={image.src}
             alt={image.alt}
@@ -118,10 +118,10 @@ export default function HowItWorksSection() {
           image={{
             src: "/images/man.png",
             alt: "Deposit",
-            width: 220,
-            height: 200,
+            width: 200,
+            height: 220,
           }}
-          imageStyle="w-full h-auto max-sm:w-[240px] max-sm:mx-auto"
+          imageStyle="w-full h-auto max-sm:w-[240px] mx-auto bg"
         />
         <HowItWorksCard
           observed={inView}
