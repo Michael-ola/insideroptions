@@ -33,7 +33,7 @@ const Section1 = () => {
 
           <SocialIcons />
 
-          <Button link="/register" caret>
+          <Button link="/signup" caret>
             Register
           </Button>
 
