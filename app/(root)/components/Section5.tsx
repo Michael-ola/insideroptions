@@ -112,7 +112,7 @@ function AnimatedSection() {
         />
       </div>
 
-      <div className="w-full max-sm:-left-25 absolute -bottom-18 z-20 -left-40 md:-left-32 flex justify-center">
+      <div className="w-full max-sm:-left-25 absolute -bottom-18 z-20 -left-40 md:-left-32 flex justify-center overflow-hidden">
         <Image
           src="/images/strategyCard.png"
           alt="card"
