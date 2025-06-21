@@ -15,8 +15,8 @@ export default function Navbar() {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <OverlayNav
-            isOpen={isMobileMenuOpen}
-            onClose={() => setIsMobileMenuOpen(false)}
+            isOpen={ isMobileMenuOpen }
+            onClose={ () => setIsMobileMenuOpen(false) }
           />
         )}
       </AnimatePresence>
