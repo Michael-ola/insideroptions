@@ -30,14 +30,14 @@ function HowItWorksCard({
   return (
     <div className={`relative  ${className}`}>
       <div
-        className={`max-h-[470px] h-full overflow-clip border border-[#99e39e1a]  rounded-xl bg-gradient-to-b from-[#0D141B] to-[#0B1017] opacity-80 pt-[13%] px-[10%] flex flex-col items-center text-center`}
+        className={`max-h-[470px] lg:h-[420px] xl:h-[425px] h-full overflow-clip border border-[#99e39e1a]  rounded-xl bg-gradient-to-b from-[#0D141B] to-[#0B1017] opacity-80 pt-[13%] px-[10%] flex flex-col items-center text-center`}
       >
         <Image
           src={`/images/Number-${number}.png`}
           width={100}
           height={500}
           alt="num"
-          className={`absolute before:content-none before:absolute before:block before:z-10 before:inset-0 before:bg-[red] -top-[22%] md:-top-[19%] z-30 -right-9 select-none w-[180px] h-[180px] transition-opacity duration-4500 ${
+          className={`absolute before:content-none before:absolute before:block before:z-10 before:inset-0 before:bg-[red] -top-[21%] md:-top-[21%] z-30 -right-9 select-none w-[180px] h-[180px] transition-opacity duration-4500 ${
             observed ? "opacity-100" : "opacity-0"
           } ${number == 2 && "md:top-0 -mt-14 max-sm:-mt-0"}`}
         />
@@ -46,7 +46,9 @@ function HowItWorksCard({
           <h3 className="text-xl font-semibold mb-2">{title}</h3>
           <p className=" text-[#B3B8C1]">{description}</p>
         </div>
-        <div className="w-full h-[290px] mt-auto flex flex-col">
+        <div
+          className={`w-full h-[290px] mt-auto flex flex-col overflow-hidden`}
+        >
           <Image
             src={image.src}
             alt={image.alt}
@@ -134,7 +136,7 @@ export default function HowItWorksSection() {
             width: 180,
             height: 200,
           }}
-          className="md:pt-8 md:top-10"
+          className="md:pt-8 md:top-6"
           imageStyle="w-[150px] h-[240px]"
         />
         <HowItWorksCard
