@@ -21,7 +21,7 @@ type Props = {
 export function Alert(
   props: React.ComponentProps<"div"> & Props & VariantProps<typeof alertStyle>
 ) {
-  const { className, desc, title, type = "info", ...rest } = props;
+  const { className, desc, type = "info", ...rest } = props;
 
   return (
     <div className={cn(alertStyle({ type }), className)} {...rest}>
