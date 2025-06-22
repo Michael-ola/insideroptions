@@ -1,8 +1,6 @@
 import Image from "next/image";
 import asbstractDot from "@/lib/assets/abstract-dot.png";
-import mck1 from "@/lib/assets/feat-mockup00.png";
-import mck2 from "@/lib/assets/feat-mockup01.png";
-import mck3 from "@/lib/assets/feat-mockup02.png";
+import { featuresLists } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 export default function FeaturesPage() {
   return (
@@ -36,7 +34,7 @@ export default function FeaturesPage() {
         </p>
 
         <section className="space-y-12">
-          {c.map((i, idx) => (
+          {featuresLists.map((i, idx) => (
             <div
               className="bg-primary-container-overlay px-6 md:px-[50px] py-6 md:py-0 rounded-lg border-text-secondary/50 border mx-auto max-w-6xl sm:max-h-[151px] md:max-h-[326px] flex flex-col md:flex-row items-center gap-10 overflow-hidden"
               key={`${idx}-${i.title}`}
@@ -75,21 +73,3 @@ export default function FeaturesPage() {
     </main>
   );
 }
-
-const c = [
-  {
-    title: "Auto Trade AI Intelligence mode",
-    desc: "Let AI handle your trades. It picks top-performing assets, opens smart deals based on technical analysis, and adapts to any risk level. Try it with a $10,000 demo account and earn up to 0.8% daily profit on your real balance.",
-    img: mck1,
-  },
-  {
-    title: "Technical analysis tools",
-    desc: "Enjoy the convenience of accessing your accounts anytime, anywhere through our secure online banking platform. Check balances, transfer funds, and pay bills with ease.",
-    img: mck2,
-  },
-  {
-    title: "All your markets in one place",
-    desc: "Trade the most popular currency pairs with high leverage, tight spreads, and fast execution. Over 100 assets including popular stocks like Apple, Facebook etc.",
-    img: mck3,
-  },
-];
