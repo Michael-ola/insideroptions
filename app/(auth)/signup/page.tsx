@@ -1,5 +1,5 @@
 "use client";
-import { Button, buttonVariants } from "@/components/Button1";
+import { SharedButton, buttonVariants } from "@/components/shared-button";
 import Link from "next/link";
 import { Label } from "@/components/label";
 import { Input } from "@/components/input";
@@ -72,9 +72,14 @@ export default function SignupPage() {
             onSubmit={form.handleSubmit(onSubmit)}
           >
             <div className="flex items-center gap-3 max-w-[442px] mx-auto">
-              <Button size="sm" variant={"default"} className="flex-1">
+              <SharedButton
+                size="sm"
+                type="button"
+                variant={"default"}
+                className="flex-1"
+              >
                 Register
-              </Button>
+              </SharedButton>
               <Link
                 href={"/login"}
                 className={buttonVariants({
@@ -200,9 +205,9 @@ export default function SignupPage() {
               </div>
             </div>
 
-            <Button type="submit" className="w-full">
+            <SharedButton type="submit" className="w-full">
               Continue <RiArrowRightSLine className="h-4 w-4" />
-            </Button>
+            </SharedButton>
 
             <Divider>Or continue with</Divider>
             <div className="flex items-center justify-center gap-5">

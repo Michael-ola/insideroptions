@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { RiArrowLeftSLine, RiArrowRightSLine } from "@remixicon/react";
 import { Input } from "@/components/input";
 import { Label } from "@/components/label";
-import { Button } from "@/components/Button1";
+import { SharedButton } from "@/components/shared-button";
 import React from "react";
 import { EmailSentConfirmation } from "@/components/confirmations/email-sent";
 
@@ -56,7 +56,8 @@ export default function ForgotPasswordPage() {
                     hasError={!!form.formState.errors.email}
                   />
                 </div>
-                <Button
+                <SharedButton
+                  type="submit"
                   disabled={
                     form.formState.isSubmitting || !form.formState.isValid
                   }
@@ -64,7 +65,7 @@ export default function ForgotPasswordPage() {
                 >
                   Reset Password
                   <RiArrowRightSLine className="h-4 w-4" />
-                </Button>
+                </SharedButton>
               </div>
             ) : null}
             {sentConfirmation ? (

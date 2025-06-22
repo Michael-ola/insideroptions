@@ -4,7 +4,7 @@ import { Label } from "@radix-ui/react-label";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Button } from "@/components/Button1";
+import { SharedButton } from "@/components/shared-button";
 import Image from "next/image";
 import hexDeco from "@/lib/assets/hex_deco.png";
 import { PasswordResetConfirmation } from "@/components/confirmations/password-reset";
@@ -76,14 +76,14 @@ export default function NewPasswordPage() {
                       hasError={!!form.formState.errors.confirmPassword}
                     />
                   </div>
-                  <Button
+                  <SharedButton
                     disabled={form.formState.isSubmitting}
                     type="submit"
                     className="w-full"
                   >
                     Submit
                     <RiArrowRightSLine className="h-4 w-4" />
-                  </Button>
+                  </SharedButton>
                 </div>
               </>
             ) : null}

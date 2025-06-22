@@ -1,8 +1,8 @@
 "use client";
 import Link from "next/link";
-import { buttonVariants } from "../Button1";
+import { buttonVariants } from "../shared-button";
 import { RiArrowLeftSLine } from "@remixicon/react";
-import { Button } from "../Button1";
+import { SharedButton } from "../shared-button";
 
 export function LegalAgreementConfirmation() {
   return (
@@ -27,7 +27,9 @@ export function LegalAgreementConfirmation() {
           <RiArrowLeftSLine />
           Back
         </Link>
-        <Button className="flex-1 w-full">I Agree</Button>
+        <SharedButton type="button" className="flex-1 w-full">
+          I Agree
+        </SharedButton>
       </div>
     </div>
   );

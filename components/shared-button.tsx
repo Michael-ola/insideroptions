@@ -27,7 +27,7 @@ export const buttonVariants = cva(
         lg: "",
       },
       withGradient: {
-        true: "bg-top-right from-primary-btn-gradient-start to-primary-btn-gradient-end",
+        true: "bg-gradient-to-tr from-primary-btn-gradient-start from-60% to-primary-btn-gradient-end",
         false: "",
       },
     },
@@ -38,16 +38,19 @@ export const buttonVariants = cva(
   }
 );
 
-export function Button(
+export function SharedButton(
   props: React.ComponentProps<"button"> &
     VariantProps<typeof buttonVariants> & { asChild?: boolean }
 ) {
-  const { className, asChild, variant, size, ...arg } = props;
+  const { className, asChild, variant, size, withGradient, ...arg } = props;
   const BtnComp = asChild ? Slot : "button";
 
   return (
     <BtnComp
-      className={cn(buttonVariants({ variant, size, className }), className)}
+      className={cn(
+        buttonVariants({ variant, size, className, withGradient }),
+        className
+      )}
       {...arg}
     />
   );

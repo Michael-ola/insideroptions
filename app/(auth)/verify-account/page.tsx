@@ -1,5 +1,5 @@
 "use client";
-import { Button, buttonVariants } from "@/components/Button1";
+import { SharedButton, buttonVariants } from "@/components/shared-button";
 import Link from "next/link";
 import hexDeco from "@/lib/assets/hex_deco.png";
 import Image from "next/image";
@@ -63,13 +63,14 @@ export default function VerifyAccountPage() {
                   Confirm
                   <RiArrowRightSLine className="h-4 w-4" />
                 </Link>
-                <Button
+                <SharedButton
+                  type="button"
                   className="w-full"
                   variant={"ghost"}
                   onClick={handleSubmit}
                 >
                   Resend email in 60s
-                </Button>
+                </SharedButton>
               </div>
             </div>
           ) : null}
