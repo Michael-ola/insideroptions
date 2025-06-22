@@ -14,11 +14,6 @@ export default function CookieConsent() {
       const timeout = setTimeout(() => setVisible(true), 500);
       return () => clearTimeout(timeout);
     }
-    if(consent === 'rejected'){
-      console.log('user rejected')
-    }if(consent === 'allowed'){
-      console.log('user allowed')
-    }
   }, []);
 
   const handleAcceptCookie = ()=>{
