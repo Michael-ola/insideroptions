@@ -9,9 +9,23 @@ export default function CookieConsent() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const timeout = setTimeout(() => setVisible(true), 500);
-    return () => clearTimeout(timeout);
+    const consent = sessionStorage.getItem('cookieConsent');
+    if(!consent){
+      const timeout = setTimeout(() => setVisible(true), 500);
+      return () => clearTimeout(timeout);
+    }
   }, []);
+
+  const handleAcceptCookie = ()=>{
+    sessionStorage.setItem('cookieConsent', 'allowed');
+    setVisible(false)
+  }
+
+  const handleRejectCookie = ()=>{
+    sessionStorage.setItem('cookieConsent', 'rejected');
+    setVisible(false)
+  }
+
 
   const close = () => setVisible(false);
 
@@ -68,13 +82,13 @@ export default function CookieConsent() {
               </div>
               <div className="flex gap-4 justify-center mt-6">
                 <Button
-                  onClick={close}
+                  onClick={handleRejectCookie}
                   className="!w-[48%] border border-green-500 text-green-500 bg-transparent font-semibold hover:!from-[#0c1117] hover:!to-[#0c1117]  transition"
                 >
                   Reject
                 </Button>
 
-                <Button onClick={close} className="!flex-1 font-semibold">
+                <Button onClick={handleAcceptCookie} className="!flex-1 font-semibold">
                   Allow
                 </Button>
               </div>
