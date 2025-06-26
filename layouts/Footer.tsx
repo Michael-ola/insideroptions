@@ -18,7 +18,7 @@ export default function Footer() {
   {
     title: "Trading",
     links: [
-      { name: "Features", href: "/features" },
+      { name: "Features", href: "/trading/features" },
       { name: "Social trading", href: "/social-trading" },
       { name: "FAQs", href: "/faqs" },
     ],
