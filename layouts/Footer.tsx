@@ -10,7 +10,7 @@ export default function Footer() {
   {
     title: "Home",
     links: [
-      { name: "Free demo", href: "/demo" },
+      { name: "Free demo", href: "" },
       { name: "Login", href: "/login" },
       { name: "Register", href: "/signup" },
     ],
@@ -19,8 +19,8 @@ export default function Footer() {
     title: "Trading",
     links: [
       { name: "Features", href: "/trading/features" },
-      { name: "Social trading", href: "/social-trading" },
-      { name: "FAQs", href: "/faqs" },
+      { name: "Social trading", href: "" },
+      { name: "FAQs", href: "/trading/faq" },
     ],
   },
   {
@@ -42,11 +42,11 @@ export default function Footer() {
       { name: "About company", href: "" },
       { name: "Terms", href: "" },
       { name: "Payment policy", href: "" },
-      { name: "Return policy", href: "/return-policy" },
-      { name: "Privacy policy", href: "/privacy-policy" },
-      { name: "AML & KYC", href: "/aml-kyc" },
-      { name: "Referral Program Terms & Conditions", href: "/referral-terms" },
-      { name: "Regulation", href: "/regulation" },
+      { name: "Return policy", href: "" },
+      { name: "Privacy policy", href: "" },
+      { name: "AML & KYC", href: "" },
+      { name: "Referral Program Terms & Conditions", href: "" },
+      { name: "Regulation", href: "" },
     ],
   },
 ];
@@ -154,7 +154,7 @@ export default function Footer() {
           </p>
           <div className="flex gap-4 justify-center md:justify-end">
             {socialIcons.map((icon) => (
-              <Link href="#" key={icon}>
+              <Link href="#" key={icon}  className="rounded-full transition-all hover:bg-[#7FCC88]">
                 <Image
                   src={`/images/${icon}.png`}
                   alt={icon}
