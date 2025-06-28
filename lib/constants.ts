@@ -19,3 +19,106 @@ export const featuresLists = [
     img: mck3,
   },
 ];
+
+export const navLinks = [
+  {
+    title: "Home",
+    links: [
+      // { name: "Free demo", href: "" },
+      { name: "Login", href: "/login" },
+      { name: "Register", href: "/signup" },
+    ],
+  },
+  {
+    title: "Trading",
+    links: [
+      { name: "Features", href: "/trading/features" },
+      // { name: "Social trading", href: "" },
+      { name: "FAQs", href: "/trading/faq" },
+    ],
+  },
+  {
+    title: "Education",
+    links: [
+      // { name: "Glossary", href: "" },
+      // { name: "Technical Analysis", href: "" },
+      // { name: "Graphical analysis", href: "" },
+      // { name: "Fundamental analysis", href:""},
+      // { name: "Psychology of trading", href:"" },
+      // { name: "Trading strategies", href: "" },
+      // { name: "Webinars", href: "" },
+      // { name: "Tutorials", href: "" },
+    ],
+  },
+  {
+    title: "Other Pages",
+    links: [
+      { name: "About company", href: "#" },
+      { name: "Terms", href: "#" },
+      { name: "Payment policy", href: "#" },
+      { name: "Return policy", href: "#" },
+      { name: "Privacy policy", href: "#" },
+      { name: "AML & KYC", href: "#" },
+      { name: "Referral Program Terms & Conditions", href: "#" },
+      { name: "Regulation", href: "#" },
+    ],
+  },
+];
+
+export const country = [
+  {
+    value: "living-area",
+    label: "Living area",
+  },
+  {
+    value: "shopping-area",
+    label: "Shopping area",
+  },
+  {
+    value: "business-park",
+    label: "Business park",
+  },
+];
+
+export const countries = [
+  { value: "Select your country", label: "Select your country" },
+  { value: "Nigeria", label: "Nigeria" },
+  { value: "Afghanistan", label: "Afghanistan" },
+  { value: "Albania", label: "Albania" },
+  { value: "Algeria", label: "Algeria" },
+  { value: "Argentina", label: "Argentina" },
+  { value: "Armenia", label: "Armenia" },
+  { value: "Austria", label: "Austria" },
+  { value: "Azerbaijan", label: "Azerbaijan" },
+  { value: "Bangladesh", label: "Bangladesh" },
+  { value: "Belgium", label: "Belgium" },
+  { value: "Brazil", label: "Brazil" },
+  { value: "Bulgaria", label: "Bulgaria" },
+  { value: "Canada", label: "Canada" },
+  { value: "Chile", label: "Chile" },
+  { value: "China", label: "China" },
+  { value: "Colombia", label: "Colombia" },
+  { value: "Croatia", label: "Croatia" },
+  { value: "Cyprus", label: "Cyprus" },
+  { value: "Czech Republic", label: "Czech Republic" },
+  { value: "Denmark", label: "Denmark" },
+  { value: "Egypt", label: "Egypt" },
+  { value: "Estonia", label: "Estonia" },
+  { value: "Finland", label: "Finland" },
+  { value: "France", label: "France" },
+  { value: "Georgia", label: "Georgia" },
+  { value: "Greece", label: "Greece" },
+  { value: "Hong Kong SAR China", label: "Hong Kong SAR China" },
+  { value: "Hungary", label: "Hungary" },
+  { value: "Iceland", label: "Iceland" },
+  { value: "India", label: "India" },
+  { value: "Indonesia", label: "Indonesia" },
+  { value: "Ireland", label: "Ireland" },
+  { value: "United Kingdom", label: "United Kingdom" },
+  { value: "United States", label: "United States" },
+  { value: "Australia", label: "Australia" },
+  { value: "Germany", label: "Germany" },
+  { value: "Spain", label: "Spain" },
+  { value: "Italy", label: "Italy" },
+  { value: "Netherlands", label: "Netherlands" },
+];

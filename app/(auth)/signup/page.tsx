@@ -5,14 +5,12 @@ import { Label } from "@/components/label";
 import { Input } from "@/components/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useState, useEffect } from "react";
 import { z } from "zod";
 import hexDeco from "@/lib/assets/hex_deco.png";
 import Image from "next/image";
 import { RiArrowRightSLine } from "@remixicon/react";
 import { Divider } from "@/components/divider";
-import appleLogo from "@/lib/assets/apple_icon.png";
-import googleLogo from "@/lib/assets/google_logo_logos_icon.png";
-import facebookLogo from "@/lib/assets/facebook_logo_icon.png";
 import { Checkbox } from "@/components/checkbox";
 import {
   Select,
@@ -22,21 +20,8 @@ import {
   SelectValue,
 } from "@/components/select";
 import { useRouter } from "next/navigation";
-
-const country = [
-  {
-    value: "living-area",
-    label: "Living area",
-  },
-  {
-    value: "shopping-area",
-    label: "Shopping area",
-  },
-  {
-    value: "business-park",
-    label: "Business park",
-  },
-];
+import { countries } from "@/lib/constants";
+import SocialLogin from "@/components/SocialLogin";
 
 const schema = z.object({
   surname: z.string().min(1, "Surname is required").trim(),
@@ -57,6 +42,12 @@ export default function SignupPage() {
     resolver: zodResolver(schema),
     mode: "onSubmit",
   });
+
+  const [selectedCountry, setSelectedCountry] = useState(countries[1]?.value || "");
+
+  useEffect(() => {
+    form.setValue("country", selectedCountry);
+  }, [selectedCountry, form]);
 
   const onSubmit = (data: z.infer<typeof schema>) => {
     console.log("data", data);
@@ -135,14 +126,21 @@ export default function SignupPage() {
                 <Label htmlFor="country" className="sr-only">
                   Country of residence
                 </Label>
-                <Select>
+                <Select
+                  value={selectedCountry}
+                  onValueChange={(val) => {
+                    setSelectedCountry(val);
+                    form.setValue("country", val);
+                  }}
+                  disabled={true}
+                >
                   <SelectTrigger id="country">
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
                   <SelectContent>
-                    {country.map((item) => (
-                      <SelectItem key={item.value} value={item.value}>
-                        {item.label}
+                    {countries.map((country) => (
+                      <SelectItem key={country.value} value={country.value}>
+                        {country.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -211,24 +209,7 @@ export default function SignupPage() {
 
             <Divider>Or continue with</Divider>
             <div className="flex items-center justify-center gap-5">
-              <button
-                type="button"
-                className="bg-white rounded-full p-2 h-12 w-12"
-              >
-                <Image src={appleLogo} alt="apple" />
-              </button>
-              <button
-                type="button"
-                className="bg-white rounded-full p-2 h-12 w-12"
-              >
-                <Image src={googleLogo} alt="google" />
-              </button>
-              <button
-                type="button"
-                className="bg-white rounded-full p-2 h-12 w-12"
-              >
-                <Image src={facebookLogo} alt="facebook" />
-              </button>
+              <SocialLogin />
             </div>
           </form>
         </section>
