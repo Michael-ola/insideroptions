@@ -1,55 +1,11 @@
 "use client";
 
+import { navLinks } from "@/lib/constants";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
-
-  const navLinks = [
-  {
-    title: "Home",
-    links: [
-      { name: "Free demo", href: "" },
-      { name: "Login", href: "/login" },
-      { name: "Register", href: "/signup" },
-    ],
-  },
-  {
-    title: "Trading",
-    links: [
-      { name: "Features", href: "/trading/features" },
-      { name: "Social trading", href: "" },
-      { name: "FAQs", href: "/trading/faq" },
-    ],
-  },
-  {
-    title: "Education",
-    links: [
-      { name: "Glossary", href: "" },
-      { name: "Technical Analysis", href: "" },
-      { name: "Graphical analysis", href: "" },
-      { name: "Fundamental analysis", href:""},
-      { name: "Psychology of trading", href:"" },
-      { name: "Trading strategies", href: "" },
-      { name: "Webinars", href: "" },
-      { name: "Tutorials", href: "" },
-    ],
-  },
-  {
-    title: "Other Pages",
-    links: [
-      { name: "About company", href: "" },
-      { name: "Terms", href: "" },
-      { name: "Payment policy", href: "" },
-      { name: "Return policy", href: "" },
-      { name: "Privacy policy", href: "" },
-      { name: "AML & KYC", href: "" },
-      { name: "Referral Program Terms & Conditions", href: "" },
-      { name: "Regulation", href: "" },
-    ],
-  },
-];
 
 
   const socialIcons = ["IG", "FB", "X", "TEL", "TIKTOK"];

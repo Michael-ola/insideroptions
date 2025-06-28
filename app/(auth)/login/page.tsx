@@ -9,12 +9,10 @@ import { Input } from "@/components/input";
 import { Label } from "@/components/label";
 import { RiArrowRightSLine, RiLoader4Line } from "@remixicon/react";
 import { Divider } from "@/components/divider";
-import appleLogo from "@/lib/assets/apple_icon.png";
-import googleLogo from "@/lib/assets/google_logo_logos_icon.png";
-import facebookLogo from "@/lib/assets/facebook_logo_icon.png";
 import Link from "next/link";
 import AuthenticationService from "@/services/authentication.services";
 import { useRouter } from "next/navigation";
+import SocialLogin from "@/components/SocialLogin";
 
 const schema = z.object({
   email: z.string().email("Invalid email address"),
@@ -116,24 +114,7 @@ export default function LoginPage() {
               </SharedButton>
               <Divider>Or continue with</Divider>
               <div className="flex items-center justify-center gap-5">
-                <button
-                  type="button"
-                  className="bg-white rounded-full p-2 h-12 w-12"
-                >
-                  <Image src={appleLogo} alt="apple" />
-                </button>
-                <button
-                  type="button"
-                  className="bg-white rounded-full p-2 h-12 w-12"
-                >
-                  <Image src={googleLogo} alt="google" />
-                </button>
-                <button
-                  type="button"
-                  className="bg-white rounded-full p-2 h-12 w-12"
-                >
-                  <Image src={facebookLogo} alt="facebook" />
-                </button>
+                <SocialLogin />
               </div>
             </div>
           </form>

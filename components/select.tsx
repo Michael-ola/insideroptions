@@ -26,7 +26,7 @@ const selectTriggerStyles = [
     "data-placeholder:text-gray-500",
     "bg-text-secondary/20",
     "hover:bg-text-secondary/30",
-    "data-disabled:bg-gray-100 data-disabled:text-gray-400",
+    "data-disabled:bg-muted data-disabled:text-muted-foreground data-disabled:opacity-50",
     focusInput
   ),
 ];
@@ -35,8 +35,9 @@ const SelectTrigger = React.forwardRef<
   React.ComponentRef<typeof SelectPrimitives.Trigger>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitives.Trigger> & {
     hasError?: boolean;
+    disabled?: boolean;
   }
->(({ className, hasError, children, ...props }, forwardedRef) => {
+>(({ className, hasError, disabled, children, ...props }, forwardedRef) => {
   return (
     <SelectPrimitives.Trigger
       ref={forwardedRef}
@@ -45,6 +46,7 @@ const SelectTrigger = React.forwardRef<
         hasError ? hasErrorInput : "",
         className
       )}
+      disabled={disabled}
       {...props}
     >
       <span className="truncate">{children}</span>
