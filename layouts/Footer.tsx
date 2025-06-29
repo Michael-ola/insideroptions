@@ -108,6 +108,7 @@ export default function Footer() {
             <br className="block md:hidden" />
             All rights reserved
           </p>
+          {/* Social Icons needs reworking - should be replaced with icons from a library or custom SVGs */}
           <div className="flex gap-4 justify-center md:justify-end">
             {socialIcons.map((icon) => (
               <Link href="#" key={icon}  className="rounded-full transition-all hover:bg-[#7FCC88]">
