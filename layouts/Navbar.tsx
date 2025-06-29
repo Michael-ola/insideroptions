@@ -23,7 +23,7 @@ export default function Navbar() {
 
       <nav className="w-full absolute z-50 max-w-screen top-0 bg-[#335E350D] backdrop-blur-[40px] text-white px-[7%] py-4 flex items-center justify-between">
         <div className="flex items-center gap-6">
-          <Menu onClick={() => setIsMobileMenuOpen(true)} className="w-5 h-5" />
+          <Menu onClick={() => setIsMobileMenuOpen(true)} className="w-5 h-5 cursor-pointer" />
           <div className="flex items-center gap-6">
             <Image
               src="/images/uk-flag.png"
