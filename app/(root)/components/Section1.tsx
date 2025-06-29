@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import Image from "next/image";
 import Button from "@/components/Button2";
@@ -92,8 +93,21 @@ const SocialIcons = () => {
 export const OfficialChannels = () => (
   <div className="flex items-center gap-4 mt-6">
     <span className="text-white font-bold">Join our official channels</span>
-    <FaWhatsapp className="text-green-400 w-10 h-10" />
-    <FaTelegram className="text-blue-400 w-10 h-10" />
+    <FaWhatsapp className="text-green-400 w-10 h-10 cursor-pointer" onClick={ () => {
+      // Uncomment the following lines and replace 'your-whatsapp-number' with your actual WhatsApp number
+      // This will open WhatsApp in a new tab for Android and iOS devices.
+      // if (navigator.userAgent.match(/Android/i)) {
+      //   window.open("https://api.whatsapp.com/send?phone=your-whatsapp-number", "_blank");
+      // } else if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
+      //   window.location.href = "whatsapp://send?phone=your-whatsapp-number";
+      // } else {
+      //   window.open("https://api.whatsapp.com/send?phone=your-whatsapp-number", "_blank");
+      // }
+      alert("WhatsApp link is not set yet. Please contact support.");
+    }} />
+    <FaTelegram className="text-blue-400 w-10 h-10 cursor-pointer" onClick={ () => {
+      alert("Telegram link is not set yet. Please contact support.");
+    }} />
   </div>
 );
 
