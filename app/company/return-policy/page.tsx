@@ -23,18 +23,18 @@ const page = () => {
 
 export default page;
 
-interface HeadingProps {
-  children: ReactNode;
-}
+// interface HeadingProps {
+//   children: ReactNode;
+// }
 
 interface NumberedParagraphProps {
   number: string;
   children: ReactNode;
 }
 
-const Heading: React.FC<HeadingProps> = ({ children }) => (
-  <h2 className="text-xl sm:text-2xl font-bold mb-4">{children}</h2>
-);
+// const Heading: React.FC<HeadingProps> = ({ children }) => (
+//   <h2 className="text-xl sm:text-2xl font-bold mb-4">{children}</h2>
+// );
 
 const NumberedParagraph: React.FC<NumberedParagraphProps> = ({
   number,

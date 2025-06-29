@@ -38,9 +38,9 @@ interface ContentListProps {
   className?: string;
 }
 
-const Heading: React.FC<HeadingProps> = ({ children }) => (
-  <h2 className="text-xl sm:text-2xl font-bold mb-4">{children}</h2>
-);
+// const Heading: React.FC<HeadingProps> = ({ children }) => (
+//   <h2 className="text-xl sm:text-2xl font-bold mb-4">{children}</h2>
+// );
 
 const SubHeading: React.FC<HeadingProps> = ({ children }) => (
   <h3 className="text-lg sm:text-xl font-semibold mb-2">{children}</h3>
