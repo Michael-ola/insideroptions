@@ -6,22 +6,38 @@ interface propTypes {
   title: string;
   breadcrumbList: { label: string; href?: string }[];
   className?: string;
+  company?: boolean;
 }
-const PageHeader = ({ title, breadcrumbList, className }: propTypes) => {
+const PageHeader = ({
+  title,
+  breadcrumbList,
+  className,
+  company,
+}: propTypes) => {
   return (
-    <div
-      className={`relative bg-[#070c17] px-[7%] py-[3%] max-sm:top-12 max-sm:py-[7%] ${className}`}
+    <section
+      className={`relative bg-gradient-to-tr from-[#0E151C] from-50% to-transparent px-[7%] py-12 max-sm:top-12 flex flex-col justify-center gap-4 max-sm:py-[7%] ${className}`}
     >
-      <Image
-        src={`/images/dots3.png`}
-        width={320}
-        height={500}
-        alt="..."
-        className="absolute top-0 right-0 max-sm:w-[272px] max-sm:h-auto"
-      />
-      <h1 className="text-white text-3xl font-bold mb-4">{title}</h1>
+      {company ? (
+        <Image
+          src={`/images/blur.png`}
+          width={1200}
+          height={500}
+          alt="..."
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      ) : (
+        <Image
+          src={`/images/dots3.png`}
+          width={320}
+          height={500}
+          alt="..."
+          className="absolute top-0 right-0 max-sm:w-[272px] max-sm:h-auto"
+        />
+      )}
+      <h1 className="text-white text-3xl font-bold">{title}</h1>
       <Breadcrumb crumbs={breadcrumbList} />
-    </div>
+    </section>
   );
 };
 

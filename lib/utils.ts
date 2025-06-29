@@ -13,7 +13,6 @@ export const focusRing =
 export const hasErrorInput =
   "ring-2 border-red-500 dark:border-red-700 ring-red-200 dark:ring-red-700/30";
 
-
 export const navItems = [
   { label: "Home", href: "/" },
   {
@@ -31,6 +30,7 @@ export const navItems = [
       { label: "Terms & Conditions", href: "/company/terms-and-conditions" },
       { label: "Payment Policy", href: "/company/payment-policy" },
       { label: "Return Policy", href: "/company/return-policy" },
+      { label: "Privacy Policy", href: "/company/privacy-policy" },
       { label: "AML & KYC", href: "/company/aml-and-kyc" },
       {
         label: "Referral Program Terms & Conditions",

@@ -49,25 +49,23 @@ function BreadcrumbItem({ href, label, isLast }: BreadcrumbItemProps) {
 
 export default function Breadcrumbs({ crumbs }: BreadcrumbsProps) {
   return (
-    <div className="mb-8">
-      <div className="flex h-full items-center gap-2">
-        {crumbs.map((crumb, index) => {
-          return crumb.href ? (
-            <BreadcrumbItem
-              key={index}
-              href={crumb.href}
-              label={crumb.label}
-              isLast={index === crumbs.length - 1}
-            />
-          ) : (
-            <BreadcrumbItem
-              key={index}
-              label={crumb.label}
-              isLast={index === crumbs.length - 1}
-            />
-          );
-        })}
-      </div>
+    <div className="flex h-full items-center gap-2 z-20">
+      {crumbs.map((crumb, index) => {
+        return crumb.href ? (
+          <BreadcrumbItem
+            key={index}
+            href={crumb.href}
+            label={crumb.label}
+            isLast={index === crumbs.length - 1}
+          />
+        ) : (
+          <BreadcrumbItem
+            key={index}
+            label={crumb.label}
+            isLast={index === crumbs.length - 1}
+          />
+        );
+      })}
     </div>
   );
 }
