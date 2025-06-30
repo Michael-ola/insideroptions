@@ -53,12 +53,12 @@ export const navLinks = [
   {
     title: "Other Pages",
     links: [
-      { name: "About company", href: "#" },
-      { name: "Terms", href: "#" },
-      { name: "Payment policy", href: "#" },
-      { name: "Return policy", href: "#" },
-      { name: "Privacy policy", href: "#" },
-      { name: "AML & KYC", href: "#" },
+      { name: "About company", href: "/company/about" },
+      { name: "Terms and Conditions", href: "/company/terms-and-conditions" },
+      { name: "Payment Policy", href: "/company/payment-policy" },
+      { name: "Return Policy", href: "/company/return-policy" },
+      { name: "Privacy Policy", href: "/company/privacy-policy" },
+      { name: "AML & KYC", href: "/company/aml-and-kyc" },
       { name: "Referral Program Terms & Conditions", href: "#" },
       { name: "Regulation", href: "#" },
     ],
