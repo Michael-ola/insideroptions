@@ -4,7 +4,13 @@ import { buttonVariants } from "../shared-button";
 import { RiArrowLeftSLine } from "@remixicon/react";
 import { SharedButton } from "../shared-button";
 
-export function LegalAgreementConfirmation() {
+export function LegalAgreementConfirmation({
+  onBack,
+  onAgree,
+}: {
+  onBack?: () => void;
+  onAgree: () => void;
+}) {
   return (
     <div className="h-[424px] space-y-14 mt-9 py-10 flex flex-col">
       <div className="flex-1 space-y-6 max-w-[500px] mx-auto">
@@ -17,8 +23,11 @@ export function LegalAgreementConfirmation() {
         </Link>
       </div>
       <div className="flex flex-col md:flex-row items-center gap-4 w-full max-w-[500px] mx-auto">
-        <Link
-          href="/login"
+        <button
+          type="button"
+          onClick={() => {
+            if (onBack) onBack();
+          }}
           className={buttonVariants({
             className: "flex-1 border-primary! text-primary w-full",
             variant: "outline",
@@ -26,8 +35,11 @@ export function LegalAgreementConfirmation() {
         >
           <RiArrowLeftSLine />
           Back
-        </Link>
-        <SharedButton type="button" className="flex-1 w-full">
+        </button>
+        <SharedButton type="button" 
+        className="flex-1 w-full"
+        onClick={onAgree}
+        >
           I Agree
         </SharedButton>
       </div>

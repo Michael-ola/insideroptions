@@ -7,11 +7,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { z } from "zod";
+import { signUpSchema, registerTrader, getErrorMessage } from "@/lib/utils";
 import hexDeco from "@/lib/assets/hex_deco.png";
 import Image from "next/image";
 import { RiArrowRightSLine } from "@remixicon/react";
 import { Divider } from "@/components/divider";
 import { Checkbox } from "@/components/checkbox";
+import { SubmitHandler } from "react-hook-form";
 import {
   Select,
   SelectContent,
@@ -20,43 +22,73 @@ import {
   SelectValue,
 } from "@/components/select";
 import { useRouter } from "next/navigation";
-import { countries } from "@/lib/constants";
+import { countries, EMPTY_STRING } from "@/lib/constants";
 import SocialLogin from "@/components/SocialLogin";
 
-const schema = z.object({
-  surname: z.string().min(1, "Surname is required").trim(),
-  firstName: z.string().min(1, "First name is required").trim(),
-  email: z.string().email("Invalid email address").trim(),
-  country: z.string().min(1, "Country is required").trim(),
-  referral: z.string().trim().optional(),
-  am: z.string().email("Invalid email address").optional(),
-  terms: z.boolean().refine((val) => val === true, {
-    message: "You must accept the terms and conditions",
-  }),
-  isUS: z.boolean().default(false).optional(),
-});
 
 export default function SignupPage() {
   const router = useRouter();
-  const form = useForm<z.infer<typeof schema>>({
-    resolver: zodResolver(schema),
-    mode: "onSubmit",
+  const form = useForm<z.infer<typeof signUpSchema>>({
+    resolver: zodResolver(signUpSchema),
+    mode: "onChange", // enables real-time validation
   });
 
-  const [selectedCountry, setSelectedCountry] = useState(countries[1]?.value || "");
+  const [errorBanner, setErrorBanner] = useState<string | null>(null);
+  const [selectedCountry, setSelectedCountry] = useState(countries[1]?.value || EMPTY_STRING);
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     form.setValue("country", selectedCountry);
   }, [selectedCountry, form]);
 
-  const onSubmit = (data: z.infer<typeof schema>) => {
-    console.log("data", data);
-    router.replace(`/verify-account?email=${data.email}`);
+  const onSubmit: SubmitHandler<z.infer<typeof signUpSchema>> = async (data) => {
+    setSubmitted(true);
+    registerTrader(data)
+      .then((response: any) => {
+        setErrorBanner(null);
+        console.log("Registration response:", response);
+        // Redirect to the next step or dashboard
+        router.replace(`/verify-account?email=${response.email}`);
+      })
+      .catch((error) => {
+        setErrorBanner(getErrorMessage(error));
+        setSubmitted(false);
+      });
   };
 
   return (
     <section className="z-0 bg-secondary relative min-h-screen overflow-hidden pb-8 bg-gradient-to-t from-bg-gradient-start/20 to-bg-gradient-end/20">
-      <section className=" grid place-items-center px-4 py-10">
+      <section className="grid place-items-center px-4 py-10">
+        {/* @Todo: Move Error Banner to a different component */}
+        {/* <ErrorBanner message={errorBanner} onClose={() => setErrorBanner(null)} /> */}
+        {/* Error Banner */}
+        {errorBanner && (
+          <div className="fixed inset-0 z-50 flex items-start justify-center pointer-events-none">
+            <div className="w-full max-w-[792px] mt-24 pointer-events-auto">
+              <div className="flex flex-col rounded-lg bg-red-600 shadow-2xl px-6 py-4">
+                <div className="flex items-center">
+                  <span className="mr-3">
+                    <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="12" fill="#fff" fillOpacity="0.25" />
+                      <path d="M12 8v4m0 4h.01" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                  <span className="font-semibold text-white text-base flex-1">{errorBanner}</span>
+                  <button
+                    onClick={() => setErrorBanner(null)}
+                    className="ml-4 text-white text-2xl hover:text-red-200 cursor-pointer"
+                    aria-label="Close"
+                  >
+                    ×
+                  </button>
+                </div>
+                <span className="text-white text-xs mt-1 opacity-90">
+                  Perhaps you signed up with a social account?
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
         <section className="z-10 w-full max-w-[792px] rounded-2xl p-5 py-12 bg-gradient-to-b from-bg-card-gradient-end/5 to-bg-card-gradient-start/5 text-white border-2 border-white/5 mt-24">
           <form
             className="space-y-6 max-w-[442px] mx-auto"
@@ -89,14 +121,19 @@ export default function SignupPage() {
             <div className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <Label htmlFor="surname">Legal Surname</Label>
+                  <Label htmlFor="lastName">Legal Surname</Label>
                   <Input
-                    id="surname"
+                    id="lastName"
                     className="mt-2"
                     placeholder="Legal surname"
-                    hasError={!!form.formState.errors.surname}
-                    {...form.register("surname")}
+                    hasError={!!form.formState.errors.lastName}
+                    {...form.register("lastName")}
                   />
+                  {form.formState.errors.lastName && (
+                    <span className="text-red-500 text-xs">
+                      {form.formState.errors.lastName.message}
+                    </span>
+                  )}
                 </div>
 
                 <div>
@@ -108,6 +145,11 @@ export default function SignupPage() {
                     placeholder="Legal first name"
                     {...form.register("firstName")}
                   />
+                  {form.formState.errors.firstName && (
+                    <span className="text-red-500 text-xs">
+                      {form.formState.errors.firstName.message}
+                    </span>
+                  )}
                 </div>
               </div>
               <div>
@@ -121,6 +163,28 @@ export default function SignupPage() {
                   autoComplete="email"
                   {...form.register("email")}
                 />
+                {form.formState.errors.email && (
+                  <span className="text-red-500 text-xs">
+                    {form.formState.errors.email.message}
+                  </span>
+                )}
+              </div>
+              <div>
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  className="mt-2"
+                  placeholder="Password"
+                  hasError={!!form.formState.errors.password}
+                  type="password"
+                  autoComplete="new-password"
+                  {...form.register("password")}
+                />
+                {form.formState.errors.password && (
+                  <span className="text-red-500 text-xs">
+                    {form.formState.errors.password.message}
+                  </span>
+                )}
               </div>
               <div>
                 <Label htmlFor="country" className="sr-only">
@@ -147,13 +211,13 @@ export default function SignupPage() {
                 </Select>
               </div>
               <div>
-                <Label htmlFor="referral">Referral</Label>
+                <Label htmlFor="refererCode">Referral</Label>
                 <Input
-                  id="referral"
+                  id="refererCode"
                   className="mt-2"
-                  placeholder="Referral's link"
-                  hasError={!!form.formState.errors.referral}
-                  {...form.register("referral")}
+                  placeholder="Referral's Code"
+                  hasError={!!form.formState.errors.refererCode}
+                  {...form.register("refererCode")}
                 />
                 <span className="text-text-secondary text-sm inline-block mt-2">
                   (Note: If you were invited by other user, you should specify
@@ -162,7 +226,7 @@ export default function SignupPage() {
                 </span>
               </div>
 
-              <div>
+              {/* <div>
                 <Label htmlFor="am">Asset Manager (AM)</Label>
                 <Input
                   id="referral"
@@ -175,14 +239,19 @@ export default function SignupPage() {
                   (It is required if you already have an AM otherwise leave
                   blank)
                 </span>
-              </div>
+              </div> */}
 
               <div className="flex items-center gap-4">
-                <Checkbox id="terms" />
+                <Checkbox id="terms"
+                  hasError={!!form.formState.errors.terms}
+                  checked={!!form.watch("terms")}
+                  onCheckedChange={(checked) => {
+                    form.setValue("terms", !!checked, { shouldValidate: true });
+                  }}
+                />
                 <Label
                   htmlFor="terms"
                   className="text-text-secondary text-xs font-normal"
-                  {...form.register("terms")}
                 >
                   By creating an account, you confirm you are 18+ and understand
                   we may send you updates and marketing materials (see Security
@@ -203,7 +272,8 @@ export default function SignupPage() {
               </div>
             </div>
 
-            <SharedButton type="submit" className="w-full">
+            <SharedButton type="submit" className="w-full"
+              disabled={!form.formState.isValid || form.formState.isSubmitting || submitted}>
               Continue <RiArrowRightSLine className="h-4 w-4" />
             </SharedButton>
 

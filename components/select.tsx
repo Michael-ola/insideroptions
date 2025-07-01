@@ -7,7 +7,8 @@ import {
   RiExpandUpDownLine,
 } from "@remixicon/react";
 
-import { cn, focusInput, hasErrorInput } from "@/lib/utils";
+import { focusInput, hasErrorInput } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 
 const Select = SelectPrimitives.Root;
 Select.displayName = "Select";
