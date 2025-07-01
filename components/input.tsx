@@ -1,6 +1,7 @@
 import React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
-import { focusInput, focusRing, hasErrorInput, cn } from "@/lib/utils";
+import { focusInput, focusRing, hasErrorInput } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 import { RiEye2Line, RiEyeOffLine, RiSearchLine } from "@remixicon/react";
 
 const inputStyle = cva(

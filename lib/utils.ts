@@ -1,45 +1,64 @@
 import { twMerge } from "tailwind-merge";
 import { clsx, type ClassValue } from "clsx";
+import { z } from "zod";
+import { signUp } from "./authService";
+import { SignUpFormData } from "./models";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const focusInput = "focus:border-primary";
+export const signUpSchema = z.object({
+  lastName: z.string().min(1, "Surname is required").trim(),
+  firstName: z.string().min(1, "First name is required").trim(),
+  email: z.string()
+  .min(1, "Email is required")
+  .email("Invalid email address").trim(),
+  country: z.string().trim().optional(),
+  refererCode: z.string().trim().optional(),
+  password: z.string()
+  .min(1, "Password is required")
+  .min(8, "Password must be at least 8 characters long")
+  .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+  .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+  .regex(/\d/, "Password must contain at least one number")
+  .regex(/^\S*$/, "Password must not contain spaces")
+  .trim(),
+  // am: z.string().email("Invalid email address").optional(),
+  terms: z.boolean().refine((val) => val === true, {
+    message: "You must accept the terms and conditions",
+  }),
+  isUS: z.boolean().default(false).optional(),
+});
 
-export const focusRing =
-  "outline outline-offset-2 outline-0 focus-visible:outline-2 outline-primary dark:outline-primary";
+export const registerTrader = async (
+  formData: z.infer<typeof signUpSchema>,
+): Promise<unknown> => {
+  const parsedData = signUpSchema.parse(formData);
+  // Only proceed if terms is true
+  if (!parsedData.terms) {
+    throw new Error("You must accept the terms and conditions");
+  }
+  return signUp(transformSignUpFormData(parsedData));
+};
 
-export const hasErrorInput =
-  "ring-2 border-red-500 dark:border-red-700 ring-red-200 dark:ring-red-700/30";
+const transformSignUpFormData = (data: z.infer<typeof signUpSchema>): SignUpFormData => {
+  return {
+    lastName: data.lastName,
+    firstName: data.firstName,
+    email: data.email,
+    country: data.country || "",
+    refererCode: data.refererCode || "",
+    password: data.password,
+  };
+}
 
-export const navItems = [
-  { label: "Home", href: "/" },
-  {
-    label: "Trading",
-    submenu: [
-      { label: "Features", href: "/trading/features" },
-      { label: "FAQ", href: "/trading/faq" },
-    ],
-  },
-  {
-    label: "Company",
-    submenu: [
-      { label: "About Us", href: "/company/about" },
-      { label: "Contact Us", href: "/company/contact" },
-      { label: "Terms & Conditions", href: "/company/terms-and-conditions" },
-      { label: "Payment Policy", href: "/company/payment-policy" },
-      { label: "Return Policy", href: "/company/return-policy" },
-      { label: "Privacy Policy", href: "/company/privacy-policy" },
-      { label: "AML & KYC", href: "/company/aml-and-kyc" },
-      {
-        label: "Referral Program Terms & Conditions",
-        href: "/company/referral-program-terms-and-conditions",
-      },
-      {
-        label: "Regulatory Environment",
-        href: "/company/regulatory-environment",
-      },
-    ],
-  },
-];
+export function getErrorMessage(error: any, fallback = "An unexpected error occurred from the server.") {
+  if (error?.response?.data?.message) {
+    return error.response.data.message;
+  }
+  if (error?.message) {
+    return error.message;
+  }
+  return fallback;
+}

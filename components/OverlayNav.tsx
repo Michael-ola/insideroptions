@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import React from "react";
-import { navItems } from "@/lib/utils";
+import { navItems } from "@/lib/constants";
 
 export default function MobileNav({
   onClose,

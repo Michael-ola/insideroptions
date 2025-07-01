@@ -2,6 +2,20 @@ import mck1 from "./assets/feat-mockup00.png";
 import mck2 from "./assets/feat-mockup01.png";
 import mck3 from "./assets/feat-mockup02.png";
 
+export const BASE_URL = "https://insider-option-api.onrender.com/api/v1";
+
+export const EMPTY_STRING = "";
+
+export const focusInput = "focus:border-primary";
+
+export const focusRing =
+  "outline outline-offset-2 outline-0 focus-visible:outline-2 outline-primary dark:outline-primary";
+
+export const hasErrorInput =
+  "ring-2 border-red-500 dark:border-red-700 ring-red-200 dark:ring-red-700/30";
+
+export const AUTH_API_URL = `${BASE_URL}/auth`;
+
 export const featuresLists = [
   {
     title: "Auto Trade AI Intelligence mode",
@@ -65,60 +79,38 @@ export const navLinks = [
   },
 ];
 
-export const country = [
-  {
-    value: "living-area",
-    label: "Living area",
-  },
-  {
-    value: "shopping-area",
-    label: "Shopping area",
-  },
-  {
-    value: "business-park",
-    label: "Business park",
-  },
-];
-
 export const countries = [
   { value: "Select your country", label: "Select your country" },
   { value: "Nigeria", label: "Nigeria" },
-  { value: "Afghanistan", label: "Afghanistan" },
-  { value: "Albania", label: "Albania" },
-  { value: "Algeria", label: "Algeria" },
-  { value: "Argentina", label: "Argentina" },
-  { value: "Armenia", label: "Armenia" },
-  { value: "Austria", label: "Austria" },
-  { value: "Azerbaijan", label: "Azerbaijan" },
-  { value: "Bangladesh", label: "Bangladesh" },
-  { value: "Belgium", label: "Belgium" },
-  { value: "Brazil", label: "Brazil" },
-  { value: "Bulgaria", label: "Bulgaria" },
-  { value: "Canada", label: "Canada" },
-  { value: "Chile", label: "Chile" },
-  { value: "China", label: "China" },
-  { value: "Colombia", label: "Colombia" },
-  { value: "Croatia", label: "Croatia" },
-  { value: "Cyprus", label: "Cyprus" },
-  { value: "Czech Republic", label: "Czech Republic" },
-  { value: "Denmark", label: "Denmark" },
-  { value: "Egypt", label: "Egypt" },
-  { value: "Estonia", label: "Estonia" },
-  { value: "Finland", label: "Finland" },
-  { value: "France", label: "France" },
-  { value: "Georgia", label: "Georgia" },
-  { value: "Greece", label: "Greece" },
-  { value: "Hong Kong SAR China", label: "Hong Kong SAR China" },
-  { value: "Hungary", label: "Hungary" },
-  { value: "Iceland", label: "Iceland" },
-  { value: "India", label: "India" },
-  { value: "Indonesia", label: "Indonesia" },
-  { value: "Ireland", label: "Ireland" },
-  { value: "United Kingdom", label: "United Kingdom" },
-  { value: "United States", label: "United States" },
-  { value: "Australia", label: "Australia" },
-  { value: "Germany", label: "Germany" },
-  { value: "Spain", label: "Spain" },
-  { value: "Italy", label: "Italy" },
-  { value: "Netherlands", label: "Netherlands" },
+];
+
+export const navItems = [
+  { label: "Home", href: "/" },
+  {
+    label: "Trading",
+    submenu: [
+      { label: "Features", href: "/trading/features" },
+      { label: "FAQ", href: "/trading/faq" },
+    ],
+  },
+  {
+    label: "Company",
+    submenu: [
+      { label: "About Us", href: "/company/about" },
+      { label: "Contact Us", href: "/company/contact" },
+      { label: "Terms & Conditions", href: "/company/terms-and-conditions" },
+      { label: "Payment Policy", href: "/company/payment-policy" },
+      { label: "Return Policy", href: "/company/return-policy" },
+      { label: "Privacy Policy", href: "/company/privacy-policy" },
+      { label: "AML & KYC", href: "/company/aml-and-kyc" },
+      {
+        label: "Referral Program Terms & Conditions",
+        href: "/company/referral-program-terms-and-conditions",
+      },
+      {
+        label: "Regulatory Environment",
+        href: "/company/regulatory-environment",
+      },
+    ],
+  },
 ];

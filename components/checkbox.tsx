@@ -1,12 +1,12 @@
 import React from "react";
 import * as CheckboxPrimitives from "@radix-ui/react-checkbox";
-
-import { cn, focusRing } from "@/lib/utils";
+import { focusRing } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 
 const Checkbox = React.forwardRef<
   React.ComponentRef<typeof CheckboxPrimitives.Root>,
-  React.ComponentPropsWithoutRef<typeof CheckboxPrimitives.Root>
->(({ className, checked, ...props }, forwardedRef) => {
+  React.ComponentPropsWithoutRef<typeof CheckboxPrimitives.Root> & { hasError?: boolean }
+>(({ className, checked, hasError, ...props }, forwardedRef) => {
   return (
     <CheckboxPrimitives.Root
       ref={forwardedRef}
@@ -17,6 +17,10 @@ const Checkbox = React.forwardRef<
         "text-white",
         "bg-transparent",
         "ring-gray-300",
+        "data-disabled:bg-gray-100 data-disabled:text-gray-400 data-disabled:ring-gray-300",
+        "enabled:data-[state=checked]:bg-primary enabled:data-[state=checked]:ring-0 enabled:data-[state=checked]:ring-transparent",
+        "enabled:data-[state=indeterminate]:bg-primary enabled:data-[state=indeterminate]:ring-0 enabled:data-[state=indeterminate]:ring-transparent",
+        hasError ? "ring-red-500" : "ring-gray-300",
         "data-disabled:bg-gray-100 data-disabled:text-gray-400 data-disabled:ring-gray-300",
         "enabled:data-[state=checked]:bg-primary enabled:data-[state=checked]:ring-0 enabled:data-[state=checked]:ring-transparent",
         "enabled:data-[state=indeterminate]:bg-primary enabled:data-[state=indeterminate]:ring-0 enabled:data-[state=indeterminate]:ring-transparent",
