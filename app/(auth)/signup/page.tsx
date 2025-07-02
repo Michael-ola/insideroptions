@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { z } from "zod";
-import { signUpSchema, registerTrader, getErrorMessage } from "@/lib/utils";
+import { signUpSchema, registerTrader, getErrorMessage } from "@/lib/authUtils";
 import hexDeco from "@/lib/assets/hex_deco.png";
 import Image from "next/image";
 import { RiArrowRightSLine } from "@remixicon/react";

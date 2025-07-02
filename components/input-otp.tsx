@@ -3,7 +3,7 @@
 import * as React from "react";
 import { OTPInput, OTPInputContext } from "input-otp";
 import { RiSubtractLine } from "@remixicon/react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/authUtils";
 
 function InputOTP({
   className,

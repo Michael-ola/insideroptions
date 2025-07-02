@@ -1,5 +1,5 @@
 import { RiErrorWarningLine } from "@remixicon/react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/authUtils";
 import { cva, type VariantProps } from "class-variance-authority";
 
 const alertStyle = cva("p-6 rounded-md", {

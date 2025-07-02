@@ -5,10 +5,10 @@ export interface SignUpFormData {
   country: string;
   refererCode?: string;
   password: string;
-//   terms: boolean;
+  terms: boolean;
 }
 
-export interface LegalAgreementPayload {
+export interface EmailVerificationPayload {
   email: string;
   otp: string;
   legalAgreement: boolean;

@@ -8,7 +8,7 @@ import {
 } from "@remixicon/react";
 
 import { focusInput, hasErrorInput } from "@/lib/constants";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/authUtils";
 
 const Select = SelectPrimitives.Root;
 Select.displayName = "Select";

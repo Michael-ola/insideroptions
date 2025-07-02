@@ -1,6 +1,6 @@
 import axios from "axios";
-import { AUTH_API_URL } from "./constants";
-import { SignUpFormData } from "./models";
+import { AUTH_API_URL } from "../lib/constants";
+import { EmailVerificationPayload, SignUpFormData } from "../lib/models";
 
 export const signUp = async (formData: SignUpFormData) => {
   try {
@@ -10,20 +10,17 @@ export const signUp = async (formData: SignUpFormData) => {
       },
     });
     return response.data;
-  } catch (error: unknown) {
-    console.error("Registration error:", error);
+  } catch (error) {
     throw error || new Error("Registration failed. Please try again.");
   }
 };
 
-export const verifyEmail = async (token: string) => {
+export const verifyEmail = async (payload: EmailVerificationPayload) => {
   try {
-    const response = await axios.get(`${AUTH_API_URL}/verify-email`, {
-      params: { token },
-    });
+    const response = await axios.put(`${AUTH_API_URL}/verify-email`, payload);
     return response.data;
-  } catch {
-    throw new Error("Error verifying email");
+  } catch (error) {
+    throw error || new Error("Error verifying email");
   }
 };
 

@@ -114,3 +114,9 @@ export const navItems = [
     ],
   },
 ];
+
+export const breadcrumbList = [
+  { label: "Home", href: "/" },
+  { label: "Company" },
+  { label: "AML & KYC", href: "/company/aml-and-kyc" },
+];

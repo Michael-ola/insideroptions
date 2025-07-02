@@ -1,7 +1,7 @@
 import Image from "next/image";
 import asbstractDot from "@/lib/assets/abstract-dot.png";
 import { featuresLists } from "@/lib/constants";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/authUtils";
 export default function FeaturesPage() {
   return (
     <main className="pt-[5%] bg-[#000510] text-white">
