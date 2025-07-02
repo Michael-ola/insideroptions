@@ -1,12 +1,9 @@
 import React from "react";
 import PageHeader from "@/components/PageHeader";
 import { ReactNode } from "react";
+import { breadcrumbList } from "@/lib/constants";
 
-const breadcrumbList = [
-  { label: "Home", href: "/" },
-  { label: "Company" },
-  { label: "AML & KYC", href: "/company/aml-and-kyc" },
-];
+
 const page = () => {
   return (
     <main className="min-h-screen bg-[#030912] pt-[5%]">

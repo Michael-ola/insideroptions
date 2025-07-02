@@ -1,8 +1,9 @@
 import { twMerge } from "tailwind-merge";
 import { clsx, type ClassValue } from "clsx";
 import { z } from "zod";
-import { signUp } from "./authService";
-import { SignUpFormData } from "./models";
+import { signUp, verifyEmail } from "@/services/authService";
+import { EmailVerificationPayload, SignUpFormData } from "./models";
+import { EMPTY_STRING } from "./constants";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -33,7 +34,7 @@ export const signUpSchema = z.object({
 
 export const registerTrader = async (
   formData: z.infer<typeof signUpSchema>,
-): Promise<unknown> => {
+): Promise<any> => {
   const parsedData = signUpSchema.parse(formData);
   // Only proceed if terms is true
   if (!parsedData.terms) {
@@ -42,14 +43,22 @@ export const registerTrader = async (
   return signUp(transformSignUpFormData(parsedData));
 };
 
+export const verifyTraderEmail = async (payload: EmailVerificationPayload): Promise<any> => {
+  if (!payload.legalAgreement) {
+    throw new Error("You must agree to the legal terms before verifying your email.");
+  }
+  return verifyEmail(payload);
+};
+
 const transformSignUpFormData = (data: z.infer<typeof signUpSchema>): SignUpFormData => {
   return {
     lastName: data.lastName,
     firstName: data.firstName,
     email: data.email,
-    country: data.country || "",
-    refererCode: data.refererCode || "",
+    country: data.country || EMPTY_STRING,
+    refererCode: data.refererCode || EMPTY_STRING,
     password: data.password,
+    terms: data.terms,
   };
 }
 
