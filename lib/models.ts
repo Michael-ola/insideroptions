@@ -8,6 +8,31 @@ export interface SignUpFormData {
   terms: boolean;
 }
 
+export interface LoginFormData {
+  email: string;
+  password: string;
+}
+
+export interface PasswordRecoveryPayload {
+  email: string;
+}
+
+export interface PasswordResetPayload {
+  email: string;
+  otp: string;
+  newPassword: string;
+}
+
+export interface signUpResponse {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  role: string;
+  createdAt: string;
+  updatedAt: string;  
+}
+
 export interface EmailVerificationPayload {
   email: string;
   otp: string;
