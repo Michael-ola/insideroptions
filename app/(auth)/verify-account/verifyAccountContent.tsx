@@ -18,7 +18,7 @@ const VerifyAccountContent = () => {
   const email = searchParams.get("email") || EMPTY_STRING;
   const [hasLegalAgreement, setHasLegalAgreement] = useState(false);
   const [otp, setOtp] = useState(EMPTY_STRING);
-  const [otpError, setOtpError] = useState<string | null>(null);
+  const [otpError, setOtpError] = useState<string>(EMPTY_STRING);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [payload, setPayload] = useState<EmailVerificationPayload>({
     email: email,
@@ -60,7 +60,7 @@ const VerifyAccountContent = () => {
     verifyTraderEmail(updatedPayload)
       .then(() => {
         setOtpError(EMPTY_STRING);
-        router.push("/login"); // Redirect to the login page
+        router.replace("/login"); // Redirect to the login page
       })
       .catch((error) => {
         // Handle error in verification
