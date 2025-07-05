@@ -38,7 +38,7 @@ export default function Footer() {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-sm">
+        <div className="grid grid-cols-2 xl:grid-cols-4 gap-8 text-sm">
           {navLinks.map(({ title, links }) => (
             <div key={title}>
               <h4 className="font-semibold mb-3 text-white/90">{title}</h4>

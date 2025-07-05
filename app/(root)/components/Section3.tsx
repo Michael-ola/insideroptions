@@ -1,24 +1,8 @@
+import { stats } from "@/lib/constants";
 import React from "react";
 
 const Section3 = () => {
-  const stats = [
-    {
-      value: "120M+",
-      label: "Monthly deals",
-    },
-    {
-      value: "3M+",
-      label: "Customers world wide",
-    },
-    {
-      value: "$1M+",
-      label: "Monthly volume",
-    },
-    {
-      value: "2021",
-      label: "Established since",
-    },
-  ];
+
 
   return (
     <section className="relative bg-[#0B0F13] text-white py-20 px-4 text-center overflow-hidden">

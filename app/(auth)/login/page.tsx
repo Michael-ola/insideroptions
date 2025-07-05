@@ -10,33 +10,32 @@ import { Label } from "@/components/label";
 import { RiArrowRightSLine, RiLoader4Line } from "@remixicon/react";
 import { Divider } from "@/components/divider";
 import Link from "next/link";
-import AuthenticationService from "@/services/authentication.services";
 import { useRouter } from "next/navigation";
 import SocialLogin from "@/components/SocialLogin";
-
-const schema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(6).max(100).nonempty("Password is required"),
-});
+import { loginSchema, loginTrader } from "@/lib/authUtils";
 
 export default function LoginPage() {
   const router = useRouter();
-  const authService = AuthenticationService.getInstance();
-  const form = useForm<z.infer<typeof schema>>({
-    resolver: zodResolver(schema),
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
     mode: "onSubmit",
   });
 
-  const onSubmit = async (data: z.infer<typeof schema>) => {
-    await authService
-      .login(data)
+  const onSubmit = async (data: z.infer<typeof loginSchema>) => {
+    // Handle login logic here
+    console.log("Logging in with:", data);
+    await loginTrader(data)
       .then(() => {
-        // Redirect to the home page after successful login
-        router.push("/");
+        // Redirect to dashboard or home page after successful login
+        router.push("/dashboard");
       })
       .catch((error) => {
-        // Handle login error (e.g., show a notification)
+        // Handle login error
         console.error("Login failed:", error);
+        form.setError("email", {
+          type: "manual",
+          message: "Invalid email or password",
+        });
       });
   };
 
@@ -82,6 +81,11 @@ export default function LoginPage() {
                   {...form.register("email")}
                   hasError={!!form.formState.errors.email}
                 />
+                {form.formState.errors.email && (
+                  <span className="text-red-500 text-xs">
+                    {form.formState.errors.email.message}
+                  </span>
+                )}
               </div>
               <div className="space-y-1">
                 <Label htmlFor="password">Password</Label>
@@ -92,6 +96,14 @@ export default function LoginPage() {
                   type="password"
                   hasError={!!form.formState.errors.password}
                 />
+                {form.formState.errors.password && (
+                  <>
+                    <span className="text-red-500 text-xs">
+                      {form.formState.errors.password.message}
+                    </span>
+                    <br />
+                  </>
+                )}
                 <Link
                   href="/forgot-password"
                   className="text-text-secondary text-sm font-medium inline-block"
@@ -103,6 +115,7 @@ export default function LoginPage() {
                 withGradient={form.formState.isSubmitting}
                 className="w-full"
                 type="submit"
+                disabled={form.formState.isSubmitting}
               >
                 {form.formState.isSubmitting ? (
                   <RiLoader4Line className="size-5 mr-2 animate-spin" />

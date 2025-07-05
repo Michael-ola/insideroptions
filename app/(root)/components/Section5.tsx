@@ -39,7 +39,7 @@ export default function Section5() {
           <div className="flex justify-center pl-[7%] items-center max-sm:px-[5%]">
             <AnimatedSection />
           </div>
-          <div className="space-y-10 max-w-md ml-28 -mt-20 max-sm:max-w-full max-sm:w-full max-sm:ml-0 max-sm:mt-20">
+          <div className="space-y-10 max-w-md md:ml-28 -mt-20 max-sm:max-w-full max-sm:w-full max-sm:ml-0 max-sm:mt-20">
             <Item description="Automatic selection of the most profitable assets" />
             <Item description="Opening deals based on technical analysis" />
             <Item description="Smart back tested strategies for all risk levels" />
@@ -101,7 +101,7 @@ function AnimatedSection() {
       <div
         className={`z-20 transition-opacity duration-6000 ${
           inView ? "opacity-100" : "opacity-0"
-        }`}
+        } w-[300px] md:w-[300px] max-sm:w-[250px]`}
       >
         <Image
           src="/images/phone3.png"
@@ -112,7 +112,7 @@ function AnimatedSection() {
         />
       </div>
 
-      <div className="w-full max-sm:-left-25 absolute -bottom-18 z-20 -left-40 md:-left-32 flex justify-center overflow-hidden">
+      <div className="w-full max-sm:-left-18 absolute -bottom-18 z-20 -left-40 md:-left-32 flex justify-center overflow-hidden">
         <Image
           src="/images/strategyCard.png"
           alt="card"
