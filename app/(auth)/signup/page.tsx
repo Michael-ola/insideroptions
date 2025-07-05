@@ -43,7 +43,7 @@ export default function SignupPage() {
 
   const onSubmit: SubmitHandler<z.infer<typeof signUpSchema>> = async (data) => {
     // setSubmitted(true);
-    registerTrader(data)
+    return registerTrader(data)
       .then((response: any) => {
         setErrorBanner(null);
         console.log("Registration response:", response);
