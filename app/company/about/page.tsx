@@ -67,7 +67,7 @@ const AboutUs: React.FC = () => {
         />
       </section>
       <section className="mb-8">
-        <h2 className="text-2xl sm:text-5xl text-left w-[70%] sm:w-[40%] font-semibold p-2 bg-yellow-300 text-black rounded-lg">
+        <h2 className="text-2xl sm:text-5xl text-left w-[70%] sm:w-[40%] font-semibold p-2 bg-yellow-300 text-black rounded-lg mb-8">
           Africa Market Leader
         </h2>
         <div className="relative space-y-4 sm:flex sm:flex-col">
