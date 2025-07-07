@@ -141,7 +141,7 @@ export default function AssetModal({ isOpen, onClose }: AssetModalProps) {
         <AssetSearch value={search} onChange={setSearch} />
       </div>
 
-      <div className="mt-5 px-6 pb-2 flex text-neutral-500 text-xs font-medium">
+      <div className="mt-5 px-6 pb-2 flex text-neutral-500 text-xs font-medium cursor-default">
         <span className="flex-1">Pair</span>
         <span className="w-25">24h change</span>
         <span className="w-12 text-center">Profit</span>
