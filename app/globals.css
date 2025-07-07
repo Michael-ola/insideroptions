@@ -71,6 +71,36 @@
   animation-delay: 0.3s;
 }
 
+/* dark thin scrollbar, no arrows, for modals */
+.thin-dark-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  appearance: none; /* ✅ prevents arrows */
+}
+
+.thin-dark-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #3b4047;
+  border-radius: 4px;
+}
+
+.thin-dark-scrollbar::-webkit-scrollbar-track {
+  background-color: #0b0d11;
+}
+
+.thin-dark-scrollbar::-webkit-scrollbar-button {
+  display: none; /* ✅ hide arrows explicitly */
+  height: 0;
+  width: 0;
+}
+
+.thin-dark-scrollbar {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #3b4047 #0b0d11;
+}
+
+.thin-dark-scrollbar:hover {
+  scrollbar-color: #4b5158 #0b0d11;
+}
+
 :root {
   --primary: hsla(123, 57%, 66%, 1);
   --primary-btn-gradient-start: hsla(123, 57%, 66%, 1);

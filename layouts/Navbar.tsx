@@ -7,23 +7,30 @@ import Link from "next/link";
 import Button from "@/components/Button2";
 import OverlayNav from "@/components/OverlayNav";
 import { AnimatePresence } from "framer-motion";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+  if (pathname.startsWith("/dashboard-test")) return null;
+
   return (
     <>
       <AnimatePresence>
         {isMobileMenuOpen && (
           <OverlayNav
-            isOpen={ isMobileMenuOpen }
-            onClose={ () => setIsMobileMenuOpen(false) }
+            isOpen={isMobileMenuOpen}
+            onClose={() => setIsMobileMenuOpen(false)}
           />
         )}
       </AnimatePresence>
 
       <nav className="w-full absolute z-50 max-w-screen top-0 bg-[#335E350D] backdrop-blur-[40px] text-white px-[7%] py-4 flex items-center justify-between">
         <div className="flex items-center gap-6">
-          <Menu onClick={() => setIsMobileMenuOpen(true)} className="w-5 h-5 cursor-pointer" />
+          <Menu
+            onClick={() => setIsMobileMenuOpen(true)}
+            className="w-5 h-5 cursor-pointer"
+          />
           <div className="flex items-center gap-6">
             <Image
               src="/images/uk-flag.png"

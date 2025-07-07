@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Apple",
+    "icon": "/images/apple-logo.png",
+    "change": 0.65,
+    "profit": 82
+  },
+  {
+    "name": "Google",
+    "icon": "/images/Google WC.png",
+    "change": -0.94,
+    "profit": 73
+  },
+  {
+    "name": "Facebook (META)",
+    "icon": "/images/Facebook.png",
+    "change": 1.22,
+    "profit": 77
+  }
+]
