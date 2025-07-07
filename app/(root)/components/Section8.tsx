@@ -71,7 +71,7 @@ export default function PaymentMethods() {
 
         {/* Right Text and Button */}
         <div className="w-full pr-[8%] max-sm:pr-0 md:w-1/2 text-center md:text-left flex flex-col items-center md:items-end relative z-30 self-end mb-[7%] gap-6 max-sm:gap-2">
-          <h2 className="text-white text-3xl md:text-5xl font-semibold text-right leading-snug md:leading-[1.2] max-sm:hidden">
+          <h2 className="text-white text-3xl md:text-4xl lg:text-5xl font-semibold text-right leading-snug md:leading-[1.2] max-sm:hidden">
             Join Millions of <br />
             <div className="text-end">Successful </div>
             <div>Traders Today</div>

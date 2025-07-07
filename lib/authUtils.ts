@@ -1,9 +1,14 @@
 import { twMerge } from "tailwind-merge";
 import { clsx, type ClassValue } from "clsx";
 import { z } from "zod";
-import { signUp, verifyEmail } from "@/services/authService";
-import { EmailVerificationPayload, SignUpFormData } from "./models";
-import { EMPTY_STRING } from "./constants";
+import { signUp, verifyEmail, login } from "@/services/authService";
+import { 
+  EmailVerificationPayload,
+  LoginFormData,
+  SignUpFormData,
+  signUpResponse
+} from "./models";
+// import { EMPTY_STRING } from "./constants";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -18,7 +23,7 @@ export const signUpSchema = z.object({
   country: z.string().trim().optional(),
   refererCode: z.string().trim().optional(),
   password: z.string()
-  .min(1, "Password is required")
+  .nonempty("Password is required")
   .min(8, "Password must be at least 8 characters long")
   .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
   .regex(/[a-z]/, "Password must contain at least one lowercase letter")
@@ -32,15 +37,37 @@ export const signUpSchema = z.object({
   isUS: z.boolean().default(false).optional(),
 });
 
+export const loginSchema = z.object({
+  email: z.string()
+  .nonempty("Email is required")
+  .email("Invalid email address"),
+  password: z.string()
+  .nonempty("Password is required")
+  .min(8, "Password must be at least 8 characters long")
+  .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+  .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+  .regex(/\d/, "Password must contain at least one number")
+  .regex(/^\S*$/, "Password must not contain spaces")
+  .trim(),
+});
+
 export const registerTrader = async (
   formData: z.infer<typeof signUpSchema>,
-): Promise<any> => {
-  const parsedData = signUpSchema.parse(formData);
+): Promise<signUpResponse> => {
+  const parsedData = signUpSchema.parse(formData) as SignUpFormData;
   // Only proceed if terms is true
   if (!parsedData.terms) {
     throw new Error("You must accept the terms and conditions");
   }
-  return signUp(transformSignUpFormData(parsedData));
+  return signUp(parsedData);
+};
+
+export const loginTrader = async (formData: z.infer<typeof loginSchema>): Promise<any> => {
+  const parsedData = loginSchema.parse(formData) as LoginFormData;
+  if (!parsedData.email || !parsedData.password) {
+    throw new Error("Email and password are required for login.");
+  }
+  return login(parsedData);
 };
 
 export const verifyTraderEmail = async (payload: EmailVerificationPayload): Promise<any> => {
@@ -50,17 +77,17 @@ export const verifyTraderEmail = async (payload: EmailVerificationPayload): Prom
   return verifyEmail(payload);
 };
 
-const transformSignUpFormData = (data: z.infer<typeof signUpSchema>): SignUpFormData => {
-  return {
-    lastName: data.lastName,
-    firstName: data.firstName,
-    email: data.email,
-    country: data.country || EMPTY_STRING,
-    refererCode: data.refererCode || EMPTY_STRING,
-    password: data.password,
-    terms: data.terms,
-  };
-}
+// const transformSignUpFormData = (data: SignUpFormData): SignUpFormData => {
+//   return {
+//     lastName: data.lastName,
+//     firstName: data.firstName,
+//     email: data.email,
+//     country: data.country || EMPTY_STRING,
+//     refererCode: data.refererCode || EMPTY_STRING,
+//     password: data.password,
+//     terms: data.terms,
+//   };
+// }
 
 export function getErrorMessage(error: any, fallback = "An unexpected error occurred from the server.") {
   if (error?.response?.data?.message) {

@@ -53,7 +53,7 @@ export default function SectionMarkets() {
               description="Trade gold, silver, oil, natural gas, sugar, and more."
             />
           </div>
-          <div className="flex justify-center items-center pl-[13%] pr-[10%] max-sm:pl-[1%]">
+          <div className="flex justify-center items-center md:pl-[13%] pr-[10%] max-sm:pl-[1%]">
             <AnimatedSection />
           </div>
         </div>
@@ -120,9 +120,8 @@ function AnimatedSection() {
       className="relative flex items-center -mt-12 max-sm:-mt-8 max-sm:mb-[20%]"
     >
       <div
-        className={`z-20 transition-opacity duration-6000 ${
-          inView ? "opacity-100" : "opacity-0"
-        }`}
+        className={`z-20 transition-opacity duration-6000 ${inView ? "opacity-100" : "opacity-0"
+          } w-[300px] md:w-[300px] max-sm:w-[250px]`}
       >
         <Image
           src="/images/phone1.png"
@@ -134,18 +133,16 @@ function AnimatedSection() {
       </div>
 
       <div
-        className={`absolute -bottom-1 -right-12 z-10 transition-opacity duration-6000 ${
-          inView ? "opacity-100 animate-float-delay" : "opacity-0"
-        } `}
+        className={`absolute -bottom-1 -right-12 z-10 transition-opacity duration-6000 ${inView ? "opacity-100 animate-float-delay" : "opacity-0"
+          } `}
       >
         <Image src="/images/bitcoin.png" alt="Bitcoin" width={80} height={80} />
       </div>
 
       {/* Apple Icon */}
       <div
-        className={`absolute z-30 -left-12 top-1/4 transition-opacity duration-6000 ${
-          inView ? "opacity-100 animate-float-delay" : "opacity-0"
-        }`}
+        className={`absolute z-30 -left-12 top-1/4 transition-opacity duration-6000 ${inView ? "opacity-100 animate-float-delay" : "opacity-0"
+          }`}
       >
         <Image
           src="/images/apple-logo.png"
@@ -159,11 +156,10 @@ function AnimatedSection() {
         {assetLabels.map((label) => (
           <div
             key={label}
-            className={`bg-[#99E39E] text-black px-6 max-sm:px-3 max-sm:text-sm -mr-60 py-2 rounded-lg shadow-md font-semibold transform transition-all duration-700 ease-out ${
-              inView
+            className={`bg-[#99E39E] text-black px-6 max-sm:px-3 max-sm:text-sm -mr-60 py-2 rounded-lg shadow-md font-semibold transform transition-all duration-700 ease-out ${inView
                 ? "translate-x-0 opacity-100"
                 : "translate-x-full opacity-0"
-            }`}
+              }`}
           >
             {label}
           </div>

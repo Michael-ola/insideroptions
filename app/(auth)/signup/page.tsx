@@ -10,7 +10,7 @@ import { z } from "zod";
 import { signUpSchema, registerTrader, getErrorMessage } from "@/lib/authUtils";
 import hexDeco from "@/lib/assets/hex_deco.png";
 import Image from "next/image";
-import { RiArrowRightSLine } from "@remixicon/react";
+import { RiArrowRightSLine, RiLoader4Line } from "@remixicon/react";
 import { Divider } from "@/components/divider";
 import { Checkbox } from "@/components/checkbox";
 import { SubmitHandler } from "react-hook-form";
@@ -35,15 +35,15 @@ export default function SignupPage() {
 
   const [errorBanner, setErrorBanner] = useState<string | null>(null);
   const [selectedCountry, setSelectedCountry] = useState(countries[1]?.value || EMPTY_STRING);
-  const [submitted, setSubmitted] = useState(false);
+  // const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     form.setValue("country", selectedCountry);
   }, [selectedCountry, form]);
 
   const onSubmit: SubmitHandler<z.infer<typeof signUpSchema>> = async (data) => {
-    setSubmitted(true);
-    registerTrader(data)
+    // setSubmitted(true);
+    return registerTrader(data)
       .then((response: any) => {
         setErrorBanner(null);
         console.log("Registration response:", response);
@@ -52,7 +52,7 @@ export default function SignupPage() {
       })
       .catch((error) => {
         setErrorBanner(getErrorMessage(error));
-        setSubmitted(false);
+        // setSubmitted(false);
       });
   };
 
@@ -273,7 +273,11 @@ export default function SignupPage() {
             </div>
 
             <SharedButton type="submit" className="w-full"
-              disabled={!form.formState.isValid || form.formState.isSubmitting || submitted}>
+              withGradient={form.formState.isSubmitting}
+              disabled={form.formState.isSubmitting}>
+              {form.formState.isSubmitting && form.formState.isValid && (
+                <RiLoader4Line className="size-5 mr-2 animate-spin" />
+              )}
               Continue <RiArrowRightSLine className="h-4 w-4" />
             </SharedButton>
 

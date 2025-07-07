@@ -120,3 +120,32 @@ export const breadcrumbList = [
   { label: "Company" },
   { label: "AML & KYC", href: "/company/aml-and-kyc" },
 ];
+
+// List of auth endpoints to exclude from interceptors
+// This is used to prevent attaching auth tokens to these requests
+export const AUTH_ENDPOINTS = [
+  "/auth/login",
+  "/auth/register",
+  "/auth/password-recovery",
+  "/auth/verify-email",
+  // Add more as needed
+];
+
+export const stats = [
+  {
+    value: "120M+",
+    label: "Monthly deals",
+  },
+  {
+    value: "3M+",
+    label: "Customers world wide",
+  },
+  {
+    value: "$1M+",
+    label: "Monthly volume",
+  },
+  {
+    value: "2021",
+    label: "Established since",
+  },
+];
