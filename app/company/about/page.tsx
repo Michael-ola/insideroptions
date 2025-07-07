@@ -165,7 +165,7 @@ const AboutUs: React.FC = () => {
                 Create Account
               </Link>
             </div>
-            <div className="flex justify-center sm:absolute sm:top-0 sm:right-[25%]">
+            <div className="flex justify-center sm:absolute sm:top-0 sm:right-[20%]">
               <Image
                 src={tradeView}
                 alt="phone trade view"
