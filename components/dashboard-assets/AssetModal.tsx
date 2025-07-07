@@ -102,7 +102,7 @@ export default function AssetModal({ isOpen, onClose }: AssetModalProps) {
         <h2 className="text-lg font-semibold">Asset list</h2>
         <button
           onClick={onClose}
-          className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white transition"
+          className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white transition cursor-pointer"
         >
           <IoClose size={20} />
         </button>
@@ -156,7 +156,7 @@ export default function AssetModal({ isOpen, onClose }: AssetModalProps) {
           return (
             <li
               key={name}
-              className="relative flex items-center gap-3 px-6 py-[14px] hover:bg-white/5"
+              className="relative flex items-center gap-3 px-6 py-[14px] hover:bg-white/5 cursor-default"
             >
               <div
                 className={`absolute left-[8%] right-[8%] bottom-0 h-px bg-white/3 ${

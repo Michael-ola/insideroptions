@@ -15,7 +15,7 @@ export default function AssetModalPage() {
           onClick={() => setOpen((prev) => !prev)}
           className="w-[40px] h-[40px] z-[60] flex items-center justify-center rounded-[8px]
                      bg-[#040b14] border border-[#10201f] text-white
-                     hover:bg-[#273134] transition"
+                     hover:bg-[#273134] transition cursor-pointer"
         >
           {open ? <IoClose size={20} /> : <IoAdd size={22} />}
         </button>

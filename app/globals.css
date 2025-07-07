@@ -118,6 +118,12 @@
   --bg-card-gradient-end: hsla(0, 0%, 94%, 1);
 }
 
+body {
+  button {
+    cursor: pointer;
+  }
+}
+
 @theme inline {
   --font-sans: var(--font-dm-sans);
 
