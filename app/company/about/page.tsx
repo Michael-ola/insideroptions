@@ -2,6 +2,7 @@ import React from "react";
 import PageHeader from "@/components/PageHeader";
 import { ReactNode } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import insiderOption from "@/lib/assets/insider_option.png";
 import tradeView from "@/lib/assets/feat-mockup03.png";
 import avatar from "@/lib/assets/avatar.png";
@@ -9,6 +10,12 @@ import reliabilty from "@/lib/assets/reliability_icon.png";
 import speed from "@/lib/assets/speed.png";
 import simplicity from "@/lib/assets/target.png";
 import map from "@/lib/assets/map.png";
+import io_icon from "@/lib/assets/io_icon.png";
+import robot from "@/lib/assets/robot.png";
+import sa from "@/lib/assets/sa_flag.png";
+import au from "@/lib/assets/AUIcon.png";
+import eu from "@/lib/assets/EU.png";
+import zar from "@/lib/assets/ZARIcon.png";
 
 const breadcrumbList = [
   { label: "Home", href: "/" },
@@ -33,31 +40,23 @@ export default page;
 
 interface HeadingProps {
   children: ReactNode;
+  className?: string;
 }
-
-interface NumberedParagraphProps {
-  number: string;
+interface ParagraphProps {
   children: ReactNode;
+  className?: string;
 }
 
-const Heading: React.FC<HeadingProps> = ({ children }) => (
-  <h2 className="text-xl sm:text-2xl font-bold">{children}</h2>
+const Heading: React.FC<HeadingProps> = ({ children, className = "" }) => (
+  <h2 className={`text-xl sm:text-2xl font-bold ${className}`}>{children}</h2>
 );
 
-const Paragraph: React.FC<HeadingProps> = ({ children }) => (
-  <h2 className="w-full min-w-full text-white/60 text-sm lg:text-base">
+const Paragraph: React.FC<ParagraphProps> = ({ children, className = "" }) => (
+  <h2
+    className={`w-full text-white/60 text-sm lg:text-base ${className}`}
+  >
     {children}
   </h2>
-);
-
-const NumberedParagraph: React.FC<NumberedParagraphProps> = ({
-  number,
-  children,
-}) => (
-  <div className="mb-4 flex">
-    <span className="font-semibold min-w-[40px]">{number}.</span>
-    <div className="flex-1">{children}</div>
-  </div>
 );
 
 const values = [
@@ -87,6 +86,48 @@ const values = [
   },
 ];
 
+const timelineData = [
+  {
+    year: "2025",
+    description:
+      "Launch Artificial intelligence AI trading/ investment in Nigeria to help improve Life & Well being, by giving traders value for their money rather than losing it with financial institutions & brokers with manipulative spread",
+    icons: [
+      { src: io_icon, alt: "io" },
+      { src: robot, alt: "robot" },
+    ],
+  },
+  {
+    year: "2024",
+    description:
+      "Partners with Regulated Brokers across Africa and in different Jurisdictions.",
+    icons: [{ src: sa, alt: "sa" }],
+  },
+  {
+    year: "2023",
+    description: "Acquired Trade Interceptor. Launched investment services",
+    icons: [{ src: io_icon, alt: "io" }],
+  },
+  {
+    year: "2022",
+    description: "Launch of CFD trading services in Australia",
+    icons: [{ src: eu, alt: "eu" }],
+  },
+  {
+    year: "2021",
+    description:
+      "Partners with Multi regulated brokers across Africa & Europe that are Regulated under the Australian Securities and Investments Commission (ASIC) & the Financial Conduct Authority (FCA) in the UK",
+    icons: [
+      { src: au, alt: "au" },
+      { src: zar, alt: "zar" },
+    ],
+  },
+  {
+    year: "2020",
+    description: "Creation of OctopusFX, forerunner of InsiderOption",
+    icons: [{ src: io_icon, alt: "io" }],
+  },
+];
+
 const AboutUs: React.FC = () => {
   return (
     <div className="max-w-[90%] max-sm:max-w-[95%] mx-auto px-4 sm:px-6 lg:px-8 pt-18 py-8 max-md:mt-13 text-white">
@@ -99,9 +140,7 @@ const AboutUs: React.FC = () => {
         />
       </section>
       <section className="px-4 py-6 sm:px-30 sm:py-12 space-y-12">
-        <h2 className="text-2xl sm:text-5xl text-left whitespace-nowrap sm:w-[40%] font-semibold p-2 bg-yellow-300 text-black rounded-lg">
-          Africa Market Leader
-        </h2>
+        <Heading>Africa Market Leader</Heading>
         <div className="relative space-y-4 sm:space-y-16 sm:flex sm:flex-col">
           <div className="space-y-4 sm:w-[50%]">
             <Paragraph>
@@ -122,9 +161,9 @@ const AboutUs: React.FC = () => {
                 range of financial markets on our award-winning trading
                 platform,
               </Paragraph>
-              <button className="bg-[#79DA7E] text-black px-6 py-2 rounded-xl">
+              <Link href="/signup" className="bg-[#79DA7E] text-black px-6 py-2 rounded-xl">
                 Create Account
-              </button>
+              </Link>
             </div>
             <div className="flex justify-center sm:absolute sm:top-0 sm:right-[25%]">
               <Image
@@ -137,7 +176,7 @@ const AboutUs: React.FC = () => {
           </div>
         </div>
       </section>
-      <section className="px-4 py-12 sm:px-30 sm:py-0 space-y-16">
+      <section className="px-4 py-12 sm:px-30 space-y-16">
         <div className="w-full sm:text-center">
           <Heading>Our Values</Heading>
         </div>
@@ -164,7 +203,7 @@ const AboutUs: React.FC = () => {
         </div>
       </section>
       <section className="px-4 sm:px-30 py-12 space-y-4 sm:space-y-12">
-        <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex flex-col sm:flex-row gap-11">
           <div className="w-full space-y-3">
             <Heading>Committed to your success</Heading>
 
@@ -184,11 +223,55 @@ const AboutUs: React.FC = () => {
               Trade with us
             </button>
           </div>
-          <div className="flex-1 space-y-6"></div>
+          <div className="w-full space-y-[18px]">
+            <div className="w-full space-y-6 border-l border-dashed border-[#79DA7E]">
+              {timelineData.map((item, index) => (
+                <div
+                  key={index}
+                  className="w-full space-y-3"
+                >
+                  <div className="inline-block bg-[#2D5B2F] text-[#79DA7E] text-sm px-4 py-1 rounded-tl-full rounded-r-full">
+                    {item.year}
+                  </div>
+                  <div className="flex items-center gap-[18px] pl-6">
+                    <div className="flex flex-col gap-4">
+                      {item.icons.map((icon, idx) => (
+                        <div
+                          key={idx}
+                          className="relative w-5 h-5 rounded-full"
+                        >
+                          <Image
+                            src={icon.src}
+                            alt={icon.alt}
+                            fill
+                            className="object-contain"
+                            priority
+                          />
+                        </div>
+                      ))}
+                    </div>
+                    <Paragraph className="break-words w-[90%]">
+                      {item.description}
+                    </Paragraph>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
+      </section>
+      <section className="bg-[#EFEFEF]/3 px-0 py-12 sm:p-16 flex flex-col gap-6 sm:gap-9 border-1 border-gray-50/15 rounded-xl">
+        <Heading className="text-center">
+          Discover the ultimate trading experience.
+        </Heading>
 
-        <div className="space-y-10 sm:flex sm:gap-[18px]">
-          <Image src={map} alt="map of africa" className="w-full h-auto" />
+        <div className="flex flex-col items-center justify-center sm:flex-row gap-4 sm:gap-6">
+          <Link href="/signup" className="bg-[#79DA7E] text-black px-6 py-2 rounded-xl">
+            Create Live Account
+          </Link>
+          <button className="text-[#79DA7E] text-base font-semibold">
+            Or Try Demo
+          </button>
         </div>
       </section>
     </div>
