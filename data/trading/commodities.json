@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Gold",
+    "icon": "/images/Maestro.png",
+    "change": 0.85,
+    "profit": 67
+  },
+  {
+    "name": "Silver",
+    "icon": "/images/Mastercard.png",
+    "change": -0.23,
+    "profit": 60
+  },
+  {
+    "name": "Google",
+    "icon": "/images/Google WC.png",
+    "change": -0.94,
+    "profit": 73
+  },
+  {
+    "name": "Facebook (META)",
+    "icon": "/images/Facebook.png",
+    "change": 1.22,
+    "profit": 77
+  }
+]

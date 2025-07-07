@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Bitcoin",
+    "icon": "/images/bitcoin.png",
+    "change": 1.03,
+    "profit": 91
+  },
+  {
+    "name": "Ethereum",
+    "icon": "/images/binance.png",
+    "change": -0.77,
+    "profit": 68
+  }
+]
