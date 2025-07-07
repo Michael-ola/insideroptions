@@ -4,6 +4,11 @@ import { ReactNode } from "react";
 import Image from "next/image";
 import insiderOption from "@/lib/assets/insider_option.png";
 import tradeView from "@/lib/assets/feat-mockup03.png";
+import avatar from "@/lib/assets/avatar.png";
+import reliabilty from "@/lib/assets/reliability_icon.png";
+import speed from "@/lib/assets/speed.png";
+import simplicity from "@/lib/assets/target.png";
+import map from "@/lib/assets/map.png";
 
 const breadcrumbList = [
   { label: "Home", href: "/" },
@@ -40,7 +45,7 @@ const Heading: React.FC<HeadingProps> = ({ children }) => (
 );
 
 const Paragraph: React.FC<HeadingProps> = ({ children }) => (
-  <h2 className="w-full text-white/60 text-sm lg:text-base text-left">
+  <h2 className="w-full min-w-full text-white/60 text-sm lg:text-base">
     {children}
   </h2>
 );
@@ -55,6 +60,33 @@ const NumberedParagraph: React.FC<NumberedParagraphProps> = ({
   </div>
 );
 
+const values = [
+  {
+    title: "Clients",
+    description:
+      "Providing the best customer service is our top priority. More than 100 account managers are focused on the needs of our clients.",
+    icon: avatar,
+  },
+  {
+    title: "Reliability",
+    description:
+      "As an industry leader, we provide our clients with exceptional reliability. We do more than anyone else to satisfy the needs of our clients.",
+    icon: reliabilty,
+  },
+  {
+    title: "Simplicity",
+    description:
+      "Anybody can become a trader with our easy-to-use trading platform. InsiderOption is available on all platforms: Web, Windows, MacOS, iPhone, and Android.",
+    icon: simplicity,
+  },
+  {
+    title: "Speed",
+    description:
+      "We provide the fastest trading using cutting-edge technologies. No delays in order execution and no lag in the user interface.",
+    icon: speed,
+  },
+];
+
 const AboutUs: React.FC = () => {
   return (
     <div className="max-w-[90%] max-sm:max-w-[95%] mx-auto px-4 sm:px-6 lg:px-8 pt-18 py-8 max-md:mt-13 text-white">
@@ -66,11 +98,11 @@ const AboutUs: React.FC = () => {
           priority
         />
       </section>
-      <section className="mb-8">
-        <h2 className="text-2xl sm:text-5xl text-left w-[70%] sm:w-[40%] font-semibold p-2 bg-yellow-300 text-black rounded-lg mb-8">
+      <section className="px-4 py-6 sm:px-30 sm:py-12 space-y-12">
+        <h2 className="text-2xl sm:text-5xl text-left whitespace-nowrap sm:w-[40%] font-semibold p-2 bg-yellow-300 text-black rounded-lg">
           Africa Market Leader
         </h2>
-        <div className="relative space-y-4 sm:flex sm:flex-col">
+        <div className="relative space-y-4 sm:space-y-16 sm:flex sm:flex-col">
           <div className="space-y-4 sm:w-[50%]">
             <Paragraph>
               Established in 2020, InsiderOption LLC is an innovative, market
@@ -103,6 +135,60 @@ const AboutUs: React.FC = () => {
               />
             </div>
           </div>
+        </div>
+      </section>
+      <section className="px-4 py-12 sm:px-30 sm:py-0 space-y-16">
+        <div className="w-full sm:text-center">
+          <Heading>Our Values</Heading>
+        </div>
+
+        <div className="space-y-10 sm:flex sm:gap-[18px]">
+          {values.map((value, idx) => (
+            <div className="space-y-6" key={idx}>
+              <Image src={value.icon} alt="Profile Icon" />
+              <div className="space-y-3">
+                <h4 className="font-medium text-xl">{value.title}</h4>
+                <Paragraph>{value.description}</Paragraph>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+      <section className="px-0 py-12">
+        <div className="w-full text-center break-words">
+          <Heading>A brand with presence all over Africa</Heading>
+        </div>
+
+        <div className="space-y-10 sm:flex sm:gap-[18px]">
+          <Image src={map} alt="map of africa" className="w-full h-auto" />
+        </div>
+      </section>
+      <section className="px-4 sm:px-30 py-12 space-y-4 sm:space-y-12">
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="w-full space-y-3">
+            <Heading>Committed to your success</Heading>
+
+            <Paragraph>
+              At Insideroption, we are committed to enhancing the trading
+              journey of our clients by providing them with excellent
+              conditions, cutting-edge tools, in-depth educational resources and
+              world-class customer support.
+            </Paragraph>
+            <Paragraph>
+              Whether you’re a new or experienced trader, InsiderOption is here
+              to help you maximise your trading potential & profit using our
+              Artificial intelligence ( AI) auto trading system.
+            </Paragraph>
+
+            <button className="bg-[#79DA7E] text-black px-6 py-2 rounded-xl">
+              Trade with us
+            </button>
+          </div>
+          <div className="flex-1 space-y-6"></div>
+        </div>
+
+        <div className="space-y-10 sm:flex sm:gap-[18px]">
+          <Image src={map} alt="map of africa" className="w-full h-auto" />
         </div>
       </section>
     </div>
