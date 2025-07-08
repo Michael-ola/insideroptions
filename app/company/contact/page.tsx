@@ -4,9 +4,9 @@ import React from "react";
 
 const page = () => {
   return (
-    <main className="min-h-screen bg-[#030912] pt-[5%]">
-      <section className="px-6 md:px-16 py-20 text-white">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-10">
+    <main className="min-h-screen bg-[#070c17] pt-[5%]">
+      <section className="px-6 sm:px-16 py-20 text-white">
+        <div className="max-w-7xl mx-auto px-16 flex flex-col md:flex-row gap-10">
          
           <div className="md:w-1/3 md:space-y-12">
             <h2 className="sm:text-5xl text-2xl font-medium text-center sm:text-left sm:font-semibold">Contact Us</h2>
@@ -21,7 +21,7 @@ const page = () => {
             </div>
           </div>
 
-          <form className="md:w-2/3 bg-[#EEFFEF]/3 p-6 text-sm border-1 border-gray-50/15 rounded-xl">
+          <form className="md:w-2/3 bg-[#0d121c] p-6 text-sm border-1 border-gray-50/15 rounded-xl">
             <div className="flex flex-col sm:flex-row gap-12">
               <div className="w-full space-y-8">
                 <div>
@@ -85,9 +85,9 @@ const page = () => {
         </div>
       </section>
 
-      <section className="px-6 md:px-16 py-18">
-        <div className="bg-[#EEFFEF]/3 mx-auto p-16 max-w-7xl">
-          <div className="flex flex-col sm:flex-row gap-6 sm:gap-0 justify-between items-center p-6 sm:p-10 rounded-xl">
+      <section className="px-6 sm:px-16 py-18">
+        <div className="bg-[#070d17] mx-auto p-16 max-w-7xl">
+          <div className="bg-gradient-to-r from-[#070d17] to-[#0d121c] bg-no-repeat flex flex-col sm:flex-row gap-6 sm:gap-0 justify-between items-center p-6 sm:p-10 border-1 border-gray-50/15 rounded-xl">
             <h3 className="w-full whitespace-nowrap text-white text-lg md:text-xl font-medium">
               Frequently Asked Questions
             </h3>
