@@ -28,7 +28,6 @@ const page = () => {
       <PageHeader
         title="About Us"
         breadcrumbList={breadcrumbList}
-        company
         className="flex-col"
       />
       <AboutUs />
@@ -52,9 +51,7 @@ const Heading: React.FC<HeadingProps> = ({ children, className = "" }) => (
 );
 
 const Paragraph: React.FC<ParagraphProps> = ({ children, className = "" }) => (
-  <h2
-    className={`w-full text-white/60 text-sm lg:text-base ${className}`}
-  >
+  <h2 className={`w-full text-white/60 text-sm lg:text-base ${className}`}>
     {children}
   </h2>
 );
@@ -161,7 +158,10 @@ const AboutUs: React.FC = () => {
                 range of financial markets on our award-winning trading
                 platform,
               </Paragraph>
-              <Link href="/signup" className="bg-[#79DA7E] text-black px-6 py-2 rounded-xl">
+              <Link
+                href="/signup"
+                className="bg-[#79DA7E] text-black px-6 py-2 rounded-xl"
+              >
                 Create Account
               </Link>
             </div>
@@ -226,10 +226,7 @@ const AboutUs: React.FC = () => {
           <div className="w-full space-y-[18px]">
             <div className="w-full space-y-6 border-l border-dashed border-[#79DA7E]">
               {timelineData.map((item, index) => (
-                <div
-                  key={index}
-                  className="w-full space-y-3"
-                >
+                <div key={index} className="w-full space-y-3">
                   <div className="inline-block bg-[#2D5B2F] text-[#79DA7E] text-sm px-4 py-1 rounded-tl-full rounded-r-full">
                     {item.year}
                   </div>
@@ -266,7 +263,10 @@ const AboutUs: React.FC = () => {
         </Heading>
 
         <div className="flex flex-col items-center justify-center sm:flex-row gap-4 sm:gap-6">
-          <Link href="/signup" className="bg-[#79DA7E] text-black px-6 py-2 rounded-xl">
+          <Link
+            href="/signup"
+            className="bg-[#79DA7E] text-black px-6 py-2 rounded-xl"
+          >
             Create Live Account
           </Link>
           <button className="text-[#79DA7E] text-base font-semibold">
