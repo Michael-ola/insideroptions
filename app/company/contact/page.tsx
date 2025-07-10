@@ -1,15 +1,25 @@
+"use client";
+import CashierModal from "@/components/cashier/cashierModal";
 import { ChevronRight, LucideMessageCircleMore, Mail } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 
-const page = () => {
+const Page = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
     <main className="min-h-screen bg-[#070c17] pt-[5%]">
+      <CashierModal
+        isOpen={isOpen}
+        onClose={() => {
+          setIsOpen(false);
+        }}
+      />
       <section className="px-6 sm:px-16 py-20 text-white">
         <div className="max-w-7xl mx-auto px-16 flex flex-col md:flex-row gap-10">
-         
           <div className="md:w-1/3 md:space-y-12">
-            <h2 className="sm:text-5xl text-2xl font-medium text-center sm:text-left sm:font-semibold">Contact Us</h2>
+            <h2 className="sm:text-5xl text-2xl font-medium text-center sm:text-left sm:font-semibold">
+              Contact Us
+            </h2>
             <div className="py-6 flex flex-row items-center justify-center gap-6 sm:flex-col sm:items-start">
               <div className="flex items-center gap-3 text-sm text-white">
                 <LucideMessageCircleMore className="text-[#79DA7E]" />
@@ -73,8 +83,9 @@ const page = () => {
 
                 <div className="flex items-end">
                   <button
-                    type="submit"
+                    type="button"
                     className="bg-[#79DA7E] text-black px-10 py-3 rounded-xl"
+                    onClick={() => setIsOpen(true)}
                   >
                     Submit
                   </button>
@@ -105,4 +116,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
