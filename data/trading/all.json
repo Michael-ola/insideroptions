@@ -1,0 +1,50 @@
+[
+  {
+    "icon": "/images/apple-logo.png",
+    "name": "Apple",
+    "change": 0.13,
+    "profit": 77
+  },
+  {
+    "icon": "/Images/binance.png",
+    "name": "Ethereum",
+    "change": 0.13,
+    "profit": 75
+  },
+  {
+    "icon": "/images/_visa.png",
+    "name": "GBP/USD",
+    "change": -1.54,
+    "profit": 60
+  },
+  {
+    "icon": "/images/Google WC.png",
+    "name": "Google",
+    "change": -1.54,
+    "profit": 77
+  },
+  {
+    "icon": "/images/Maestro.png",
+    "name": "Gold",
+    "change": -1.54,
+    "profit": 69
+  },
+  {
+    "icon": "/images/Mastercard.png",
+    "name": "EUR/USD",
+    "change": 0.13,
+    "profit": 77
+  },
+  {
+    "icon": "/images/Facebook.png",
+    "name": "Facebook (META)",
+    "change": -1.54,
+    "profit": 65
+  },
+  {
+    "icon": "/images/bitcoin.png",
+    "name": "Bitcoin",
+    "change": 0.13,
+    "profit": 77
+  }
+]

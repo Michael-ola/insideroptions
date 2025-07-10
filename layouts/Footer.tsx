@@ -3,12 +3,14 @@
 import { navLinks } from "@/lib/constants";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
-
   const socialIcons = ["IG", "FB", "X", "TEL", "TIKTOK"];
+  const pathname = usePathname();
+  if (pathname.startsWith("/dashboard-test")) return null;
 
   return (
     <footer className="bg-[#050B11] text-white py-16  px-4 lg:px-20">
@@ -43,7 +45,7 @@ export default function Footer() {
             <div key={title}>
               <h4 className="font-semibold mb-3 text-white/90">{title}</h4>
               <ul className="space-y-1">
-                {links.map(({name,href}) => (
+                {links.map(({ name, href }) => (
                   <li key={name}>
                     <Link
                       href={href}
@@ -111,7 +113,11 @@ export default function Footer() {
           {/* Social Icons needs reworking - should be replaced with icons from a library or custom SVGs */}
           <div className="flex gap-4 justify-center md:justify-end">
             {socialIcons.map((icon) => (
-              <Link href="#" key={icon}  className="rounded-full transition-all hover:bg-[#7FCC88]">
+              <Link
+                href="#"
+                key={icon}
+                className="rounded-full transition-all hover:bg-[#7FCC88]"
+              >
                 <Image
                   src={`/images/${icon}.png`}
                   alt={icon}
