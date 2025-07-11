@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import ModalWrapper from "../modalWrapper";
+import ModalWrapper from "../../modalWrapper";
 import { StaticImageData } from "next/image";
-import CashierList from "./CashierList";
+import CashierList from "../CashierList";
 import DepositList from "./DepositList";
 import CryptoView from "./CryptoView";
 // import CryptoPayView from "./CryptoPayView";

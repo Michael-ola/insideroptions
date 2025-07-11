@@ -1,5 +1,5 @@
 "use client";
-import CashierModal from "@/components/cashier/cashierModal";
+import CashierModal from "@/components/cashier/deposit/cashierModal";
 import { ChevronRight, LucideMessageCircleMore, Mail } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";

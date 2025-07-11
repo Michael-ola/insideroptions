@@ -1,10 +1,9 @@
 import { ChevronLeft } from "lucide-react";
 import Image, { StaticImageData } from "next/image";
 import { ReactNode } from "react";
-import { cryptoOptions } from "./cashier/CryptoView";
-import { depositOptions } from "./cashier/DepositList";
+import { cryptoOptions } from "./cashier/deposit/CryptoView";
+import { depositOptions } from "./cashier/deposit/DepositList";
 import { cashierOptions } from "./cashier/CashierList";
-
 
 type SelectedCrypto =
   | "USDT (ERC20)"
@@ -79,8 +78,7 @@ export default function ModalWrapper({
                   if (onCloseHandler) {
                     onCloseHandler();
                   }
-                }
-                else {
+                } else {
                   handleViewChange("My Cashier");
                   if (onCloseHandler) {
                     onCloseHandler();
@@ -93,7 +91,9 @@ export default function ModalWrapper({
             </button>
           )}
           <div className="flex items-center gap-3">
-            {title !== "My Cashier" && <Image src={icon ?? ""} alt="icon" className="w-6 h-6" />}
+            {title !== "My Cashier" && (
+              <Image src={icon ?? ""} alt="icon" className="w-6 h-6" />
+            )}
             <h2 className="text-xl capitalize font-medium">{title}</h2>
           </div>
           <button

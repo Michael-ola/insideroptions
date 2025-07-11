@@ -1,7 +1,7 @@
 import { AlertCircle, Copy } from "lucide-react";
 import Image from "next/image";
 import React from "react";
-import { cryptoData } from "../../data/cashier/cryptoData";
+import { cryptoData } from "../../../data/cashier/cryptoData";
 
 const CryptoPayView = () => {
   return (
