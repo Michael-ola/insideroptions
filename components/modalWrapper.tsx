@@ -3,28 +3,9 @@ import Image, { StaticImageData } from "next/image";
 import { ReactNode } from "react";
 import { cryptoOptions } from "./cashier/deposit/CryptoView";
 import { depositOptions } from "./cashier/deposit/DepositList";
-import { cashierOptions } from "./cashier/CashierList";
+import { cashierOptions } from "./cashier/deposit/CashierList";
+import { ModalView } from "./cashier/cashierModal";
 
-type SelectedCrypto =
-  | "USDT (ERC20)"
-  | "BITCOIN (BTC)"
-  | "USDT (TRC20)"
-  | "ETHEREUM (ETH)";
-
-type DepositOption =
-  | "USDT, BITCOIN, ETHEREUM"
-  | "Bank Transfer"
-  | "Binance Pay"
-  | "Visa/Master Card";
-
-type ModalView =
-  | "My Cashier"
-  | "Deposit"
-  | "Withdrawals"
-  | "Swap"
-  | "History"
-  | DepositOption
-  | SelectedCrypto;
 
 interface ModalWrapperProps {
   title: ModalView;
@@ -50,7 +31,7 @@ export default function ModalWrapper({
   return (
     <div className="fixed min-w-[25%] lg:w-[25%] inset-0 bg-transparent backdrop-blur-xs bg-opacity-60 z-50 flex items-center justify-center">
       <div className="w-full h-full sm:h-[80%] bg-[#00040d] sm:bg-[#79DA7E]/3 rounded-lg shadow-lg p-6 relative text-white border-r border-green-300/30 space-y-6 overflow-y-auto">
-        <div className="flex justify-between items-center gap-3">
+        <div className="bg-gradient-to-r from-[#00040d] to-[#13171f] sm:bg-transparent p-4 border-y border-y-[#79DA7E]/30 sm:border-0 flex justify-between items-center gap-3">
           {title !== "My Cashier" && (
             <button
               onClick={() => {

@@ -4,27 +4,8 @@ import visa from "@/lib/assets/visa_icon.png";
 import crypto from "@/lib/assets/crypto.png";
 import bankTransfer from "@/lib/assets/bank_transfer.png";
 import binance from "@/lib/assets/binance_icon.png";
+import { ModalView } from "../cashierModal";
 
-type SelectedCrypto =
-  | "USDT (ERC20)"
-  | "BITCOIN (BTC)"
-  | "USDT (TRC20)"
-  | "ETHEREUM (ETH)";
-
-type DepositList =
-  | "USDT, BITCOIN, ETHEREUM"
-  | "Bank Transfer"
-  | "Binance Pay"
-  | "Visa/Master Card";
-
-type ModalView =
-  | "My Cashier"
-  | "Deposit"
-  | "Withdrawals"
-  | "Swap"
-  | "History"
-  | DepositList
-  | SelectedCrypto;
 
 type DepositOption = {
   label: string;

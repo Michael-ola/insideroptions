@@ -1,5 +1,5 @@
 "use client";
-import CashierModal from "@/components/cashier/deposit/cashierModal";
+import CashierModal from "@/components/cashier/cashierModal";
 import { ChevronRight, LucideMessageCircleMore, Mail } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -14,14 +14,14 @@ const Page = () => {
           setIsOpen(false);
         }}
       />
-      <section className="px-6 sm:px-16 py-20 bg-[#070c17] text-white">
+      <section className="px-3 sm:px-16 py-20 bg-[#070c17] text-white">
         <div className="max-w-7xl mx-auto bg-[#070c17] px-16 flex flex-col md:flex-row gap-10">
           <div className="md:w-1/3 md:space-y-12">
             <h2 className="sm:text-5xl text-2xl font-medium text-center sm:text-left sm:font-semibold">
               Contact Us
             </h2>
             <div className="py-6 flex flex-row items-center justify-center gap-6 sm:flex-col sm:items-start">
-              <div className="flex items-center gap-3 text-sm text-white">
+              <div className="flex items-center gap-3 text-sm text-white whitespace-nowrap">
                 <LucideMessageCircleMore className="text-[#79DA7E]" />
                 <span>Live chat</span>
               </div>

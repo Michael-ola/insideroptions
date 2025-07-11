@@ -1,32 +1,33 @@
 "use client";
 
 import { useState } from "react";
-import ModalWrapper from "../../modalWrapper";
+import ModalWrapper from "../modalWrapper";
 import { StaticImageData } from "next/image";
-import CashierList from "../CashierList";
-import DepositList from "./DepositList";
-import CryptoView from "./CryptoView";
+import CashierList from "./deposit/CashierList";
+import DepositList from "./deposit/DepositList";
+import CryptoView from "./deposit/CryptoView";
 // import CryptoPayView from "./CryptoPayView";
-import BankTransfer from "./BankTransfer";
-import CryptoPayView from "./cryptoPayView";
+import BankTransfer from "./deposit/BankTransfer";
+import CryptoPayView from "./deposit/cryptoPayView";
+import WithdrawalView from "./withdrawal/WithdrawalView";
 
-type SelectedCrypto =
+export type SelectedCrypto =
   | "USDT (ERC20)"
   | "BITCOIN (BTC)"
   | "USDT (TRC20)"
   | "ETHEREUM (ETH)";
 
-type DepositOption =
+export type DepositOption =
   | "USDT, BITCOIN, ETHEREUM"
   | "Bank Transfer"
   | "Binance Pay"
   | "Visa/Master Card";
 
-type ModalView =
+export type ModalView =
   | "My Cashier"
   | "Deposit"
   | "Withdrawals"
-  | "Swap"
+  | "Swap (Profit bal - Real bal)"
   | "History"
   | DepositOption
   | SelectedCrypto;
@@ -79,8 +80,8 @@ export default function CashierModal({ isOpen, onClose }: Props) {
         return <CryptoPayView />;
       case "Bank Transfer":
         return <BankTransfer />;
-      // case "Withdrawals":
-      //   return renderDepositList(view, withdrawalOptions);
+      case "Withdrawals":
+        return <WithdrawalView handleViewChange={handleViewChange} setIconOrImage={setIconOrImage} />
       default:
         return null;
     }

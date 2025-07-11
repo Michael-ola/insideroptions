@@ -1,32 +1,13 @@
 import Image, { StaticImageData } from "next/image";
 import React from "react";
+import { ModalView } from "../cashierModal";
 import wallet from "@/lib/assets/wallet_icon.png";
 import withdraw from "@/lib/assets/scroll.png";
 import history from "@/lib/assets/tx_history.png";
 import swap from "@/lib/assets/swap.png";
 
-type SelectedCrypto =
-  | "USDT (ERC20)"
-  | "BITCOIN (BTC)"
-  | "USDT (TRC20)"
-  | "ETHEREUM (ETH)";
 
-type DepositOption =
-  | "USDT, BITCOIN, ETHEREUM"
-  | "Bank Transfer"
-  | "Binance Pay"
-  | "Visa/Master Card";
-
-type ModalView =
-  | "My Cashier"
-  | "Deposit"
-  | "Withdrawals"
-  | "Swap"
-  | "History"
-  | DepositOption
-  | SelectedCrypto;
-
-interface CashierList {
+export interface CashierList {
   label: string;
   icon: StaticImageData;
 }

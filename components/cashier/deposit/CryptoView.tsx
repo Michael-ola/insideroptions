@@ -8,32 +8,14 @@ import btc from "@/lib/assets/btc.png";
 import trc20 from "@/lib/assets/trc20.png";
 import eth from "@/lib/assets/eth.png";
 import { RiLoader4Line } from "@remixicon/react";
+import { ModalView } from "../cashierModal";
 
 type CryptoList = {
   label: string;
   icon: StaticImageData;
   speed?: "FASTEST" | "FAST";
 };
-type SelectedCrypto =
-  | "USDT (ERC20)"
-  | "BITCOIN (BTC)"
-  | "USDT (TRC20)"
-  | "ETHEREUM (ETH)";
 
-type DepositOption =
-  | "USDT, BITCOIN, ETHEREUM"
-  | "Bank Transfer"
-  | "Binance Pay"
-  | "Visa/Master Card";
-
-type ModalView =
-  | "My Cashier"
-  | "Deposit"
-  | "Withdrawals"
-  | "Swap"
-  | "History"
-  | DepositOption
-  | SelectedCrypto;
 
 interface Props {
   handleViewChange: (view: ModalView) => void;
@@ -139,7 +121,7 @@ const CryptoView = ({
 
         <hr className="border-gray-700/50" />
 
-        <div className="relative flex items-start gap-3 text-sm">
+        <div className="flex items-start gap-3 text-sm">
           <div
             onClick={() => setConfirmed(!confirmed)}
             className={`
