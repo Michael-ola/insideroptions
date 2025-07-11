@@ -66,7 +66,7 @@ export default function Footer() {
           <p>
             InsiderOption LLC is partners with Multi-Regulated across African &
             Europe.{" "}
-            <Link href="#" className="text-white font-medium">
+            <Link href="/company/about" className="text-white font-medium">
               ABOUT US
             </Link>
           </p>
@@ -77,7 +77,7 @@ export default function Footer() {
             carefully consider your investment objectives, level of experience
             and risk appetite before buying, selling or using Auto Trades using
             Artificial system.{" "}
-            <span className="font-semibold text-white">TERMS & CONDITION</span>,
+            <Link href="/company/terms-and-conditions" className="font-semibold text-white">TERMS & CONDITION</Link>,
             Buying or selling entails financial risks and could result in a
             partial or complete loss of your funds, therefore, you should not
             invest funds you cannot afford to lose. You should be aware of and
