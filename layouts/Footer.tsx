@@ -10,7 +10,7 @@ export default function Footer() {
 
   const socialIcons = ["IG", "FB", "X", "TEL", "TIKTOK"];
   const pathname = usePathname();
-  if (pathname.startsWith("/dashboard-test")) return null;
+  if (pathname.startsWith("/dashboard")) return null;
 
   return (
     <footer className="bg-[#050B11] text-white py-16  px-4 lg:px-20">
