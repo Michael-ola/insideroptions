@@ -1,19 +1,9 @@
-"use client";
-import CashierModal from "@/components/cashier/cashierModal";
 import { ChevronRight, LucideMessageCircleMore, Mail } from "lucide-react";
 import Link from "next/link";
-import React, { useState } from "react";
 
 const Page = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
     <main className="min-h-screen bg-[#00050f] pt-[5%]">
-      <CashierModal
-        isOpen={isOpen}
-        onClose={() => {
-          setIsOpen(false);
-        }}
-      />
       <section className="px-3 sm:px-16 py-20 bg-[#070c17] text-white">
         <div className="max-w-7xl mx-auto bg-[#070c17] px-16 flex flex-col md:flex-row gap-10">
           <div className="md:w-1/3 md:space-y-12">
@@ -85,7 +75,6 @@ const Page = () => {
                   <button
                     type="button"
                     className="bg-[#79DA7E] text-black px-10 py-3 rounded-xl"
-                    onClick={() => setIsOpen(true)}
                   >
                     Submit
                   </button>
