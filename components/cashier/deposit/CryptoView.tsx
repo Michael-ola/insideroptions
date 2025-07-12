@@ -90,18 +90,15 @@ const CryptoView = ({
   const handleConfirmedCrypto = async () => {
     try {
       setIsConfirming(true);
-      if (typeof selectedCrypto === "string") {
-        const payload = generatePayload();
-        // Handle the confirmed crypto action here
-        console.log("Confirmed Crypto:", selectedCrypto);
-        console.log("Payload: ", payload);
-        // const url = `deposit/get-address`;
-        // await apiClient.post(url, payload);
 
-        handleViewChange(selectedCrypto as ModalView);
-      } else {
-        throw new Error("No crypto selected");
-      }
+      const payload = generatePayload();
+      console.log("payload: ", payload);
+
+      // const url = `deposit/get-address`;
+      // await apiClient.post(url, payload);
+
+      handleViewChange(selectedCrypto as ModalView);
+
       setIsConfirming(false);
     } catch (error) {
       console.error("Error confirming crypto:", error);
