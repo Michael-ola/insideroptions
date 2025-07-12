@@ -1,15 +1,63 @@
+"use client";
+
 import { ChevronRight, LucideMessageCircleMore, Mail } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { useRef } from "react";
+import { useForm } from "react-hook-form";
+import ReCAPTCHA from "react-google-recaptcha";
+import { apiClient } from "@/lib/api-client";
 
-const page = () => {
+type FormData = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber?: string;
+  message: string;
+  recaptchaToken: string;
+};
+
+const Page = () => {
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+    setValue,
+    clearErrors,
+    reset,
+  } = useForm<FormData>();
+
+  const onSubmit = async (data: FormData) => {
+    const url = ('/devops/contact-us')
+    try {
+      if (!data.recaptchaToken) {
+        setError("recaptchaToken", {
+          type: "manual",
+          message: "Please complete the reCAPTCHA",
+        });
+        return;
+      }
+      alert("Form submitted successfully ✅");
+       const res = await apiClient.post(url, data);
+      console.log(res);
+      reset();
+      recaptchaRef.current?.reset();
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <main className="min-h-screen bg-[#070c17] pt-[5%]">
       <section className="px-6 sm:px-16 py-20 text-white">
         <div className="max-w-7xl mx-auto px-16 flex flex-col md:flex-row gap-10">
-         
           <div className="md:w-1/3 md:space-y-12">
-            <h2 className="sm:text-5xl text-2xl font-medium text-center sm:text-left sm:font-semibold">Contact Us</h2>
+            <h2 className="sm:text-5xl text-2xl font-medium text-center sm:text-left sm:font-semibold">
+              Contact Us
+            </h2>
             <div className="py-6 flex flex-row items-center justify-center gap-6 sm:flex-col sm:items-start">
               <div className="flex items-center gap-3 text-sm text-white">
                 <LucideMessageCircleMore className="text-[#79DA7E]" />
@@ -21,56 +69,136 @@ const page = () => {
             </div>
           </div>
 
-          <form className="md:w-2/3 bg-[#0d121c] p-6 text-sm border-1 border-gray-50/15 rounded-xl">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="md:w-2/3 bg-[#0d121c] p-6 text-sm border border-gray-50/15 rounded-xl"
+          >
             <div className="flex flex-col sm:flex-row gap-12">
               <div className="w-full space-y-8">
+                {/* First Name */}
                 <div>
                   <label className="block mb-1">First name</label>
                   <input
+                    {...register("firstName", {
+                      required: "First name is required",
+                    })}
                     type="text"
                     placeholder="First name"
-                    className="w-full bg-transparent border border-gray-700 px-3 py-2 outline-none rounded-xl"
+                    className={`w-full bg-transparent border px-3 py-2 rounded-xl outline-none ${
+                      errors.firstName ? "border-red-500" : "border-gray-700"
+                    }`}
                   />
+                  {errors.firstName && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.firstName.message}
+                    </p>
+                  )}
                 </div>
 
-                <div>
-                  <label className="block mb-1">Email</label>
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    className="w-full bg-transparent border border-gray-700 rounded-xl px-3 py-2 outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="block mb-1">Phone number</label>
-                  <input
-                    type="tel"
-                    placeholder="Phone number"
-                    className="w-full bg-transparent border border-gray-700 rounded-xl px-3 py-2 outline-none"
-                  />
-                </div>
-
+                {/* Last Name */}
                 <div>
                   <label className="block mb-1">Last name</label>
                   <input
+                    {...register("lastName", {
+                      required: "Last name is required",
+                    })}
                     type="text"
                     placeholder="Last name"
+                    className={`w-full bg-transparent border px-3 py-2 rounded-xl outline-none ${
+                      errors.lastName ? "border-red-500" : "border-gray-700"
+                    }`}
+                  />
+                  {errors.lastName && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.lastName.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Email */}
+                <div>
+                  <label className="block mb-1">Email</label>
+                  <input
+                    {...register("email", {
+                      required: "Email is required",
+                      pattern: {
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                        message: "Enter a valid email address",
+                      },
+                    })}
+                    type="email"
+                    placeholder="Email"
+                    className={`w-full bg-transparent border px-3 py-2 rounded-xl outline-none ${
+                      errors.email ? "border-red-500" : "border-gray-700"
+                    }`}
+                  />
+                  {errors.email && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.email.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Phone */}
+                <div>
+                  <label className="block mb-1">Phone number</label>
+                  <input
+                    {...register("phoneNumber")}
+                    type="tel"
+                    placeholder="Phone number"
                     className="w-full bg-transparent border border-gray-700 rounded-xl px-3 py-2 outline-none"
                   />
                 </div>
               </div>
 
               <div className="w-full space-y-8">
-                <div className="md:row-span-3">
+                {/* Message */}
+                <div>
                   <label className="block mb-1">Message</label>
                   <textarea
+                    {...register("message", {
+                      required: "Message is required",
+                    })}
                     placeholder="Enter your message"
                     rows={6}
-                    className="w-full bg-transparent border border-gray-700 rounded-xl px-3 py-2 outline-none"
+                    className={`w-full bg-transparent border px-3 py-2 rounded-xl outline-none ${
+                      errors.message ? "border-red-500" : "border-gray-700"
+                    }`}
                   />
+                  {errors.message && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.message.message}
+                    </p>
+                  )}
                 </div>
 
+                {/* reCAPTCHA */}
+                <div className="scale-[0.75] origin-top-left sm:scale-100 mx-auto">
+                  <ReCAPTCHA
+                    sitekey="6Ld-EYArAAAAAAMfkZB0D-EhiDwsWS7z2TCCai3u"
+                    onChange={(token) => {
+                      if (token) {
+                        clearErrors("recaptchaToken");
+                        setValue("recaptchaToken", token);
+                      }
+                    }}
+                    ref={recaptchaRef}
+                  />
+                  {errors.recaptchaToken && (
+                    <p className="text-red-500 text-xs mt-1 text-center">
+                      {errors.recaptchaToken.message}
+                    </p>
+                  )}
+                </div>
+
+                <input
+                  type="hidden"
+                  {...register("recaptchaToken", {
+                    required: "Please complete the reCAPTCHA",
+                  })}
+                />
+
+                {/* Submit Button */}
                 <div className="flex items-end">
                   <button
                     type="submit"
@@ -105,4 +233,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
