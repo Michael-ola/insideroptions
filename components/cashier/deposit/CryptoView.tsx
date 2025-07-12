@@ -4,18 +4,19 @@ import React, { useState } from "react";
 import { AlertCircle, Check, ChevronRight } from "lucide-react";
 import Image, { StaticImageData } from "next/image";
 import usdt from "@/lib/assets/usdt.png";
+import profile from "@/data/trader/profile.json";
 import btc from "@/lib/assets/btc.png";
 import trc20 from "@/lib/assets/trc20.png";
 import eth from "@/lib/assets/eth.png";
 import { RiLoader4Line } from "@remixicon/react";
 import { ModalView } from "../cashierModal";
+// import { apiClient } from "@/lib/api-client";
 
 type CryptoList = {
   label: string;
   icon: StaticImageData;
   speed?: "FASTEST" | "FAST";
 };
-
 
 interface Props {
   handleViewChange: (view: ModalView) => void;
@@ -56,13 +57,51 @@ const CryptoView = ({
   const [confirmed, setConfirmed] = useState<boolean>(false);
   const [isConfirming, setIsConfirming] = useState(false);
 
-  const handleConfirmedCrypto = () => {
+  const cryptoConfig: Record<string, { type: string; onToken: string }> = {
+    "USDT (ERC20)": { type: "teth4", onToken: "ofcusdt" },
+    "USDT (TRC20)": { type: "ttrx4", onToken: "ofcusdt" },
+    "BITCOIN (BTC)": { type: "tbtc4", onToken: "ofcbtc" },
+    "ETHEREUM (ETH)": { type: "teth4", onToken: "ofceth" },
+  };
+
+  const generatePayload = () => {
+    if (typeof selectedCrypto !== "string") {
+      throw new Error("Unsupported crypto selection");
+    }
+    const config = cryptoConfig[selectedCrypto];
+
+    if (!config) {
+      throw new Error("Unsupported crypto selection");
+    }
+
+    return {
+      type: config.type,
+      onToken: config.onToken,
+      label: `${profile.firstName} Hot Wallet Address`,
+      gasPrice: "",
+      eip1559: {
+        maxFeePerGas: 0,
+        maxPriorityFeePerGas: 0,
+      },
+      accountId: profile.id,
+    };
+  };
+
+  const handleConfirmedCrypto = async () => {
     try {
       setIsConfirming(true);
-      // Handle the confirmed crypto action here
-      console.log("Confirmed Crypto:", selectedCrypto);
+      if (typeof selectedCrypto === "string") {
+        const payload = generatePayload();
+        // Handle the confirmed crypto action here
+        console.log("Confirmed Crypto:", selectedCrypto);
+        console.log("Payload: ", payload);
+        // const url = `deposit/get-address`;
+        // await apiClient.post(url, payload);
 
-      handleViewChange(selectedCrypto as ModalView);
+        handleViewChange(selectedCrypto as ModalView);
+      } else {
+        throw new Error("No crypto selected");
+      }
       setIsConfirming(false);
     } catch (error) {
       console.error("Error confirming crypto:", error);
@@ -140,8 +179,9 @@ const CryptoView = ({
             />
           </div>
           <span className="text-gray-400">
-            I, Prince Genesis, hereby confirm that I have read and understood
-            Deposit & Withdrawal Terms for Cryptocurrencies
+            I, {profile.firstName} {profile.lastName}, hereby confirm that I
+            have read and understood Deposit & Withdrawal Terms for
+            Cryptocurrencies
           </span>
         </div>
       </div>
@@ -167,7 +207,7 @@ const CryptoView = ({
         }}
       >
         {isConfirming && <RiLoader4Line className="size-5 mr-2 animate-spin" />}{" "}
-        Pay Now <ChevronRight className="w-4 h-4" />
+        Pay Now {!isConfirming && <ChevronRight className="w-4 h-4" />}
       </button>
     </div>
   );
