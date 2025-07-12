@@ -16,7 +16,6 @@ type CryptoList = {
   speed?: "FASTEST" | "FAST";
 };
 
-
 interface Props {
   handleViewChange: (view: ModalView) => void;
   setSelectedCrypto: React.Dispatch<React.SetStateAction<string | null>>;
@@ -56,13 +55,45 @@ const CryptoView = ({
   const [confirmed, setConfirmed] = useState<boolean>(false);
   const [isConfirming, setIsConfirming] = useState(false);
 
+  const cryptoConfig: Record<string, { type: string; onToken: string }> = {
+    "USDT (ERC20)": { type: "teth4", onToken: "ofcusdt" },
+    "USDT (TRC20)": { type: "ttrx4", onToken: "ofcusdt" },
+    "BITCOIN (BTC)": { type: "tbtc4", onToken: "ofcbtc" },
+    "ETHEREUM (ETH)": { type: "teth4", onToken: "ofceth" },
+  };
+
+  const generatePayload = (selectedLabel: string, accountId: number, firstName: string) => {
+    const config = cryptoConfig[selectedLabel];
+
+    if (!config) {
+      throw new Error("Unsupported crypto selection");
+    }
+
+    return {
+      type: config.type,
+      onToken: config.onToken,
+      label: `${firstName} Hot Wallet Address`,
+      gasPrice: "",
+      eip1559: {
+        maxFeePerGas: 0,
+        maxPriorityFeePerGas: 0,
+      },
+      accountId,
+    };
+  };
+
   const handleConfirmedCrypto = () => {
     try {
       setIsConfirming(true);
-      // Handle the confirmed crypto action here
-      console.log("Confirmed Crypto:", selectedCrypto);
-
-      handleViewChange(selectedCrypto as ModalView);
+      if (typeof selectedCrypto === "string") {
+        const payload = generatePayload(selectedCrypto, 3, 'DMJ');
+        // Handle the confirmed crypto action here
+        console.log("Confirmed Crypto:", selectedCrypto);
+        console.log("Payload: ", payload);
+        handleViewChange(selectedCrypto as ModalView);
+      } else {
+        throw new Error("No crypto selected");
+      }
       setIsConfirming(false);
     } catch (error) {
       console.error("Error confirming crypto:", error);
@@ -167,7 +198,7 @@ const CryptoView = ({
         }}
       >
         {isConfirming && <RiLoader4Line className="size-5 mr-2 animate-spin" />}{" "}
-        Pay Now <ChevronRight className="w-4 h-4" />
+        Pay Now {!isConfirming && <ChevronRight className="w-4 h-4" />}
       </button>
     </div>
   );

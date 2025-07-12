@@ -8,6 +8,7 @@ import Image, { StaticImageData } from "next/image";
 import { IoSwapHorizontal } from "react-icons/io5";
 import { cashierOptions } from "../deposit/CashierList";
 import { ModalView } from "../cashierModal";
+import { cryptoOptions } from "../deposit/CryptoView";
 // import { RiLoader4Line } from "@remixicon/react";
 
 type Props = {
@@ -20,11 +21,12 @@ type Props = {
 const WithdrawalView = ({ handleViewChange, setIconOrImage }: Props) => {
   const [agreed, setAgreed] = useState<boolean>(false);
   const [amount, setAmount] = useState<string>("");
-  const [method, setMethod] = useState<"Bank Transfer" | "Bitcoin">(
+  const [method, setMethod] = useState<"Bank Transfer" | "Crypto">(
     "Bank Transfer"
   );
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [selectedBank, setSelectedBank] = useState<string>("");
+  const [selectedCrypto, setSelectedCrypto] = useState<string>("");
   const [accountOrAddress, setAccountOrAddress] = useState<string>("");
   const [isOpen, setIsOpen] = useState(false);
 
@@ -42,6 +44,7 @@ const WithdrawalView = ({ handleViewChange, setIconOrImage }: Props) => {
     "Polaris Bank",
     "Keystone Bank",
   ];
+  
   return (
     <div className="space-y-6 text-white p-4">
       {/* Info Banner */}
@@ -111,11 +114,11 @@ const WithdrawalView = ({ handleViewChange, setIconOrImage }: Props) => {
 
         {showDropdown && (
           <div className="absolute w-full bg-black sm:bg-black/40 border-x border-b border-x-white/10 border-b-white/10 rounded-bl-xl rounded-br-xl z-10 overflow-hidden">
-            {["Bank Transfer", "Bitcoin"].map((item) => (
+            {["Bank Transfer", "Crypto"].map((item) => (
               <button
                 key={item}
                 onClick={() => {
-                  setMethod(item as "Bank Transfer" | "Bitcoin");
+                  setMethod(item as "Bank Transfer" | "Crypto");
                   setShowDropdown(false);
                 }}
                 className="w-full px-4 py-2 text-left hover:bg-[#79DA7E] text-sm"
@@ -145,7 +148,7 @@ const WithdrawalView = ({ handleViewChange, setIconOrImage }: Props) => {
       </div>
 
       {/* Bank Select (only if Bank Transfer) */}
-      {method === "Bank Transfer" && (
+      {method === "Bank Transfer" ? (
         <div className="relative text-sm text-white">
           <button
             type="button"
@@ -173,6 +176,34 @@ const WithdrawalView = ({ handleViewChange, setIconOrImage }: Props) => {
             </ul>
           )}
         </div>
+      ) : (
+         <div className="relative text-sm text-white">
+          <button
+            type="button"
+            className="w-full rounded-tl-xl rounded-tr-xl border border-white/10 px-4 py-3 flex justify-between items-center bg-transparent text-left"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {selectedCrypto || "Select Crypto"}
+            <ChevronDown className="w-4 h-4 text-gray-400" />
+          </button>
+
+          {isOpen && (
+            <ul className="absolute z-10 w-full bg-black/80 border border-white/10 rounded-bl-xl rounded-br-xl max-h-60 overflow-auto">
+              {cryptoOptions.map(({ label }) => (
+                <li
+                  key={label}
+                  onClick={() => {
+                    setSelectedCrypto(label);
+                    setIsOpen(false);
+                  }}
+                  className="px-4 py-2 hover:bg-[#79DA7E] cursor-pointer text-sm"
+                >
+                  {label}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       )}
 
       {/* Account Number or Bitcoin Address */}
@@ -180,7 +211,7 @@ const WithdrawalView = ({ handleViewChange, setIconOrImage }: Props) => {
         <label className="text-sm text-white/70">
           {method === "Bank Transfer"
             ? "Bank Account Number"
-            : "Bitcoin Address"}
+            : `${selectedCrypto} Address`}
         </label>
         <input
           type="text"
@@ -190,7 +221,7 @@ const WithdrawalView = ({ handleViewChange, setIconOrImage }: Props) => {
           placeholder={
             method === "Bank Transfer"
               ? "Bank Account Number"
-              : "Bitcoin Address"
+              : `${selectedCrypto} Address`
           }
         />
       </div>
