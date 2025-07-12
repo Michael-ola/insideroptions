@@ -92,12 +92,27 @@ export default function AssetModal({ isOpen, onClose }: AssetModalProps) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="absolute top-15 max-sm:-top-1 max-sm:w-[80vw] max-sm:fixed max-sm:h-[70vh] inset-0 max-sm:-left-[35vw] z-[60] pb-10 flex flex-col w-[293px] md:w-[320px] h-[80vh]
+      className="absolute top-15 max-sm:-top-1 max-sm:w-[80vw] max-sm:fixed max-sm:h-[70vh] inset-0 max-sm:-left-[35vw] z-[60] pb-10 flex flex-col w-[293px] md:w-[320px] h-[85vh]
                  overflow-hidden rounded-2xl text-sm ring-1 ring-white/10"
     >
       <div className="absolute inset-0 -z-10">
-        <div className="bg-[#050d15] h-[90%] max-sm:backdrop-blur-sm max-sm:bg-transparent" />
-        <div className="h-[10%] backdrop-blur-sm" />
+        {/* Background for larger screens */}
+        <div className="hidden sm:block h-full relative">
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(to bottom, #050d15 80%, rgba(5, 13, 21, 0.8) 85%, rgba(5, 13, 21, 0.2) 100%)",
+            }}
+          />
+          <div className="absolute inset-0 backdrop-blur-sm" />
+        </div>
+
+        {/* Background for mobile screens */}
+        <div className="block sm:hidden h-full relative">
+          <div className="absolute inset-0 backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-[#050d15] opacity-30" />
+        </div>
       </div>
 
       <div className="flex items-center justify-center relative px-6 py-3.5">
