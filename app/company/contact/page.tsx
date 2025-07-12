@@ -39,7 +39,6 @@ const Page = () => {
         });
         return;
       }
-      alert("Form submitted successfully ✅");
        const res = await apiClient.post(url, data);
       console.log(res);
       reset();
