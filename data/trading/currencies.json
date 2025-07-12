@@ -1,0 +1,20 @@
+[
+  {
+    "name": "EUR/USD",
+    "icon": "/images/Mastercard.png",
+    "change": -0.22,
+    "profit": 61
+  },
+  {
+    "name": "GBP/USD",
+    "icon": "/images/_visa.png",
+    "change": 0.48,
+    "profit": 64
+  },
+  {
+    "name": "USD/JPY",
+    "icon": "/images/Maestro.png",
+    "change": -0.35,
+    "profit": 59
+  }
+]
