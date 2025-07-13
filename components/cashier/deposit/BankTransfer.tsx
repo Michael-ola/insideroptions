@@ -3,13 +3,14 @@
 import { Check, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
-import candle from "@/lib/assets/green_candle.png"; // Assuming you have a candle image in your assets
+import profile from "@/data/trader/profile.json";
+import candle from "@/lib/assets/green_candle.png";
 import { RiLoader4Line } from "@remixicon/react";
 
 const tranferDetails = [
   { label: "Payment method", value: "Bank Transfer" },
   { label: "Bank", value: "Access Bank" },
-  { label: "Receipeint full name", value: "Prince Genesis" },
+  { label: "Receipeint full name", value: `${profile.firstName} ${profile.lastName}` },
   { label: "Currency", value: "USD/NGN" },
   { label: "Receiving amount", value: "NGN378,250.00" },
 ];
@@ -20,6 +21,8 @@ const BankTransfer = () => {
   const [confirmPayment, setConfirmPayment] = useState<boolean>(false);
   const [isConfirming, setIsConfirming] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+
   const handleConfirmPayment = () => {
     try {
       setIsConfirming(true);
@@ -30,7 +33,6 @@ const BankTransfer = () => {
         );
       }
       setConfirmPayment(true);
-      // Here you can add logic to handle the payment confirmation
       console.log("Payment confirmed with amount:", amount);
 
       setIsConfirming(false);
@@ -42,15 +44,14 @@ const BankTransfer = () => {
   const handleProcessPayment = () => {
     try {
       setIsSubmitting(true);
-      // Here you can add logic to handle the payment processing
-      console.log("Processing payment with amount:", amount); 
-        setIsSubmitting(false);
-        alert("Payment processed successfully!");
-        // Reset state after successful payment
-        setConfirmed(false);
-        setAmount("");
-        setConfirmPayment(false);
-    
+
+      console.log("Processing payment with amount:", amount);
+      setIsSubmitting(false);
+      // alert("Payment processed successfully!");
+
+      setConfirmed(false);
+      setAmount("");
+      setConfirmPayment(false);
     } catch (error) {
       console.error(error);
       setIsSubmitting(false);
@@ -69,7 +70,7 @@ const BankTransfer = () => {
               <input
                 type="text"
                 disabled
-                value={"Prince"}
+                value={profile.firstName}
                 className="w-full bg-transparent border border-gray-700 px-4 py-3 outline-none rounded-xl text-sm text-gray-500"
               />
             </div>
@@ -80,7 +81,7 @@ const BankTransfer = () => {
               <input
                 type="text"
                 disabled
-                value={"Genesis"}
+                value={profile.lastName}
                 className="w-full bg-transparent border border-gray-700 px-4 py-3 outline-none rounded-xl text-sm text-gray-500"
               />
             </div>
@@ -128,7 +129,7 @@ const BankTransfer = () => {
                 />
               </div>
               <span className="text-gray-400">
-                I Prince John agree to 
+                I {profile.firstName} {profile.lastName} agree to 
                 <a
                   href="/company/terms-and-condition"
                   className="text-green-400"

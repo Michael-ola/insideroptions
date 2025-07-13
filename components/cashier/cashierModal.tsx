@@ -6,7 +6,6 @@ import { StaticImageData } from "next/image";
 import CashierList from "./deposit/CashierList";
 import DepositList from "./deposit/DepositList";
 import CryptoView from "./deposit/CryptoView";
-// import CryptoPayView from "./CryptoPayView";
 import BankTransfer from "./deposit/BankTransfer";
 import CryptoPayView from "./deposit/cryptoPayView";
 import WithdrawalView from "./withdrawal/WithdrawalView";

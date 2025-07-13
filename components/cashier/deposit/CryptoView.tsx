@@ -4,11 +4,13 @@ import React, { useState } from "react";
 import { AlertCircle, Check, ChevronRight } from "lucide-react";
 import Image, { StaticImageData } from "next/image";
 import usdt from "@/lib/assets/usdt.png";
+import profile from "@/data/trader/profile.json";
 import btc from "@/lib/assets/btc.png";
 import trc20 from "@/lib/assets/trc20.png";
 import eth from "@/lib/assets/eth.png";
 import { RiLoader4Line } from "@remixicon/react";
 import { ModalView } from "../cashierModal";
+// import { apiClient } from "@/lib/api-client";
 
 type CryptoList = {
   label: string;
@@ -62,8 +64,11 @@ const CryptoView = ({
     "ETHEREUM (ETH)": { type: "teth4", onToken: "ofceth" },
   };
 
-  const generatePayload = (selectedLabel: string, accountId: number, firstName: string) => {
-    const config = cryptoConfig[selectedLabel];
+  const generatePayload = () => {
+    if (typeof selectedCrypto !== "string") {
+      throw new Error("Unsupported crypto selection");
+    }
+    const config = cryptoConfig[selectedCrypto];
 
     if (!config) {
       throw new Error("Unsupported crypto selection");
@@ -72,28 +77,28 @@ const CryptoView = ({
     return {
       type: config.type,
       onToken: config.onToken,
-      label: `${firstName} Hot Wallet Address`,
+      label: `${profile.firstName} Hot Wallet Address`,
       gasPrice: "",
       eip1559: {
         maxFeePerGas: 0,
         maxPriorityFeePerGas: 0,
       },
-      accountId,
+      accountId: profile.id,
     };
   };
 
-  const handleConfirmedCrypto = () => {
+  const handleConfirmedCrypto = async () => {
     try {
       setIsConfirming(true);
-      if (typeof selectedCrypto === "string") {
-        const payload = generatePayload(selectedCrypto, 3, 'DMJ');
-        // Handle the confirmed crypto action here
-        console.log("Confirmed Crypto:", selectedCrypto);
-        console.log("Payload: ", payload);
-        handleViewChange(selectedCrypto as ModalView);
-      } else {
-        throw new Error("No crypto selected");
-      }
+
+      const payload = generatePayload();
+      console.log("payload: ", payload);
+
+      // const url = `deposit/get-address`;
+      // await apiClient.post(url, payload);
+
+      handleViewChange(selectedCrypto as ModalView);
+
       setIsConfirming(false);
     } catch (error) {
       console.error("Error confirming crypto:", error);
@@ -171,8 +176,9 @@ const CryptoView = ({
             />
           </div>
           <span className="text-gray-400">
-            I, Prince Genesis, hereby confirm that I have read and understood
-            Deposit & Withdrawal Terms for Cryptocurrencies
+            I, {profile.firstName} {profile.lastName}, hereby confirm that I
+            have read and understood Deposit & Withdrawal Terms for
+            Cryptocurrencies
           </span>
         </div>
       </div>
