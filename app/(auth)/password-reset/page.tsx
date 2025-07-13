@@ -8,8 +8,10 @@ import { SharedButton } from "@/components/shared-button";
 import Image from "next/image";
 import hexDeco from "@/lib/assets/hex_deco.png";
 import { PasswordResetConfirmation } from "@/components/confirmations/password-reset";
-import React from "react";
+import React, { useState } from "react";
 import { RiArrowRightSLine } from "@remixicon/react";
+import { useSearchParams } from "next/navigation";
+import { apiClient } from "@/lib/api-client";
 
 const schema = z
   .object({
@@ -22,22 +24,43 @@ const schema = z
       .min(6, "Confirm Password must be at least 6 characters")
       .trim(),
   })
-  .refine((data) => data.password !== data.confirmPassword, {
+  .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
     path: ["confirmPassword"],
   });
 
 export default function NewPasswordPage() {
-  const [sentConfirmation, setSentConfirmation] = React.useState(false);
+  const searchParams = useSearchParams();
+
+  const code = searchParams.get("code");
+  const email = searchParams.get("email");
+
+  const [sentConfirmation, setSentConfirmation] = useState<boolean>(false);
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     mode: "onSubmit",
   });
 
-  const onSubmit = (data: z.infer<typeof schema>) => {
-    console.log("data ", data);
+  const onSubmit = async (data: z.infer<typeof schema>) => {
+    try {
+      console.log("data ", data);
+      const url = `/auth/reset-password`;
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  
+      const form = {
+        email,
+        password: data.password,
+        baseUrl,
+        passwordResetCode: code,
+      };
+      await apiClient.put(url, form);
+      setSentConfirmation(true);
+    } catch (error) {
+      // const err = getErrorMessage(error);
+      // toast.error(err);
+      console.log(error);
+    }
     // Handle password reset logic here
-    setSentConfirmation(true);
   };
   return (
     <section className="bg-secondary relative z-0 h-screen overflow-hidden">
