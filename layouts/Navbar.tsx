@@ -12,7 +12,7 @@ import { usePathname } from "next/navigation";
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
-  if (pathname.startsWith("/dashboard-test")) return null;
+  if (pathname.startsWith("/dashboard")) return null;
 
   return (
     <>
