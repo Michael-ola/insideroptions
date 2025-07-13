@@ -30,7 +30,7 @@ const Page = () => {
   } = useForm<FormData>();
 
   const onSubmit = async (data: FormData) => {
-    const url = ('/devops/contact-us')
+    const url = "/devops/contact-us";
     try {
       if (!data.recaptchaToken) {
         setError("recaptchaToken", {
@@ -39,11 +39,10 @@ const Page = () => {
         });
         return;
       }
-       const res = await apiClient.post(url, data);
+      const res = await apiClient.post(url, data);
       console.log(res);
       reset();
       recaptchaRef.current?.reset();
-      
     } catch (error) {
       console.log(error);
     }
@@ -51,7 +50,7 @@ const Page = () => {
 
   return (
     <main className="min-h-screen bg-[#070c17] pt-[5%]">
-     <section className="px-3 sm:px-16 py-20 bg-[#070c17] text-white">
+      <section className="px-3 sm:px-16 py-20 bg-[#070c17] text-white">
         <div className="max-w-7xl mx-auto bg-[#070c17] px-16 flex flex-col md:flex-row gap-10">
           <div className="md:w-1/3 md:space-y-12">
             <h2 className="sm:text-5xl text-2xl font-medium text-center sm:text-left sm:font-semibold">
@@ -212,7 +211,7 @@ const Page = () => {
         </div>
       </section>
 
-     <section className="px-6 sm:px-16 py-18 bg-[#00050f]">
+      <section className="px-6 sm:px-16 py-18 bg-[#00050f]">
         <div className="mx-auto p-16 max-w-7xl">
           <div className="bg-gradient-to-r from-[#070d17] to-[#0d121c] bg-no-repeat flex flex-col sm:flex-row gap-6 sm:gap-0 justify-between items-center p-6 sm:p-13 border-1 border-gray-50/15 rounded-xl">
             <h3 className="w-full whitespace-nowrap text-white text-lg md:text-xl font-medium">
