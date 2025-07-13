@@ -31,7 +31,7 @@ export default function ModalWrapper({
   return (
     <div className="fixed min-w-[25%] md:w-[30%] inset-0 bg-transparent backdrop-blur-xs bg-opacity-60 z-50 flex items-center justify-center">
       <div className="w-full h-full sm:h-[80%] bg-[#00040d] sm:bg-transparent rounded-lg shadow-lg p-6 relative text-white border-r border-green-300/30 space-y-6 overflow-y-auto">
-        <div className="bg-gradient-to-r from-[#00040d] to-[#13171f] sm:bg-none p-4 border-y border-y-[#79DA7E]/30 sm:border-0 flex justify-between items-center gap-3">
+        <div className="bg-gradient-to-r from-[#00040d] to-[#13171f] sm:bg-none px-8 py-4 sm:p-0 border-y border-y-[#79DA7E]/30 sm:border-0 flex justify-between items-center gap-3">
           {title !== "My Cashier" && (
             <button
               onClick={() => {
