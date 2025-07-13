@@ -4,6 +4,7 @@ import { AlertCircle, ChevronRight, ChevronDown, Check } from "lucide-react";
 import { useState } from "react";
 import bank from "@/lib/assets/bank_transfer.png";
 import crypto from "@/lib/assets/crypto.png";
+import profile from "@/data/trader/profile.json";
 import Image, { StaticImageData } from "next/image";
 import { IoSwapHorizontal } from "react-icons/io5";
 import { cashierOptions } from "../deposit/CashierList";
@@ -44,10 +45,10 @@ const WithdrawalView = ({ handleViewChange, setIconOrImage }: Props) => {
     "Polaris Bank",
     "Keystone Bank",
   ];
-  
+
   return (
     <div className="space-y-6 text-white p-4">
-      {/* Info Banner */}
+      
       <div className="bg-[#79DA7E]/3 p-6 rounded-xl border border-white/3">
         <div className="flex items-start gap-3">
           <AlertCircle className="w-8 h-8 text-gray-400" />
@@ -71,7 +72,6 @@ const WithdrawalView = ({ handleViewChange, setIconOrImage }: Props) => {
         </div>
       </div>
 
-      {/* Balance and Swap */}
       <div className="flex items-center gap-3">
         <div className="w-full flex flex-col items-center justify-center bg-[#070c14] sm:bg-white/3 px-6 py-4 rounded-xl border border-[#79DA7E]/25">
           <p className="text-base font-semibold">$5000.00</p>
@@ -95,7 +95,6 @@ const WithdrawalView = ({ handleViewChange, setIconOrImage }: Props) => {
         </button>
       </div>
 
-      {/* Method Selector */}
       <div className="relative">
         <button
           onClick={() => setShowDropdown((prev) => !prev)}
@@ -130,7 +129,6 @@ const WithdrawalView = ({ handleViewChange, setIconOrImage }: Props) => {
         )}
       </div>
 
-      {/* Amount Input */}
       <div className="flex flex-col gap-1">
         <label className="text-sm text-white/70">Enter Amount</label>
         <div className="relative w-full">
@@ -147,7 +145,6 @@ const WithdrawalView = ({ handleViewChange, setIconOrImage }: Props) => {
         </div>
       </div>
 
-      {/* Bank Select (only if Bank Transfer) */}
       {method === "Bank Transfer" ? (
         <div className="relative text-sm text-white">
           <button
@@ -177,7 +174,7 @@ const WithdrawalView = ({ handleViewChange, setIconOrImage }: Props) => {
           )}
         </div>
       ) : (
-         <div className="relative text-sm text-white">
+        <div className="relative text-sm text-white">
           <button
             type="button"
             className="w-full rounded-tl-xl rounded-tr-xl border border-white/10 px-4 py-3 flex justify-between items-center bg-transparent text-left"
@@ -206,7 +203,6 @@ const WithdrawalView = ({ handleViewChange, setIconOrImage }: Props) => {
         </div>
       )}
 
-      {/* Account Number or Bitcoin Address */}
       <div className="flex flex-col gap-1">
         <label className="text-sm text-white/70">
           {method === "Bank Transfer"
@@ -226,7 +222,6 @@ const WithdrawalView = ({ handleViewChange, setIconOrImage }: Props) => {
         />
       </div>
 
-      {/* Agreement */}
       <label className="flex items-start gap-3 text-sm text-white/70">
         <div
           onClick={() => setAgreed(!agreed)}
@@ -242,14 +237,14 @@ const WithdrawalView = ({ handleViewChange, setIconOrImage }: Props) => {
           />
         </div>
         <span>
-          I, Prince John agree that the above provided{" "}
+          I, {profile.firstName} {profile.lastName} agree that the above
+          provided{" "}
           {method === "Bank Transfer" ? "Bank account" : "Bitcoin address"} is
           correct, and <span className="font-semibold">InsiderOption LLC</span>{" "}
           will not be liable for transfer to incorrect address.
         </span>
       </label>
 
-      {/* Continue Button */}
       <button
         disabled={!agreed}
         className={`w-full text-center py-3 rounded-xl text-[#545c5c]  font-medium text-sm transition-opacity flex items-center justify-center gap-3 ${
