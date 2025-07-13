@@ -6,6 +6,8 @@ import React, { useRef } from "react";
 import { useForm } from "react-hook-form";
 import ReCAPTCHA from "react-google-recaptcha";
 import { apiClient } from "@/lib/api-client";
+import { toast } from "react-toastify";
+import { getErrorMessage } from "@/lib/authUtils";
 
 type FormData = {
   firstName: string;
@@ -30,7 +32,7 @@ const Page = () => {
   } = useForm<FormData>();
 
   const onSubmit = async (data: FormData) => {
-    const url = ('/devops/contact-us')
+    const url = "/devops/contact-us";
     try {
       if (!data.recaptchaToken) {
         setError("recaptchaToken", {
@@ -39,19 +41,20 @@ const Page = () => {
         });
         return;
       }
-       const res = await apiClient.post(url, data);
-      console.log(res);
+      await apiClient.post(url, data);
+      toast.success("Submission Successful!");
       reset();
       recaptchaRef.current?.reset();
-      
     } catch (error) {
       console.log(error);
+      const err = getErrorMessage(error);
+      toast.error(err);
     }
   };
 
   return (
     <main className="min-h-screen bg-[#070c17] pt-[5%]">
-     <section className="px-3 sm:px-16 py-20 bg-[#070c17] text-white">
+      <section className="px-3 sm:px-16 py-20 bg-[#070c17] text-white">
         <div className="max-w-7xl mx-auto bg-[#070c17] px-16 flex flex-col md:flex-row gap-10">
           <div className="md:w-1/3 md:space-y-12">
             <h2 className="sm:text-5xl text-2xl font-medium text-center sm:text-left sm:font-semibold">
@@ -174,7 +177,7 @@ const Page = () => {
                 {/* reCAPTCHA */}
                 <div className="scale-[0.75] origin-top-left sm:scale-100 mx-auto">
                   <ReCAPTCHA
-                    sitekey="6Ld-EYArAAAAAAMfkZB0D-EhiDwsWS7z2TCCai3u"
+                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? ""}
                     onChange={(token) => {
                       if (token) {
                         clearErrors("recaptchaToken");
@@ -212,7 +215,7 @@ const Page = () => {
         </div>
       </section>
 
-     <section className="px-6 sm:px-16 py-18 bg-[#00050f]">
+      <section className="px-6 sm:px-16 py-18 bg-[#00050f]">
         <div className="mx-auto p-16 max-w-7xl">
           <div className="bg-gradient-to-r from-[#070d17] to-[#0d121c] bg-no-repeat flex flex-col sm:flex-row gap-6 sm:gap-0 justify-between items-center p-6 sm:p-13 border-1 border-gray-50/15 rounded-xl">
             <h3 className="w-full whitespace-nowrap text-white text-lg md:text-xl font-medium">
