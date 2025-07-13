@@ -9,6 +9,8 @@ import CryptoView from "./deposit/CryptoView";
 import BankTransfer from "./deposit/BankTransfer";
 import CryptoPayView from "./deposit/cryptoPayView";
 import WithdrawalView from "./withdrawal/WithdrawalView";
+import OtpModal from "./withdrawal/OtpModal";
+import SuccessModal from "./withdrawal/SuccessModal";
 
 export type SelectedCrypto =
   | "USDT (ERC20)"
@@ -40,6 +42,8 @@ export default function CashierModal({ isOpen, onClose }: Props) {
   const [view, setView] = useState<ModalView>("My Cashier");
   const [iconOrImage, setIconOrImage] = useState<StaticImageData | string>("");
   const [selectedCrypto, setSelectedCrypto] = useState<string | null>(null);
+  const [openOtp, setOpenOtp] = useState<boolean>(false);
+  const [openSuccess, setOpenSuccess] = useState<boolean>(false);
 
   if (!isOpen) return null;
 
@@ -80,22 +84,40 @@ export default function CashierModal({ isOpen, onClose }: Props) {
       case "Bank Transfer":
         return <BankTransfer />;
       case "Withdrawals":
-        return <WithdrawalView handleViewChange={handleViewChange} setIconOrImage={setIconOrImage} />
+        return (
+          <WithdrawalView
+            handleViewChange={handleViewChange}
+            setIconOrImage={setIconOrImage}
+            setOpenOtp={setOpenOtp}
+          />
+        );
       default:
         return null;
     }
   };
 
   return (
-    <ModalWrapper
-      title={view}
-      icon={iconOrImage}
-      onClose={onClose}
-      onCloseHandler={onCloseHandler}
-      handleViewChange={handleViewChange}
-      setIconOrImage={setIconOrImage}
-    >
-      {renderView()}
-    </ModalWrapper>
+    <div>
+      <ModalWrapper
+        title={view}
+        icon={iconOrImage}
+        onClose={onClose}
+        onCloseHandler={onCloseHandler}
+        handleViewChange={handleViewChange}
+        setIconOrImage={setIconOrImage}
+      >
+        {renderView()}
+      </ModalWrapper>
+
+      {openOtp && (
+        <OtpModal
+          title={view}
+          icon={iconOrImage}
+          onCloseModal={() => setOpenOtp(false)}
+          setOpenSuccess={setOpenSuccess}
+        />
+      )}
+      {openSuccess && <SuccessModal close={() => setOpenSuccess(false)} />}
+    </div>
   );
 }

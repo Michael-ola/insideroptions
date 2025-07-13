@@ -17,10 +17,16 @@ type Props = {
   setIconOrImage: React.Dispatch<
     React.SetStateAction<StaticImageData | string>
   >;
+  setOpenOtp: (value: boolean) => void;
 };
 
-const WithdrawalView = ({ handleViewChange, setIconOrImage }: Props) => {
+const WithdrawalView = ({
+  handleViewChange,
+  setIconOrImage,
+  setOpenOtp,
+}: Props) => {
   const [agreed, setAgreed] = useState<boolean>(false);
+
   const [amount, setAmount] = useState<string>("");
   const [method, setMethod] = useState<"Bank Transfer" | "Crypto">(
     "Bank Transfer"
@@ -247,6 +253,7 @@ const WithdrawalView = ({ handleViewChange, setIconOrImage }: Props) => {
 
       <button
         disabled={!agreed}
+        onClick={() => setOpenOtp(true)}
         className={`w-full text-center py-3 rounded-xl text-[#545c5c]  font-medium text-sm transition-opacity flex items-center justify-center gap-3 ${
           !agreed
             ? "bg-[#171f24] cursor-not-allowed"
