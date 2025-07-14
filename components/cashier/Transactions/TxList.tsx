@@ -1,5 +1,5 @@
-import React from "react";
-import transactions from "@/data/cashier/tx-history.json";
+import React, { useEffect, useRef, useState } from "react";
+import transaction from "@/data/cashier/tx-history.json";
 import bank from "@/lib/assets/bank_transfer.png";
 import btc from "@/lib/assets/btc.png";
 import withdraw from "@/lib/assets/scroll.png";
@@ -8,11 +8,28 @@ import mask from "@/lib/assets/mask_deposit.png";
 import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 import { ModalView } from "../cashierModal";
+import { apiClient } from "@/lib/api-client";
+type Transaction = {
+  id: string;
+  type: string;
+  pair: string;
+  amount: string;
+  status: string;
+  date: string;
+  time: string;
+};
+
 const TxList = ({
   handleViewChange,
 }: {
   handleViewChange: (view: ModalView) => void;
 }) => {
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [nextCursorId, setNextCursorId] = useState<string | null>(null);
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  const containerRef = useRef<HTMLDivElement>(null);
   const iconList = [
     { label: "Bank Deposit", src: bank },
     { label: "Bank Withdrawal", src: withdraw },
@@ -20,11 +37,54 @@ const TxList = ({
     { label: "Withdrawal", src: btc },
     { label: "Swap (Real – Profit)", src: swap },
   ];
+
+  useEffect(() => {
+    // Initial load
+    fetchTransactions(null);
+  }, []);
+
+  const fetchTransactions = async (cursor: string | null) => {
+    if (loading || !hasMore) return;
+
+    setLoading(true);
+    try {
+      const res = await apiClient.post(
+        `/transactions/1/search
+        ${cursor ? `?cursor=${cursor}` : ""}`
+      );
+      const data = await res.data;
+      setTransactions((prev) => [...prev, ...data.transactions]);
+      setNextCursorId(data.nextCursorId);
+      setHasMore(data.hasMore);
+    } catch (error) {
+      console.error("Failed to fetch transactions", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleScroll = () => {
+    const container = containerRef.current;
+    if (!container || loading || !hasMore) return;
+
+    const nearBottom =
+      container.scrollHeight - container.scrollTop - container.clientHeight <
+      100;
+    console.log(nearBottom);
+    if (nearBottom) {
+      fetchTransactions(nextCursorId);
+    }
+  };
+  
   return (
-    <div className="space-y-4 w-full h-full">
+    <div
+      className="space-y-4 w-full h-full overflow-y-auto"
+      ref={containerRef}
+      onScroll={handleScroll}
+    >
       <div className="w-full h-full pb-6">
-        {transactions.length ? (
-          transactions.map((tx, i) => (
+        {transaction.length ? (
+          transaction.map((tx, i) => (
             <div
               key={i}
               className="flex gap-3 items-start border-b border-white/10 pb-2"
