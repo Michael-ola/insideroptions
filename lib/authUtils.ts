@@ -98,3 +98,19 @@ export function getErrorMessage(error: any, fallback = "An unexpected error occu
   }
   return fallback;
 }
+
+export const passwordResetSchema = z
+  .object({
+    password: z
+      .string()
+      .min(6, "Password must be at least 6 characters")
+      .trim(),
+    confirmPassword: z
+      .string()
+      .min(6, "Confirm Password must be at least 6 characters")
+      .trim(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });

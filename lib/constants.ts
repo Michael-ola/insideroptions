@@ -73,8 +73,7 @@ export const navLinks = [
       { name: "Return Policy", href: "/company/return-policy" },
       { name: "Privacy Policy", href: "/company/privacy-policy" },
       { name: "AML & KYC", href: "/company/aml-and-kyc" },
-      { name: "Referral Program Terms & Conditions", href: "#" },
-      { name: "Regulation", href: "#" },
+      { name: "Referral Program Terms & Conditions", href: "/company/referral-program-terms-and-conditions" },
     ],
   },
 ];
@@ -106,10 +105,6 @@ export const navItems = [
       {
         label: "Referral Program Terms & Conditions",
         href: "/company/referral-program-terms-and-conditions",
-      },
-      {
-        label: "Regulatory Environment",
-        href: "/company/regulatory-environment",
       },
     ],
   },

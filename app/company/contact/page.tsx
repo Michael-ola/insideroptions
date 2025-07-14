@@ -34,7 +34,7 @@ const Page = () => {
   } = useForm<FormData>();
 
   const onSubmit = async (data: FormData) => {
-    const url = "/devops/contact-us";
+    const url = ('/devops/contact-us')
     try {
       setIsSubmitting(true);
       if (!data.recaptchaToken) {
