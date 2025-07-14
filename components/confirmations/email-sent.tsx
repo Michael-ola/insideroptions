@@ -17,7 +17,7 @@ export function EmailSentConfirmation({
         <Image src={mailSentIcon} alt="send" />
       </div>
       <p className="text-lg text-center">
-        An email containing a link to reset your password has been sent to
+        An email containing a link to reset your password has been sent to{" "}
         {email}. Please follow the instructions within the email. If you have
         not received an email, please check your junk or spam folder.
       </p>
