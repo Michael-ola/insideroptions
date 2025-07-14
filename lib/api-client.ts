@@ -2,7 +2,7 @@ import axios, { InternalAxiosRequestConfig } from "axios";
 import { AUTH_ENDPOINTS } from "./constants";
 
 const baseUrl =
-  process.env.NEXT_PUBLIC_API_URL || "https://insider-option-api.onrender.com";
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8081";
 
 export const apiClient = axios.create({
   baseURL: `${baseUrl}/api/v1`,
