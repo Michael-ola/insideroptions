@@ -9,15 +9,7 @@ import { apiClient } from "@/lib/api-client";
 import { toast } from "react-toastify";
 import { getErrorMessage } from "@/lib/authUtils";
 import { RiLoader4Line } from "@remixicon/react";
-
-type FormData = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phoneNumber?: string;
-  message: string;
-  recaptchaToken: string;
-};
+import { ContactUsFormData } from "@/lib/models";
 
 const Page = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -31,9 +23,9 @@ const Page = () => {
     setValue,
     clearErrors,
     reset,
-  } = useForm<FormData>();
+  } = useForm<ContactUsFormData>();
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: ContactUsFormData) => {
     const url = ('/devops/contact-us')
     try {
       setIsSubmitting(true);
