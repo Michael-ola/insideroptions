@@ -4,7 +4,13 @@ import { RiArrowLeftSLine } from "@remixicon/react";
 import Image from "next/image";
 import mailSentIcon from "@/lib/assets/mail-sent-icon.png";
 
-export function EmailSentConfirmation({ email }: { email: string }) {
+export function EmailSentConfirmation({
+  email,
+  onSubmit,
+}: {
+  email: string;
+  onSubmit: () => void;
+}) {
   return (
     <div className="h-[424px] grid place-content-center space-y-8 mt-9">
       <div className="h-[124px] w-[124px] rounded-full grid place-content-center mx-auto">
@@ -20,7 +26,11 @@ export function EmailSentConfirmation({ email }: { email: string }) {
           <RiArrowLeftSLine className="h-4 w-4" />
           Back to Login
         </Link>
-        <SharedButton className="w-full" variant={"ghost"}>
+        <SharedButton
+          onClick={() => onSubmit()}
+          className="w-full"
+          variant={"ghost"}
+        >
           Send Again
         </SharedButton>
       </div>
