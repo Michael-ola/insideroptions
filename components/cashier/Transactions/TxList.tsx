@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import transaction from "@/data/cashier/tx-history.json";
+// import transaction from "@/data/cashier/tx-history.json";
 import bank from "@/lib/assets/bank_transfer.png";
 import btc from "@/lib/assets/btc.png";
 import withdraw from "@/lib/assets/scroll.png";
@@ -48,7 +48,7 @@ const TxList = ({
 
     setLoading(true);
     try {
-      const res = await apiClient.post(
+      const res = await apiClient.get(
         `/transactions/1/search
         ${cursor ? `?cursor=${cursor}` : ""}`
       );
@@ -78,13 +78,13 @@ const TxList = ({
   
   return (
     <div
-      className="space-y-4 w-full h-full overflow-y-auto"
+      className="space-y-4 w-full h-full flex-1 overflow-y-auto px-4 py-4"
       ref={containerRef}
       onScroll={handleScroll}
     >
       <div className="w-full h-full pb-6">
-        {transaction.length ? (
-          transaction.map((tx, i) => (
+        {transactions.length ? (
+          transactions.map((tx, i) => (
             <div
               key={i}
               className="flex gap-3 items-start border-b border-white/10 pb-2"
@@ -136,7 +136,7 @@ const TxList = ({
             </div>
           ))
         ) : (
-          <div className=" flex flex-col items-center justify-center gap-12">
+          <div className="w-full h-full flex flex-col items-center justify-center gap-12">
             <Image src={mask} alt="mask" priority />
             <div className="text-gray-400 text-xs text-center space-y-1">
               <p>Transaction is empty</p>
