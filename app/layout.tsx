@@ -3,6 +3,7 @@ import "./globals.css";
 import { DM_Sans } from "next/font/google";
 import Navbar from "@/layouts/Navbar";
 import Footer from "@/layouts/Footer";
+import ToastContainer from "@/components/ToastContainer";
 
 export const metadata: Metadata = {
   title: "Insider Options",
@@ -23,6 +24,7 @@ export default function RootLayout({
       <body className={`${dmSans.variable} font-sans antialiased`}>
         <Navbar />
         {children}
+        <ToastContainer />
         <Footer />
       </body>
     </html>

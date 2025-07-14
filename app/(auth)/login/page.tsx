@@ -12,7 +12,8 @@ import { Divider } from "@/components/divider";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import SocialLogin from "@/components/SocialLogin";
-import { loginSchema, loginTrader } from "@/lib/authUtils";
+import { getErrorMessage, loginSchema, loginTrader } from "@/lib/authUtils";
+import { toast } from "react-toastify";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -22,21 +23,21 @@ export default function LoginPage() {
   });
 
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
-    // Handle login logic here
-    console.log("Logging in with:", data);
-    await loginTrader(data)
-      .then(() => {
-        // Redirect to dashboard or home page after successful login
-        router.push("/dashboard");
-      })
-      .catch((error) => {
-        // Handle login error
-        console.error("Login failed:", error);
-        form.setError("email", {
-          type: "manual",
-          message: "Invalid email or password",
-        });
+    try {
+      await loginTrader(data);
+      data.email = "";
+      data.password = "";
+      toast.success("Login Successful!");
+      router.push("/dashboard");
+    } catch (error) {
+      console.error("Login failed:", error);
+      const err = getErrorMessage(error);
+      toast.error(err);
+      form.setError("email", {
+        type: "manual",
+        message: "Invalid email or password",
       });
+    }
   };
 
   return (

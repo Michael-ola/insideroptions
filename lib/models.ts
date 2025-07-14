@@ -38,3 +38,12 @@ export interface EmailVerificationPayload {
   otp: string;
   legalAgreement: boolean;
 }
+
+export type ContactUsFormData = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber?: string;
+  message: string;
+  recaptchaToken: string;
+};

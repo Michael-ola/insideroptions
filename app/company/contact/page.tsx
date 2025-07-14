@@ -2,21 +2,17 @@
 
 import { ChevronRight, LucideMessageCircleMore, Mail } from "lucide-react";
 import Link from "next/link";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import ReCAPTCHA from "react-google-recaptcha";
 import { apiClient } from "@/lib/api-client";
-
-type FormData = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phoneNumber?: string;
-  message: string;
-  recaptchaToken: string;
-};
+import { toast } from "react-toastify";
+import { getErrorMessage } from "@/lib/authUtils";
+import { RiLoader4Line } from "@remixicon/react";
+import { ContactUsFormData } from "@/lib/models";
 
 const Page = () => {
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const recaptchaRef = useRef<ReCAPTCHA>(null);
 
   const {
@@ -27,24 +23,30 @@ const Page = () => {
     setValue,
     clearErrors,
     reset,
-  } = useForm<FormData>();
+  } = useForm<ContactUsFormData>();
 
-  const onSubmit = async (data: FormData) => {
-    const url = "/devops/contact-us";
+  const onSubmit = async (data: ContactUsFormData) => {
+    const url = ('/devops/contact-us')
     try {
+      setIsSubmitting(true);
       if (!data.recaptchaToken) {
         setError("recaptchaToken", {
           type: "manual",
           message: "Please complete the reCAPTCHA",
         });
+        setIsSubmitting(false);
         return;
       }
-      const res = await apiClient.post(url, data);
-      console.log(res);
+      await apiClient.post(url, data);
+      toast.success("Submission Successful!");
+      setIsSubmitting(false);
       reset();
       recaptchaRef.current?.reset();
     } catch (error) {
       console.log(error);
+      const err = getErrorMessage(error);
+      toast.error(err);
+      setIsSubmitting(false);
     }
   };
 
@@ -173,7 +175,7 @@ const Page = () => {
                 {/* reCAPTCHA */}
                 <div className="scale-[0.75] origin-top-left sm:scale-100 mx-auto">
                   <ReCAPTCHA
-                    sitekey="6Ld-EYArAAAAAAMfkZB0D-EhiDwsWS7z2TCCai3u"
+                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? ""}
                     onChange={(token) => {
                       if (token) {
                         clearErrors("recaptchaToken");
@@ -196,12 +198,18 @@ const Page = () => {
                   })}
                 />
 
-                {/* Submit Button */}
-                <div className="flex items-end">
+                <div className="flex items-start">
                   <button
                     type="submit"
-                    className="bg-[#79DA7E] text-black px-10 py-3 rounded-xl"
+                    className={`text-center px-10 py-3 rounded-xl text-[#545c5c] bg-[#74d67f] font-medium text-sm transition-opacity flex items-center justify-center gap-3 ${
+                      isSubmitting
+                        ? "opacity-50 cursor-not-allowed"
+                        : "text-black cursor-pointer"
+                    }`}
                   >
+                    {isSubmitting && (
+                      <RiLoader4Line className="size-5 mr-2 animate-spin" />
+                    )}
                     Submit
                   </button>
                 </div>
