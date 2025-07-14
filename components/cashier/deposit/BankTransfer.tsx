@@ -97,7 +97,7 @@ const BankTransfer = () => {
               <div className="flex flex-col gap-2">
                 <label>Enter Amount</label>
                 <input
-                  type="text"
+                  type="number"
                   name="amount"
                   onChange={(e) => setAmount(e.target.value)}
                   value={amount.toLocaleString()}
