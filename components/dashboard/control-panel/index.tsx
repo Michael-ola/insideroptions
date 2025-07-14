@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { useDashboardContext } from "@/context/DashboardContext";
 
 const BuySellButtons = ({ className }: { className?: string }) => {
   function handleClick(action: string) {
@@ -71,7 +72,7 @@ export default function ControlPanel() {
       alt: "Settings",
     },
     {
-      label: "Waves",
+      label: "Chart",
       icon: "/images/chart-type.png",
       className: "w-16 h-7",
       alt: "Waves",
@@ -101,8 +102,13 @@ export default function ControlPanel() {
     );
   }
 
+  const { setOpenGraphStyleModal } = useDashboardContext();
+
   function handleClick(action: string) {
     console.log(`${action} clicked`);
+    if (action === "Chart") {
+      setOpenGraphStyleModal(true);
+    }
   }
 
   return (
