@@ -9,23 +9,33 @@ import { RiArrowLeftSLine, RiArrowRightSLine } from "@remixicon/react";
 import { Input } from "@/components/input";
 import { Label } from "@/components/label";
 import { SharedButton } from "@/components/shared-button";
-import React from "react";
+import React, { useState } from "react";
 import { EmailSentConfirmation } from "@/components/confirmations/email-sent";
+// import { getErrorMessage } from "@/lib/authUtils";
+import { apiClient } from "@/lib/api-client";
 
 const schema = z.object({
   email: z.string().email("Invalid email address"),
 });
 
 export default function ForgotPasswordPage() {
-  const [sentConfirmation, setSentConfirmation] = React.useState(true);
+  const [sentConfirmation, setSentConfirmation] = useState<boolean>(false);
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     mode: "onSubmit",
   });
 
-  const onSubmit = (data: z.infer<typeof schema>) => {
-    console.log("data ", data);
-    setSentConfirmation(true);
+  const onSubmit = async (data: z.infer<typeof schema>) => {
+    try {
+      console.log("data ", data);
+      const url = `/auth/password-recovery-mail/${data.email}`
+      await apiClient.post(url);
+      setSentConfirmation(true);
+    } catch (error) {
+      // const err = getErrorMessage(error);
+      // toast.error(err);
+      console.log(error);
+    }
   };
   return (
     <section className="z-0 bg-secondary relative h-screen overflow-hidden">
@@ -69,7 +79,7 @@ export default function ForgotPasswordPage() {
               </div>
             ) : null}
             {sentConfirmation ? (
-              <EmailSentConfirmation email={form.getValues("email")} />
+              <EmailSentConfirmation email={form.getValues("email")} onSubmit={form.handleSubmit(onSubmit)} />
             ) : null}
           </form>
         </section>
