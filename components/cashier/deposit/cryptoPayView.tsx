@@ -15,8 +15,8 @@ const CryptoPayView = ({ cryptoData }: { cryptoData: CryptoData | null }) => {
         <div className="flex items-start gap-3 text-xs text-gray-400 mb-4">
           <AlertCircle className="w-24 text-red-400" />
           <p>
-            Please note, we only accept {cryptoData?.label} to the below
-            address. Any tokens/coins sent other than {cryptoData?.label} will
+            Please note, we only accept {cryptoData?.coin} to the below
+            address. Any tokens/coins sent other than {cryptoData?.coin} will
             not be applied to your trading account.
           </p>
         </div>
@@ -25,12 +25,12 @@ const CryptoPayView = ({ cryptoData }: { cryptoData: CryptoData | null }) => {
       <div className="space-y-8 text-gray-400">
         <div className="w-full space-y-6 text-center text-gray-400 bg-[#79DA7E]/3 p-6 rounded-xl border border-gray-400/70">
           <p className="w-full break-words text-center">
-            {cryptoData?.address}
+            {cryptoData?.depositAddress}
           </p>
           <div
             className="w-full flex items-center justify-center gap-2 text-[#79DA7E] font-semibold"
             onClick={() => {
-              navigator.clipboard.writeText(cryptoData?.address || "");
+              navigator.clipboard.writeText(cryptoData?.depositAddress || "");
             }}
           >
             <Copy className="text-2xl" /> <span>Copy address</span>
@@ -40,7 +40,7 @@ const CryptoPayView = ({ cryptoData }: { cryptoData: CryptoData | null }) => {
           Or Scan QR Code
         </p>
         <div className="flex items-center justify-center p-4">
-          <QRCodeCanvas value={cryptoData?.redeemScript || ""} size={256} />
+          <QRCodeCanvas value={cryptoData?.depositAddress || ""} size={320} level="H" marginSize={1} />
         </div>
         <p className="text-xs sm:text-sm text-center">
           Once you initiate the transaction in your crypto wallet, we will email

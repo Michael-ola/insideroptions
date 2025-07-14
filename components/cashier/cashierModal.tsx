@@ -35,8 +35,8 @@ export type ModalView =
 
 export type CryptoData = {
   id: string;
-  label: string;
-  address: string;
+  coin: string;
+  depositAddress: string;
   redeemScript: string;
 };
 
