@@ -27,10 +27,6 @@ export const cashierOptions: CashierList[] = [
 ];
 
 const CashierList = ({ handleViewChange, setIconOrImage }: Props) => {
-  //   const [iconOrImage, setIconOrImage] = useState<
-  //     IconType | StaticImageData | string
-  //   >("");
-
   return (
     <div className="space-y-6">
       {cashierOptions.map(({ label, icon }) => (
