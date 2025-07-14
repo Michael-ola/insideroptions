@@ -175,7 +175,7 @@ const Page = () => {
                 {/* reCAPTCHA */}
                 <div className="scale-[0.75] origin-top-left sm:scale-100 mx-auto">
                   <ReCAPTCHA
-                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? ""}
+                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? "anykey"}
                     onChange={(token) => {
                       if (token) {
                         clearErrors("recaptchaToken");
