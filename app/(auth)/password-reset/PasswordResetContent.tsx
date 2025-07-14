@@ -9,16 +9,16 @@ import Image from "next/image";
 import hexDeco from "@/lib/assets/hex_deco.png";
 import { PasswordResetConfirmation } from "@/components/confirmations/password-reset";
 import React, { useState } from "react";
-import { RiArrowRightSLine } from "@remixicon/react";
+import { RiArrowRightSLine, RiLoader4Line } from "@remixicon/react";
 import { useSearchParams } from "next/navigation";
 import { apiClient } from "@/lib/api-client";
-import { passwordResetSchema } from "@/lib/authUtils";
+import { getErrorMessage, passwordResetSchema } from "@/lib/authUtils";
+import { toast } from "react-toastify";
 
 export default function PasswordResetContent() {
   const searchParams = useSearchParams();
 
   const code = searchParams.get("code");
-  const email = searchParams.get("email");
 
   const [sentConfirmation, setSentConfirmation] = useState<boolean>(false);
   const form = useForm<z.infer<typeof passwordResetSchema>>({
@@ -30,22 +30,17 @@ export default function PasswordResetContent() {
     try {
       console.log("data ", data);
       const url = `/auth/reset-password`;
-      const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  
       const form = {
-        email,
         password: data.password,
-        baseUrl,
         passwordResetCode: code,
       };
       await apiClient.put(url, form);
       setSentConfirmation(true);
     } catch (error) {
-      // const err = getErrorMessage(error);
-      // toast.error(err);
+      const err = getErrorMessage(error);
+      toast.error(err);
       console.log(error);
     }
-    // Handle password reset logic here
   };
   return (
     <section className="bg-secondary relative z-0 h-screen overflow-hidden">
@@ -89,8 +84,13 @@ export default function PasswordResetContent() {
                     type="submit"
                     className="w-full"
                   >
+                    {form.formState.isSubmitting && (
+                      <RiLoader4Line className="size-5 mr-2 animate-spin" />
+                    )}{" "}
                     Submit
-                    <RiArrowRightSLine className="h-4 w-4" />
+                    {!form.formState.isSubmitting && (
+                      <RiArrowRightSLine className="h-4 w-4" />
+                    )}
                   </SharedButton>
                 </div>
               </>

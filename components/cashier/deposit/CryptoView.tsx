@@ -9,8 +9,8 @@ import btc from "@/lib/assets/btc.png";
 import trc20 from "@/lib/assets/trc20.png";
 import eth from "@/lib/assets/eth.png";
 import { RiLoader4Line } from "@remixicon/react";
-import { ModalView } from "../cashierModal";
-// import { apiClient } from "@/lib/api-client";
+import { CryptoData, ModalView } from "../cashierModal";
+import { apiClient } from "@/lib/api-client";
 
 type CryptoList = {
   label: string;
@@ -25,6 +25,7 @@ interface Props {
   setIconOrImage: React.Dispatch<
     React.SetStateAction<StaticImageData | string>
   >;
+  setCryptoData: (value: CryptoData) => void;
 }
 
 export const cryptoOptions: CryptoList[] = [
@@ -53,15 +54,17 @@ const CryptoView = ({
   setIconOrImage,
   selectedCrypto,
   setSelectedCrypto,
+  setCryptoData,
 }: Props) => {
   const [confirmed, setConfirmed] = useState<boolean>(false);
+
   const [isConfirming, setIsConfirming] = useState(false);
 
-  const cryptoConfig: Record<string, { type: string; onToken: string }> = {
-    "USDT (ERC20)": { type: "teth4", onToken: "ofcusdt" },
-    "USDT (TRC20)": { type: "ttrx4", onToken: "ofcusdt" },
-    "BITCOIN (BTC)": { type: "tbtc4", onToken: "ofcbtc" },
-    "ETHEREUM (ETH)": { type: "teth4", onToken: "ofceth" },
+  const cryptoConfig: Record<string, { type: string; onToken: string, label:string }> = {
+    "USDT (ERC20)": { type: "teth4", onToken: "ofcusdt", label: "ERC20" },
+    "USDT (TRC20)": { type: "ttrx4", onToken: "ofcusdt", label: "TRC20" },
+    "BITCOIN (BTC)": { type: "tbtc4", onToken: "ofcbtc", label: "BTC" },
+    "ETHEREUM (ETH)": { type: "teth4", onToken: "ofceth", label: "ETH" },
   };
 
   const generatePayload = () => {
@@ -77,7 +80,7 @@ const CryptoView = ({
     return {
       type: config.type,
       onToken: config.onToken,
-      label: `${profile.firstName} Hot Wallet Address`,
+      label: config.label,
       gasPrice: "",
       eip1559: {
         maxFeePerGas: 0,
@@ -92,13 +95,10 @@ const CryptoView = ({
       setIsConfirming(true);
 
       const payload = generatePayload();
-      console.log("payload: ", payload);
-
-      // const url = `deposit/get-address`;
-      // await apiClient.post(url, payload);
-
+      const url = `deposit/get-address`;
+      const res = await apiClient.post(url, payload);
       handleViewChange(selectedCrypto as ModalView);
-
+      setCryptoData(res.data);
       setIsConfirming(false);
     } catch (error) {
       console.error("Error confirming crypto:", error);
