@@ -33,6 +33,13 @@ export type ModalView =
   | DepositOption
   | SelectedCrypto;
 
+export type CryptoData = {
+  id: string;
+  label: string;
+  address: string;
+  redeemScript: string;
+};
+
 interface Props {
   isOpen: boolean;
   onClose: () => void;
@@ -44,6 +51,7 @@ export default function CashierModal({ isOpen, onClose }: Props) {
   const [selectedCrypto, setSelectedCrypto] = useState<string | null>(null);
   const [openOtp, setOpenOtp] = useState<boolean>(false);
   const [openSuccess, setOpenSuccess] = useState<boolean>(false);
+  const [cryptoData, setCryptoData] = useState<CryptoData | null>(null);
 
   if (!isOpen) return null;
 
@@ -77,10 +85,11 @@ export default function CashierModal({ isOpen, onClose }: Props) {
             setIconOrImage={setIconOrImage}
             selectedCrypto={selectedCrypto}
             setSelectedCrypto={setSelectedCrypto}
+            setCryptoData={setCryptoData}
           />
         );
       case selectedCrypto:
-        return <CryptoPayView />;
+        return <CryptoPayView cryptoData={cryptoData} />;
       case "Bank Transfer":
         return <BankTransfer />;
       case "Withdrawals":

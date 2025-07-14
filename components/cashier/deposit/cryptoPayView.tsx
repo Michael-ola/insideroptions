@@ -1,9 +1,8 @@
 import { AlertCircle, Copy } from "lucide-react";
-import Image from "next/image";
-import React from "react";
-import { cryptoData } from "../../../data/cashier/cryptoData";
+import { CryptoData } from "../cashierModal";
+import { QRCodeCanvas } from "qrcode.react";
 
-const CryptoPayView = () => {
+const CryptoPayView = ({ cryptoData }: { cryptoData: CryptoData | null }) => {
   return (
     <div className="space-y- 16 sm:space-y-13 px-8 pt-6">
       <div className="space-y-6">
@@ -16,8 +15,8 @@ const CryptoPayView = () => {
         <div className="flex items-start gap-3 text-xs text-gray-400 mb-4">
           <AlertCircle className="w-24 text-red-400" />
           <p>
-            Please note, we only accept {cryptoData?.network} to the below
-            address. Any tokens/coins sent other than {cryptoData?.network} will
+            Please note, we only accept {cryptoData?.label} to the below
+            address. Any tokens/coins sent other than {cryptoData?.label} will
             not be applied to your trading account.
           </p>
         </div>
@@ -41,16 +40,13 @@ const CryptoPayView = () => {
           Or Scan QR Code
         </p>
         <div className="flex items-center justify-center p-4">
-          <Image
-            src={cryptoData?.qrCode}
-            alt="QR Code"
-            width={200}
-            height={200}
-            className="w-full h-auto"
-          />
+          <QRCodeCanvas value={cryptoData?.redeemScript || ""} size={256} />
         </div>
         <p className="text-xs sm:text-sm text-center">
-          {cryptoData?.instructions}
+          Once you initiate the transaction in your crypto wallet, we will email
+          you confirmation of the pending transaction. The transaction usually
+          takes up to 4 hour to be processed. You can track the progress using
+          the blockchain explorer.
         </p>
       </div>
     </div>
