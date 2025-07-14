@@ -50,9 +50,12 @@ export default function GraphStyleModal() {
       className={`fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4 ${
         openGraphStyleModal ? "flex" : "hidden"
       }`}
+      onClick={() => setOpenGraphStyleModal(false)}
     >
-      <div className="relative w-full max-w-md rounded-2xl bg-[##030910]/80 backdrop-blur-lg border max-sm:w-[90%] border-[#223f2c] p-6 text-white shadow-xl max-sm:relative max-sm:-bottom-8">
-        {/* Close Button */}
+      <div
+        className="relative w-full max-w-md rounded-2xl bg-[##030910]/80 backdrop-blur-lg border max-sm:w-[90%] border-[#223f2c] p-6 text-white shadow-xl max-sm:relative max-sm:-bottom-8"
+        onClick={(e) => e.stopPropagation()}
+      >
         <button
           onClick={() => setOpenGraphStyleModal(false)}
           className="absolute top-6 right-6 text-neutral-400 hover:text-white transition"
@@ -60,10 +63,8 @@ export default function GraphStyleModal() {
           <X className="w-5 h-5" />
         </button>
 
-        {/* Title */}
         <h2 className="text-center text-xl font-semibold mb-6">Graph Style</h2>
 
-        {/* Graph Style Options + Info + Confirm */}
         <div className="flex flex-col items-center mx-auto mt-[17%] w-[312px] max-sm:w-[90%] max-sm:mt-[25%]">
           <div className="flex justify-between gap-4 mb-6 max-sm:flex-col max-sm:w-full">
             {styles.map((style) => {
