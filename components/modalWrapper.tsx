@@ -89,7 +89,7 @@ export default function ModalWrapper({
             &times;
           </button>
         </div>
-        <div className="flex-1 overflow-y-auto px-4 py-4">{children}</div>
+        {children}
       </div>
     </div>
   );
