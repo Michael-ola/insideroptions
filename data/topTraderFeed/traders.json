@@ -1,0 +1,62 @@
+[
+  {
+    "name": "Temple",
+    "amount": 100,
+    "type": "BUY",
+    "avatar": "/images/traderAvatar.png"
+  },
+  {
+    "name": "Sarah A",
+    "amount": 100,
+    "type": "SELL",
+    "avatar": "/images/traderAvatar.png"
+  },
+  {
+    "name": "Benjamin O",
+    "amount": 190,
+    "type": "SELL",
+    "avatar": "/images/traderAvatar.png"
+  },
+  {
+    "name": "Alvin C",
+    "amount": 100,
+    "type": "BUY",
+    "avatar": "/images/traderAvatar.png"
+  },
+  {
+    "name": "Zara M",
+    "amount": 120,
+    "type": "SELL",
+    "avatar": "/images/traderAvatar.png"
+  },
+  {
+    "name": "Liam T",
+    "amount": 150,
+    "type": "BUY",
+    "avatar": "/images/traderAvatar.png"
+  },
+  {
+    "name": "Jane D",
+    "amount": 80,
+    "type": "SELL",
+    "avatar": "/images/traderAvatar.png"
+  },
+  {
+    "name": "Victor R",
+    "amount": 200,
+    "type": "BUY",
+    "avatar": "/images/traderAvatar.png"
+  },
+  {
+    "name": "Sophia L",
+    "amount": 90,
+    "type": "SELL",
+    "avatar": "/images/traderAvatar.png"
+  },
+  {
+    "name": "David K",
+    "amount": 70,
+    "type": "BUY",
+    "avatar": "/images/traderAvatar.png"
+  }
+]

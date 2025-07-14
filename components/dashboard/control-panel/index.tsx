@@ -102,12 +102,14 @@ export default function ControlPanel() {
     );
   }
 
-  const { setOpenGraphStyleModal } = useDashboardContext();
+  const { setOpenGraphStyleModal, setShowTraderFeed } = useDashboardContext();
 
   function handleClick(action: string) {
     console.log(`${action} clicked`);
     if (action === "Chart") {
       setOpenGraphStyleModal(true);
+    } else if (action === "User") {
+      setShowTraderFeed(true);
     }
   }
 

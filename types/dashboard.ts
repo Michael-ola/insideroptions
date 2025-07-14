@@ -3,4 +3,6 @@ export interface DashboardPropsType {
   setOpenGraphStyleModal: (val: boolean) => void;
   chartStyle: string;
   setChartStyle: (val: string) => void;
+  showTraderFeed: boolean;
+  setShowTraderFeed: (val: boolean) => void;
 }
