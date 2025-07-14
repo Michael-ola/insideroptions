@@ -5,14 +5,19 @@ import hexDeco from "@/lib/assets/hex_deco.png";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RiArrowLeftSLine, RiArrowRightSLine } from "@remixicon/react";
+import {
+  RiArrowLeftSLine,
+  RiArrowRightSLine,
+  RiLoader4Line,
+} from "@remixicon/react";
 import { Input } from "@/components/input";
 import { Label } from "@/components/label";
 import { SharedButton } from "@/components/shared-button";
 import React, { useState } from "react";
 import { EmailSentConfirmation } from "@/components/confirmations/email-sent";
-// import { getErrorMessage } from "@/lib/authUtils";
+import { getErrorMessage } from "@/lib/authUtils";
 import { apiClient } from "@/lib/api-client";
+import { toast } from "react-toastify";
 
 const schema = z.object({
   email: z.string().email("Invalid email address"),
@@ -28,12 +33,12 @@ export default function ForgotPasswordPage() {
   const onSubmit = async (data: z.infer<typeof schema>) => {
     try {
       console.log("data ", data);
-      const url = `/auth/password-recovery-mail/${data.email}`
+      const url = `/auth/password-recovery-mail/${data.email}`;
       await apiClient.post(url);
       setSentConfirmation(true);
     } catch (error) {
-      // const err = getErrorMessage(error);
-      // toast.error(err);
+      const err = getErrorMessage(error);
+      toast.error(err);
       console.log(error);
     }
   };
@@ -73,13 +78,21 @@ export default function ForgotPasswordPage() {
                   }
                   className="mt-4"
                 >
+                  {form.formState.isSubmitting && (
+                    <RiLoader4Line className="size-5 mr-2 animate-spin" />
+                  )}{" "}
                   Reset Password
-                  <RiArrowRightSLine className="h-4 w-4" />
+                  {!form.formState.isSubmitting && (
+                    <RiArrowRightSLine className="h-4 w-4" />
+                  )}
                 </SharedButton>
               </div>
             ) : null}
             {sentConfirmation ? (
-              <EmailSentConfirmation email={form.getValues("email")} onSubmit={form.handleSubmit(onSubmit)} />
+              <EmailSentConfirmation
+                email={form.getValues("email")}
+                onSubmit={form.handleSubmit(onSubmit)}
+              />
             ) : null}
           </form>
         </section>
