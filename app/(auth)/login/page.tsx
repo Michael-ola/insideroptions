@@ -27,7 +27,6 @@ export default function LoginPage() {
       await loginTrader(data);
       data.email = "";
       data.password = "";
-      toast.success("Login Successful!");
       router.push("/dashboard");
     } catch (error) {
       console.error("Login failed:", error);
