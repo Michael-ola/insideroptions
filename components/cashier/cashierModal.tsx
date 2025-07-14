@@ -3,7 +3,7 @@
 import { useState } from "react";
 import ModalWrapper from "../modalWrapper";
 import { StaticImageData } from "next/image";
-import CashierList from "./deposit/CashierList";
+import CashierList from "./CashierList";
 import DepositList from "./deposit/DepositList";
 import CryptoView from "./deposit/CryptoView";
 import BankTransfer from "./deposit/BankTransfer";
@@ -11,6 +11,7 @@ import CryptoPayView from "./deposit/cryptoPayView";
 import WithdrawalView from "./withdrawal/WithdrawalView";
 import OtpModal from "./withdrawal/OtpModal";
 import SuccessModal from "./withdrawal/SuccessModal";
+import TxList from "./Transactions/TxList";
 
 export type SelectedCrypto =
   | "USDT (ERC20)"
@@ -29,7 +30,7 @@ export type ModalView =
   | "Deposit"
   | "Withdrawals"
   | "Swap (Profit bal - Real bal)"
-  | "History"
+  | "Transaction History"
   | DepositOption
   | SelectedCrypto;
 
@@ -100,6 +101,8 @@ export default function CashierModal({ isOpen, onClose }: Props) {
             setOpenOtp={setOpenOtp}
           />
         );
+      case "Transaction History":
+        return <TxList  handleViewChange={handleViewChange} />;
       default:
         return null;
     }
