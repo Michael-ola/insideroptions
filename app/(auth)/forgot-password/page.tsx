@@ -92,6 +92,7 @@ export default function ForgotPasswordPage() {
               <EmailSentConfirmation
                 email={form.getValues("email")}
                 onSubmit={form.handleSubmit(onSubmit)}
+                isSubmitting={form.formState.isSubmitting}
               />
             ) : null}
           </form>

@@ -1,15 +1,17 @@
 import Link from "next/link";
 import { buttonVariants, SharedButton } from "../shared-button";
-import { RiArrowLeftSLine } from "@remixicon/react";
+import { RiArrowLeftSLine, RiLoader4Line } from "@remixicon/react";
 import Image from "next/image";
 import mailSentIcon from "@/lib/assets/mail-sent-icon.png";
 
 export function EmailSentConfirmation({
   email,
   onSubmit,
+  isSubmitting,
 }: {
   email: string;
   onSubmit: () => void;
+  isSubmitting: boolean;
 }) {
   return (
     <div className="h-[424px] grid place-content-center space-y-8 mt-9">
@@ -31,7 +33,11 @@ export function EmailSentConfirmation({
           className="w-full"
           variant={"ghost"}
         >
-          Send Again
+          {isSubmitting ? (
+            <RiLoader4Line className="size-8 text-primary mr-2 animate-spin" />
+          ) : (
+            "Send Again"
+          )}
         </SharedButton>
       </div>
     </div>
