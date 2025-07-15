@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { ModalView } from "../cashierModal";
-// import { format } from "date-fns";
+import { ModalView, Transaction } from "../cashierModal";
+import { ChevronRight } from "lucide-react";
+// import profile from "@/data/trader/profile.json";
+// import { apiClient } from "@/lib/api-client";
 
 const statusOptions = ["Confirmed", "Pending", "Canceled"];
 const categoryOptions = ["All Types", "Deposit", "Withdrawal", "Swap"];
@@ -18,39 +20,53 @@ const periodPresets = [
 interface Props {
   handleViewChange: (view: ModalView) => void;
   onApply: (filters: any) => void;
+  transactions: Transaction[];
 }
-const TxFilters = ({ onApply, handleViewChange }: Props) => {
+const TxFilters = ({ onApply, handleViewChange, transactions }: Props) => {
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState("All Types");
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedPreset, setSelectedPreset] = useState<string | null>(null);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (selectedStatus || selectedCategory || (startDate && endDate)) {
+        handleApply();
+      }
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, [selectedStatus, selectedCategory, startDate, endDate]);
+
   const handleApply = () => {
-    onApply({
+    const filters = {
       status: selectedStatus,
       category: selectedCategory,
       periodPreset: selectedPreset,
       from: startDate,
       to: endDate,
-    });
+    };
+
+    onApply(filters);
   };
 
   return (
     <div className="space-y-6 px-4 py-6">
-      {/* Period Presets */}
       <div>
-        <p className="text-white/70 text-sm mb-2">Period</p>
-        <div className="flex flex-wrap gap-2">
+        <p className="text-white text-sm mb-2">Period</p>
+        <div className="flex flex-wrap gap-3">
           {periodPresets.map((preset) => (
             <button
               key={preset}
               onClick={() => setSelectedPreset(preset)}
               className={`
-                "px-3 py-1 rounded-md border text-sm",
-                selectedPreset === preset
-                  ? "bg-white text-black"
-                  : "border-white/20 text-white/60"
+                px-3 py-2 rounded-md border text-sm
+                ${
+                  selectedPreset === preset
+                    ? "bg-primary text-black"
+                    : "border-white/20 text-white/60"
+                }
               `}
             >
               {preset}
@@ -59,40 +75,49 @@ const TxFilters = ({ onApply, handleViewChange }: Props) => {
         </div>
       </div>
 
-      {/* Custom Date Range */}
       <div>
-        <p className="text-white/70 text-sm mb-2">Select period</p>
-        <div className="flex gap-2">
+        <p className="text-white text-sm mb-2">Select period</p>
+        <div className="flex gap-[10px]">
           <DatePicker
             selected={startDate}
             onChange={(date) => setStartDate(date)}
             placeholderText="Start date"
-            className="bg-white/10 text-white px-3 py-1 rounded-md text-sm w-full"
+            className={`px-3 py-2 rounded-[8px] border text-sm w-full ${
+              startDate
+                ? "bg-primary text-black"
+                : "border-white/20 text-white/60"
+            }`}
             dateFormat="dd MMM yyyy"
           />
+          <p>-</p>
           <DatePicker
             selected={endDate}
             onChange={(date) => setEndDate(date)}
             placeholderText="End date"
-            className="bg-white/10 text-white px-3 py-1 rounded-md text-sm w-full"
+            className={` px-3 py-2 rounded-[8px] border text-sm w-full ${
+              endDate
+                ? "bg-primary text-black"
+                : "border-white/20 text-white/60"
+            }`}
             dateFormat="dd MMM yyyy"
           />
         </div>
       </div>
 
-      {/* Status */}
       <div>
-        <p className="text-white/70 text-sm mb-2">Status</p>
-        <div className="flex flex-wrap gap-2">
+        <p className="text-white text-sm mb-2">Status</p>
+        <div className="flex flex-wrap gap-3">
           {statusOptions.map((status) => (
             <button
               key={status}
               onClick={() => setSelectedStatus(status)}
               className={`
-                "px-3 py-1 rounded-md border text-sm",
-                selectedStatus === status
-                  ? "bg-white text-black"
-                  : "border-white/20 text-white/60"
+                px-3 py-2 rounded-[8px] border text-sm
+                ${
+                  selectedStatus === status
+                    ? "bg-primary text-black"
+                    : "border-white/20 text-white/60"
+                }
               `}
             >
               {status}
@@ -101,19 +126,20 @@ const TxFilters = ({ onApply, handleViewChange }: Props) => {
         </div>
       </div>
 
-      {/* Category */}
       <div>
-        <p className="text-white/70 text-sm mb-2">Category</p>
+        <p className="text-white text-sm mb-2">Category</p>
         <div className="flex flex-wrap gap-2">
           {categoryOptions.map((cat) => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
               className={`
-                "px-3 py-1 rounded-md border text-sm",
-                selectedCategory === cat
-                  ? "bg-white text-black"
-                  : "border-white/20 text-white/60"
+                px-3 py-2 rounded-[8px] border text-sm
+                ${
+                  selectedCategory === cat
+                    ? "bg-primary text-black"
+                    : "border-white/20 text-white/60"
+                }
               `}
             >
               {cat}
@@ -122,12 +148,17 @@ const TxFilters = ({ onApply, handleViewChange }: Props) => {
         </div>
       </div>
 
-      {/* Apply Button */}
       <button
-        onClick={handleApply}
-        className="w-full py-2 bg-primary text-white rounded-md mt-4 disabled:opacity-50"
+        onClick={() => handleViewChange("Transaction History")}
+        disabled={!selectedStatus && !selectedPreset && !startDate && !endDate}
+        className={`w-full py-2 rounded-xl mt-4 flex items-center justify-center gap-2 ${
+          !selectedStatus && !selectedPreset && !startDate && !endDate
+            ? "bg-secondary cursor-not-allowed"
+            : "bg-primary cursor-pointer text-black"
+        }`}
       >
-        Results
+        {transactions ? `Show Results (${transactions.length})` : "Results"}{" "}
+        <ChevronRight className="w-4 h4 text-black" />
       </button>
     </div>
   );

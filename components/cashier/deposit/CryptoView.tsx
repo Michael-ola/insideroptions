@@ -11,6 +11,8 @@ import eth from "@/lib/assets/eth.png";
 import { RiLoader4Line } from "@remixicon/react";
 import { CryptoData, ModalView } from "../cashierModal";
 import { apiClient } from "@/lib/api-client";
+import { getErrorMessage } from "@/lib/authUtils";
+import { toast } from "react-toastify";
 
 type CryptoList = {
   label: string;
@@ -93,14 +95,15 @@ const CryptoView = ({
   const handleConfirmedCrypto = async () => {
     try {
       setIsConfirming(true);
-
       const payload = generatePayload();
       const url = `deposit/get-address`;
       const res = await apiClient.post(url, payload);
-      handleViewChange(selectedCrypto as ModalView);
       setCryptoData(res.data);
       setIsConfirming(false);
+      handleViewChange(selectedCrypto as ModalView);
     } catch (error) {
+      const err = getErrorMessage(error);
+      toast.error(err);
       console.error("Error confirming crypto:", error);
       setIsConfirming(false);
     }

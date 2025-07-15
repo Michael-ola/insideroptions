@@ -24,6 +24,9 @@ apiClient.interceptors.response.use(
     const originalRequest = error.config as InternalAxiosRequestConfig & {
       _retry?: boolean;
     };
+
+    console.warn("Interceptor caught error", error);
+
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
@@ -43,7 +46,7 @@ apiClient.interceptors.response.use(
       }
     }
 
-    Promise.reject(error);
+    return Promise.reject(error);
   }
 );
 
