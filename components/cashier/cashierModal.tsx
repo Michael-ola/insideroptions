@@ -12,6 +12,7 @@ import WithdrawalView from "./withdrawal/WithdrawalView";
 import OtpModal from "./withdrawal/OtpModal";
 import SuccessModal from "./withdrawal/SuccessModal";
 import TxList from "./Transactions/TxList";
+import TxFilters from "./Transactions/TxFilters";
 
 export type SelectedCrypto =
   | "USDT (ERC20)"
@@ -31,6 +32,7 @@ export type ModalView =
   | "Withdrawals"
   | "Swap (Profit bal - Real bal)"
   | "Transaction History"
+  | "Filters"
   | DepositOption
   | SelectedCrypto;
 
@@ -61,6 +63,9 @@ export default function CashierModal({ isOpen, onClose }: Props) {
   const onCloseHandler = () => {
     setSelectedCrypto(null);
     // setConfirmed(false);
+  };
+  const onApply = () => {
+    console.log("filters");
   };
 
   const renderView = () => {
@@ -102,7 +107,10 @@ export default function CashierModal({ isOpen, onClose }: Props) {
           />
         );
       case "Transaction History":
-        return <TxList  handleViewChange={handleViewChange} />;
+        return <TxList handleViewChange={handleViewChange} />;
+
+      case "Filters":
+        return <TxFilters onApply={onApply} handleViewChange={handleViewChange} />;
       default:
         return null;
     }

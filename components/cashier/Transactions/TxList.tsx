@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 // import transaction from "@/data/cashier/tx-history.json";
+import profile from "@/data/trader/profile.json";
 import bank from "@/lib/assets/bank_transfer.png";
 import btc from "@/lib/assets/btc.png";
 import withdraw from "@/lib/assets/scroll.png";
@@ -9,6 +10,7 @@ import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 import { ModalView } from "../cashierModal";
 import { apiClient } from "@/lib/api-client";
+import filter from "@/lib/assets/Filter.png";
 type Transaction = {
   id: string;
   type: string;
@@ -26,8 +28,8 @@ const TxList = ({
 }) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [nextCursorId, setNextCursorId] = useState<string | null>(null);
-  const [hasMore, setHasMore] = useState(true);
-  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const iconList = [
@@ -39,7 +41,6 @@ const TxList = ({
   ];
 
   useEffect(() => {
-    // Initial load
     fetchTransactions(null);
   }, []);
 
@@ -49,7 +50,7 @@ const TxList = ({
     setLoading(true);
     try {
       const res = await apiClient.get(
-        `/transactions/1/search
+        `/transactions/${profile.id}/search
         ${cursor ? `?cursor=${cursor}` : ""}`
       );
       const data = await res.data;
@@ -76,12 +77,21 @@ const TxList = ({
     }
   };
   
+
   return (
     <div
       className="space-y-4 w-full h-full flex-1 overflow-y-auto px-4 py-4"
       ref={containerRef}
       onScroll={handleScroll}
     >
+      <div className="flex justify-end">
+        <div
+          onClick={() => handleViewChange("Filters")}
+          className="border border-primary/30 rounded-[8px] p-4"
+        >
+          <Image src={filter} alt="Filter" />
+        </div>
+      </div>
       <div className="w-full h-full pb-6">
         {transactions.length ? (
           transactions.map((tx, i) => (
