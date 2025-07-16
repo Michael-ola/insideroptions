@@ -7,7 +7,7 @@ import crypto from "@/lib/assets/crypto.png";
 import profile from "@/data/trader/profile.json";
 import Image, { StaticImageData } from "next/image";
 import { IoSwapHorizontal } from "react-icons/io5";
-import { cashierOptions } from "../deposit/CashierList";
+import { cashierOptions } from "../CashierList";
 import { ModalView } from "../cashierModal";
 import { cryptoOptions } from "../deposit/CryptoView";
 // import { RiLoader4Line } from "@remixicon/react";
