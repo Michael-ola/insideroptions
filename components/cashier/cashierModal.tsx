@@ -16,6 +16,7 @@ import TxList from "./Transactions/TxList";
 import TxFilters from "./Transactions/TxFilters";
 import { apiClient } from "@/lib/api-client";
 import SwapView from "./swap/SwapView";
+import { useDashboardContext } from "@/context/DashboardContext";
 
 export type SelectedCrypto =
   | "USDT (ERC20)"
@@ -56,12 +57,8 @@ export type CryptoData = {
   redeemScript: string;
 };
 
-interface Props {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-export default function CashierModal({ isOpen, onClose }: Props) {
+export default function CashierModal() {
+  const { openCashierModal, setOpenCashierModal } = useDashboardContext();
   const [view, setView] = useState<ModalView>("My Cashier");
   const [iconOrImage, setIconOrImage] = useState<StaticImageData | string>("");
   const [selectedCrypto, setSelectedCrypto] = useState<string | null>(null);
@@ -125,7 +122,7 @@ export default function CashierModal({ isOpen, onClose }: Props) {
     fetchTransactions(filters);
   };
 
-  if (!isOpen) return null;
+  if (!openCashierModal) return null;
 
   const handleViewChange = (nextView: ModalView) => setView(nextView);
 
@@ -205,7 +202,7 @@ export default function CashierModal({ isOpen, onClose }: Props) {
       <ModalWrapper
         title={view}
         icon={iconOrImage}
-        onClose={onClose}
+        onClose={() => setOpenCashierModal(false)}
         onCloseHandler={onCloseHandler}
         handleViewChange={handleViewChange}
         setIconOrImage={setIconOrImage}
