@@ -26,7 +26,7 @@ const SwapView = () => {
 
   const handleSwap = () => {
     if (percent === 0) return;
-    // Call API to swap here
+
     setPercent(0);
     setIsSwapping(true);
     console.log("Swapping", getFromAmount(), "from", source);
