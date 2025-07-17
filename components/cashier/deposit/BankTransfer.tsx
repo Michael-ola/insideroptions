@@ -10,7 +10,10 @@ import { RiLoader4Line } from "@remixicon/react";
 const tranferDetails = [
   { label: "Payment method", value: "Bank Transfer" },
   { label: "Bank", value: "Access Bank" },
-  { label: "Receipeint full name", value: `${profile.firstName} ${profile.lastName}` },
+  {
+    label: "Receipeint full name",
+    value: `${profile.firstName} ${profile.lastName}`,
+  },
   { label: "Currency", value: "USD/NGN" },
   { label: "Receiving amount", value: "NGN378,250.00" },
 ];
@@ -21,7 +24,6 @@ const BankTransfer = () => {
   const [confirmPayment, setConfirmPayment] = useState<boolean>(false);
   const [isConfirming, setIsConfirming] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-
 
   const handleConfirmPayment = () => {
     try {
@@ -39,6 +41,12 @@ const BankTransfer = () => {
     } catch (error) {
       console.error(error);
       setIsConfirming(false);
+    }
+  };
+  const handleAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    if (val === "" || /^\d*\.?\d{0,2}$/.test(val)) {
+      setAmount(val);
     }
   };
   const handleProcessPayment = () => {
@@ -97,10 +105,10 @@ const BankTransfer = () => {
               <div className="flex flex-col gap-2">
                 <label>Enter Amount</label>
                 <input
-                  type="number"
+                  type="text"
                   name="amount"
-                  onChange={(e) => setAmount(e.target.value)}
-                  value={amount.toLocaleString()}
+                  onChange={(e) => handleAmount(e)}
+                  value={amount}
                   placeholder="0.00"
                   className="w-full text-white bg-transparent border border-gray-700 px-4 py-3 outline-none rounded-xl text-sm focus:border-0 focus:ring-1 focus-within:ring-green-500"
                 />

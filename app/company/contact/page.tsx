@@ -26,7 +26,7 @@ const Page = () => {
   } = useForm<ContactUsFormData>();
 
   const onSubmit = async (data: ContactUsFormData) => {
-    const url = ('/devops/contact-us')
+    const url = "/devops/contact-us";
     try {
       setIsSubmitting(true);
       if (!data.recaptchaToken) {
@@ -52,8 +52,8 @@ const Page = () => {
 
   return (
     <main className="min-h-screen bg-[#070c17] pt-[5%]">
-      <section className="px-3 sm:px-16 py-20 bg-[#070c17] text-white">
-        <div className="max-w-7xl mx-auto bg-[#070c17] px-16 flex flex-col md:flex-row gap-10">
+      <section className="px-3 sm:px-16 py-20 bg-[#00141f] sm:bg-[#070c17] text-white">
+        <div className="w-full sm:max-w-7xl mx-auto bg-[#00141f] sm:bg-[#070c17] px-0 sm:px-16 flex flex-col md:flex-row gap-10">
           <div className="md:w-1/3 md:space-y-12">
             <h2 className="sm:text-5xl text-2xl font-medium text-center sm:text-left sm:font-semibold">
               Contact Us
@@ -71,7 +71,7 @@ const Page = () => {
 
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="md:w-2/3 bg-[#0d121c] p-6 text-sm border border-gray-50/15 rounded-xl"
+            className="md:w-2/3 bg-[#061b24] sm:bg-[#0d121c] p-6 text-sm border border-gray-50/15 rounded-xl"
           >
             <div className="flex flex-col sm:flex-row gap-12">
               <div className="w-full space-y-8">
@@ -175,7 +175,9 @@ const Page = () => {
                 {/* reCAPTCHA */}
                 <div className="scale-[0.75] origin-top-left sm:scale-100 mx-auto">
                   <ReCAPTCHA
-                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? "anykey"}
+                    sitekey={
+                      process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? "anykey"
+                    }
                     onChange={(token) => {
                       if (token) {
                         clearErrors("recaptchaToken");
@@ -219,10 +221,10 @@ const Page = () => {
         </div>
       </section>
 
-      <section className="px-6 sm:px-16 py-18 bg-[#00050f]">
-        <div className="mx-auto p-16 max-w-7xl">
-          <div className="bg-gradient-to-r from-[#070d17] to-[#0d121c] bg-no-repeat flex flex-col sm:flex-row gap-6 sm:gap-0 justify-between items-center p-6 sm:p-13 border-1 border-gray-50/15 rounded-xl">
-            <h3 className="w-full whitespace-nowrap text-white text-lg md:text-xl font-medium">
+      <section className="px-6 sm:px-16 py-18 bg-[#00141f] sm:bg-[#00050f]">
+        <div className="mx-auto p-3 sm:p-16 max-w-7xl">
+          <div className="w-full bg-[#061b24] sm:bg-gradient-to-r from-[#070d17] to-[#0d121c] bg-no-repeat flex flex-col sm:flex-row gap-6 sm:gap-0 justify-center sm:justify-between items-center p-6 sm:p-13 border-1 border-gray-50/15 rounded-xl">
+            <h3 className="w-full whitespace-nowrap text-center sm:text-start text-white text-lg md:text-xl font-medium">
               Frequently Asked Questions
             </h3>
             <Link

@@ -1,10 +1,10 @@
 import Image, { StaticImageData } from "next/image";
 import React from "react";
-import { ModalView } from "../cashierModal";
 import wallet from "@/lib/assets/wallet_icon.png";
 import withdraw from "@/lib/assets/scroll.png";
 import history from "@/lib/assets/tx_history.png";
 import swap from "@/lib/assets/swap.png";
+import { ModalView } from "./cashierModal";
 
 
 export interface CashierList {
