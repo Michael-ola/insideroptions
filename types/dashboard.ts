@@ -5,4 +5,6 @@ export interface DashboardPropsType {
   setChartStyle: (val: string) => void;
   showTraderFeed: boolean;
   setShowTraderFeed: (val: boolean) => void;
+  selectedSideNavTab: string;
+  setSelectedSideNavTab: (val: string) => void;
 }
