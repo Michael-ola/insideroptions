@@ -15,6 +15,7 @@ import SuccessModal from "./withdrawal/SuccessModal";
 import TxList from "./Transactions/TxList";
 import TxFilters from "./Transactions/TxFilters";
 import { apiClient } from "@/lib/api-client";
+import SwapView from "./swap/SwapView";
 
 export type SelectedCrypto =
   | "USDT (ERC20)"
@@ -170,6 +171,11 @@ export default function CashierModal({ isOpen, onClose }: Props) {
             setIconOrImage={setIconOrImage}
             setOpenOtp={setOpenOtp}
           />
+        );
+      case "Swap (Profit bal - Real bal)":
+        return (
+          // setView("Swap");
+          <SwapView />
         );
       case "Transaction History":
         return (

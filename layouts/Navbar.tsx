@@ -4,6 +4,9 @@ import React, { useState } from "react";
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import hexagon from "@/lib/assets/hex_frame.png";
+import years from "@/lib/assets/4years.png";
+import line from "@/lib/assets/Line 610.png";
 import Button from "@/components/Button2";
 import OverlayNav from "@/components/OverlayNav";
 import { AnimatePresence } from "framer-motion";
@@ -12,7 +15,13 @@ import { usePathname } from "next/navigation";
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
-  if (pathname.startsWith("/dashboard")) return null;
+
+  const isLogOrReg =
+    pathname.startsWith("/login") || pathname.startsWith("/signup");
+
+  if (pathname.startsWith("/dashboard")) {
+    return null;
+  }
 
   return (
     <>
@@ -52,30 +61,65 @@ export default function Navbar() {
             </div>
           </div>
         </div>
-        <Link href="/">
-          <div
-            className={`flex items-center max-sm:hidden cursor-pointer ${
-              isMobileMenuOpen ? "hidden" : ""
-            }`}
-          >
-            <Image
-              width={186}
-              height={32}
-              src="/images/logo-extended.png"
-              alt="Insider Options"
-              className="w-[186px] h-[32px]"
-            />
-          </div>
-        </Link>
-        <div className="flex items-center gap-6">
-          <Link href="/login">
-            <button className="cursor-pointer max-sm:hidden">Login</button>
-          </Link>
 
-          <Button link="/signup" caret>
-            Register
-          </Button>
-        </div>
+        {!isLogOrReg && !isMobileMenuOpen && (
+          <div>
+            <Link href="/">
+              <div
+                className={`flex items-center max-sm:hidden cursor-pointer `}
+              >
+                <Image
+                  width={186}
+                  height={32}
+                  src="/images/logo-extended.png"
+                  alt="Insider Options"
+                  className="w-[186px] h-[32px]"
+                />
+              </div>
+            </Link>
+          </div>
+        )}
+        <>
+          {isLogOrReg ? (
+            <div>
+              <div className="flex items-center gap-3">
+                <div
+                  className={`flex items-center max-sm:hidden cursor-pointer `}
+                >
+                  <Image
+                    width={186}
+                    height={32}
+                    src="/images/logo-extended.png"
+                    alt="Insider Options"
+                    className="w-[186px] h-[32px]"
+                  />
+                </div>
+
+                <div className={`flex items-center sm:hidden cursor-pointer `}>
+                  <Image
+                    src={hexagon}
+                    alt="Insider Options"
+                    className="w-5 h-auto"
+                  />
+                </div>
+
+                <Image src={line} alt="Line Or Divider" />
+
+                <Image src={years} alt="4 years Logo" />
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center gap-6">
+              <Link href="/login">
+                <button className="cursor-pointer max-sm:hidden">Login</button>
+              </Link>
+
+              <Button link="/signup" caret>
+                Register
+              </Button>
+            </div>
+          )}
+        </>
         <div className="nav-bottom-line absolute left-0 right-0 bottom-0 w-full"></div>
       </nav>
     </>

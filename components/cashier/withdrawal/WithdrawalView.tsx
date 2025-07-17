@@ -81,7 +81,7 @@ const WithdrawalView = ({
       <div className="flex items-center gap-3">
         <div className="w-full flex flex-col items-center justify-center bg-[#070c14] sm:bg-white/3 px-6 py-4 rounded-xl border border-[#79DA7E]/25">
           <p className="text-base font-semibold">$5000.00</p>
-          <p className="text-xs text-white/80">Demo Balance</p>
+          <p className="text-xs text-white/80">Real Balance</p>
         </div>
         <button
           type="button"
@@ -118,7 +118,7 @@ const WithdrawalView = ({
         </button>
 
         {showDropdown && (
-          <div className="absolute w-full bg-black sm:bg-black/40 border-x border-b border-x-white/10 border-b-white/10 rounded-bl-xl rounded-br-xl z-10 overflow-hidden">
+          <div className="absolute w-full bg-black border-x border-b border-x-white/10 border-b-white/10 rounded-bl-xl rounded-br-xl z-10 overflow-hidden">
             {["Bank Transfer", "Crypto"].map((item) => (
               <button
                 key={item}

@@ -5,8 +5,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ModalView, Transaction } from "../cashierModal";
 import { ChevronRight } from "lucide-react";
-// import profile from "@/data/trader/profile.json";
-// import { apiClient } from "@/lib/api-client";
 
 const statusOptions = ["Confirmed", "Pending", "Canceled"];
 const categoryOptions = ["All Types", "Deposit", "Withdrawal", "Swap"];
@@ -115,7 +113,7 @@ const TxFilters = ({ onApply, handleViewChange, transactions }: Props) => {
                 px-3 py-2 rounded-[8px] border text-sm
                 ${
                   selectedStatus === status
-                    ? "bg-primary text-black"
+                    ? "bg-[#306139] text-black"
                     : "border-white/20 text-white/60"
                 }
               `}
