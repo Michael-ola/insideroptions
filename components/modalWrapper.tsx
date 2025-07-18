@@ -31,10 +31,10 @@ export default function ModalWrapper({
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, x: -30 }}
-      animate={{ opacity: 1, x: 0 }}
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, height: 0, margin: 0 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.4 }}
       className="fixed top-0 left-0 h-screen z-40 w-full sm:left-[100px] sm:w-[30%] sm:pt-[5%] sm:pb-[5%] pb-0 pt-0 bg-transparent backdrop-blur-xs bg-opacity-60 flex items-center justify-center"
     >
       <div className="w-full h-full bg-[#00040d] sm:bg-transparent rounded-lg shadow-lg p-6 relative text-white border-r border-green-300/30 flex flex-col gap-6">

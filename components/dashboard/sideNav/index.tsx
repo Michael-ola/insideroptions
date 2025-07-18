@@ -3,7 +3,6 @@
 import clsx from "clsx";
 import { useDashboardContext } from "@/context/DashboardContext";
 
-
 import TradeIcon from "../icons/tradeIcon.svg";
 import OrdersIcon from "../icons/OrdersIcon.svg";
 import CashierIcon from "../icons/cashierIcon.svg";
@@ -12,8 +11,6 @@ import HelpIcon from "../icons/helpIcon.svg";
 import AssetManagerIcon from "../icons/assetManagerIcon.svg";
 import AutoTradeIcon from "../icons/autoTradeIcon.svg";
 import LogoutIcon from "../icons/logoutIcon.svg";
-
-
 
 const navItems = [
   { label: "Trade", icon: TradeIcon },
@@ -25,15 +22,8 @@ const navItems = [
   { label: "Auto trade", icon: AutoTradeIcon },
 ];
 
-
-
 export default function DashboardSidebar() {
   const { selectedSideNavTab, setSelectedSideNavTab } = useDashboardContext();
-  const { setOpenCashierModal } = useDashboardContext();
-
-  const handleNav = () => {
-  setOpenCashierModal(true);
-}
   return (
     <aside className="fixed top-0 left-0 h-screen z-40 w-[100px] max-sm:w-full max-sm:h-auto max-sm:static bg-[#01060e] flex flex-col justify-between py-4 pt-[3%] pb-[3%] max-sm:pb-0 max-sm:pt-0">
       <div className="flex flex-col  max-sm:flex-row  items-center space-y-1/3 w-full max-sm:space-y-0">
@@ -41,7 +31,7 @@ export default function DashboardSidebar() {
           const isActive = selectedSideNavTab === item.label;
           const Icon = item.icon;
 
-          const hiddenOnMobile = !["Trade", "Orders", "Cashier", "Auto trade"].includes(
+          const hiddenOnMobile = !["Trade", "Orders", "Auto trade"].includes(
             item.label
           )
             ? "max-sm:hidden"
@@ -50,9 +40,7 @@ export default function DashboardSidebar() {
           return (
             <button
               key={item.label}
-              onClick={() => {
-                handleNav()
-                setSelectedSideNavTab(item.label)}}
+              onClick={() => setSelectedSideNavTab(item.label)}
               className={clsx(
                 "relative flex flex-col items-center w-full max-sm:w-1/3 py-3 max-sm:pt-1 max-sm:pb-2 text-xs transition-all duration-150",
                 isActive
