@@ -35,7 +35,7 @@ export default function ModalWrapper({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, height: 0, margin: 0 }}
       transition={{ duration: 0.4 }}
-      className="fixed top-0 left-0 h-screen z-40 w-full sm:left-[100px] sm:w-[30%] sm:pt-[10%] pb-0 pt-0 bg-transparent backdrop-blur-xs bg-opacity-60 flex items-center justify-center"
+      className="fixed top-0 left-0 z-50 w-full h-[calc(100vh-57px)] sm:left-[100px] sm:w-[25%] bg-transparent backdrop-blur-xs bg-opacity-60 flex items-center justify-center"
     >
       <div className="w-full h-full bg-[#00040d] sm:bg-black/10 rounded-lg shadow-lg p-6 relative text-white border-r border-green-300/30 flex flex-col gap-6">
         <div className="bg-gradient-to-r from-[#00040d] to-[#13171f] sm:bg-none px-8 py-4 sm:p-0 border-y border-y-[#79DA7E]/30 sm:border-0 flex justify-between items-center gap-3">

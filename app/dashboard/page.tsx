@@ -1,6 +1,5 @@
 "use client";
 
-import CashierModal from "@/components/cashier/cashierModal";
 import AssetComponent from "@/components/dashboard/assets/AssetComponent";
 import ControlPanel from "@/components/dashboard/control-panel";
 import { useState } from "react";
@@ -14,7 +13,7 @@ export default function DashboardPage() {
   const [openGraphStyleModal, setOpenGraphStyleModal] = useState(false);
   const [chartStyle, setChartStyle] = useState("lines");
   const [showTraderFeed, setShowTraderFeed] = useState(false);
-  const [openCashierModal, setOpenCashierModal] = useState<boolean>(true);
+  const [openCashierModal, setOpenCashierModal] = useState<boolean>(false);
   const [selectedSideNavTab, setSelectedSideNavTab] = useState("Trade");
 
   const contextValue: DashboardPropsType = {
@@ -41,7 +40,6 @@ export default function DashboardPage() {
         <ControlPanel />
         <SideNav />
         <GraphStyleModal />
-        <CashierModal />
       </div>
     </DashboardContext.Provider>
   );

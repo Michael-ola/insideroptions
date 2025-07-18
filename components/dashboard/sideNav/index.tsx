@@ -12,6 +12,7 @@ import HelpIcon from "../icons/helpIcon";
 import AssetManagerIcon from "../icons/assetManagerIcon";
 import AutoTradeIcon from "../icons/autoTradeIcon";
 import LogoutIcon from "../icons/logoutIcon";
+import CashierModal from "@/components/cashier/cashierModal";
 
 const navItems = [
   { label: "Trade", icon: TradeIcon },
@@ -41,7 +42,10 @@ export default function DashboardSidebar() {
           return (
             <div
               key={item.label}
-              onClick={() => setSelectedSideNavTab(item.label)}
+              onClick={() => {
+                setSelectedSideNavTab(item.label);
+                console.log(item.label);
+              }}
               className={clsx(
                 "relative cursor-pointer flex flex-col items-center w-full max-sm:w-1/3 py-3 max-sm:pt-1 max-sm:pb-2 text-xs transition-all duration-150",
                 isActive
@@ -102,6 +106,8 @@ const ModalComponent = ({
 
   if (nav === "Orders") {
     return <OrdersHistoryModal onClose={closeModalFunction} />;
+  } else if (nav === "Cashier") {
+    return <CashierModal onClose={closeModalFunction} />;
   } else {
     return <></>;
   }
