@@ -1,17 +1,36 @@
 "use client";
 
+import { getErrorMessage } from "@/lib/authUtils";
 import { RiLoader4Line } from "@remixicon/react";
 import { ChevronDown } from "lucide-react";
+import profile from "@/data/trader/profile.json";
 import React, { useState } from "react";
+import { toast } from "react-toastify";
+import { apiClient } from "@/lib/api-client";
 
 const SwapView = () => {
   const [source, setSource] = useState<"profit" | "referral">("profit");
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [isSwapping, setIsSwapping] = useState<boolean>(false);
   const [percent, setPercent] = useState<number>(0);
-  const realBalance = 50000;
-  const profitBalance = 10000;
-  const referralBalance = 1000;
+
+  let realBalance = 0;
+  let profitBalance = 0;
+  let referralBalance = 0;
+
+  const realAccount = profile.accounts.find(
+    (account) => account.accountType === "INDIVIDUAL"
+  );
+  if (realAccount) {
+    ({
+      profitBalance,
+      referralBalance,
+      accountBalance: realBalance,
+    } = realAccount);
+  }
+  // const realBalance = 50000;
+  // const profitBalance = 10000;
+  // const referralBalance = 1000;
 
   const handleQuickSelect = (value: number) => {
     setPercent(value);
@@ -24,13 +43,25 @@ const SwapView = () => {
     ).toFixed(2);
   };
 
-  const handleSwap = () => {
-    if (percent === 0) return;
-
-    setPercent(0);
-    setIsSwapping(true);
-    console.log("Swapping", getFromAmount(), "from", source);
-    setIsSwapping(false);
+  const handleSwap = async () => {
+    try {
+      if (percent === 0) return;
+      setIsSwapping(true);
+      const url = `/transactions/${profile.id}/swap`;
+      const payload = {
+        toBalance: "REAL_BALANCE",
+        fromBalance: source === "profit" ? "PROFIT_BALANCE" : "REFERRAL_BALANCE",
+        percent: percent,
+      };
+      await apiClient.post(url, payload);
+      setPercent(0);
+      setIsSwapping(false);
+    } catch (error) {
+      const err = getErrorMessage(error);
+      toast.error(err);
+      console.error(error);
+      setIsSwapping(false);
+    }
   };
 
   return (

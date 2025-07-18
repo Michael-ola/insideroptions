@@ -30,9 +30,9 @@
     "accounts": [
         {
             "id": 3,
-            "accountBalance": 0.00,
-            "profitBalance": 0.00,
-            "referralBalance": 0.00,
+            "accountBalance": 50000.55,
+            "profitBalance": 10000.38,
+            "referralBalance": 2000.70,
             "accountNumber": "  62789763",
             "accountType": "INDIVIDUAL",
             "status": "ACTIVE",
