@@ -14,7 +14,7 @@ export default function DashboardPage() {
   const [openGraphStyleModal, setOpenGraphStyleModal] = useState(false);
   const [chartStyle, setChartStyle] = useState("lines");
   const [showTraderFeed, setShowTraderFeed] = useState(false);
-  const [openCashierModal, setOpenCashierModal] = useState<boolean>(false);
+  const [openCashierModal, setOpenCashierModal] = useState<boolean>(true);
   const [selectedSideNavTab, setSelectedSideNavTab] = useState("Trade");
 
   const contextValue: DashboardPropsType = {

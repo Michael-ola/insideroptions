@@ -73,7 +73,10 @@ export const navLinks = [
       { name: "Return Policy", href: "/company/return-policy" },
       { name: "Privacy Policy", href: "/company/privacy-policy" },
       { name: "AML & KYC", href: "/company/aml-and-kyc" },
-      { name: "Referral Program Terms & Conditions", href: "/company/referral-program-terms-and-conditions" },
+      {
+        name: "Referral Program Terms & Conditions",
+        href: "/company/referral-program-terms-and-conditions",
+      },
     ],
   },
 ];
@@ -123,7 +126,17 @@ export const AUTH_ENDPOINTS = [
   "/auth/register",
   "/auth/password-recovery",
   "/auth/verify-email",
+  "/auth/refresh-token",
+  "/devops/contact-us",
   // Add more as needed
+];
+
+export const EXCLUDEFROMNAV_ENDPOINTS = [
+  "/login",
+  "/signup",
+  "/reset-password",
+  "/verify-account",
+  "password-reset",
 ];
 
 export const stats = [
