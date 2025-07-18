@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import Image from "next/image";
 import OrdersIcon from "../icons/OrdersIcon.svg";
 import { motion } from "framer-motion";
-import clsx from "clsx";
 
 // Mock Data (same as above but clean values)
 import ordersData from "@/data/orders/ordersData.json";
