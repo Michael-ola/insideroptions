@@ -4,7 +4,6 @@ import Image from "next/image";
 import OrdersIcon from "../icons/OrdersIcon";
 import { motion } from "framer-motion";
 
-// Mock Data (same as above but clean values)
 import ordersData from "@/data/orders/ordersData.json";
 
 export default function OrdersModal({ onClose }: { onClose: () => void }) {
@@ -26,7 +25,6 @@ export default function OrdersModal({ onClose }: { onClose: () => void }) {
       className="fixed inset-0 left-[100px] bg-black/20 z-50 w-screen h-screen cursor-default max-sm:left-0 max-sm:bg-[#000510] max-sm:h-[calc(100vh-57px)]"
     >
       <div className="absolute top-0 bottom-0 left-0 w-[25%] z-50 flex flex-col backdrop-blur-sm pt-7 max-sm:w-full max-sm:pt-5">
-        {/* Header */}
         <div className="flex justify-between items-center px-4 py-3 text-white text-sm pl-8">
           <button onClick={onClose}>
             <Image
@@ -44,12 +42,11 @@ export default function OrdersModal({ onClose }: { onClose: () => void }) {
           </button>
         </div>
 
-        {/* Content */}
         <div className="flex-1 overflow-y-auto text-white px-6 pb-10 mt-4 space-y-5 custom-scrollbar">
           {hasData ? (
             ordersData.map((section, index) => (
               <div key={index}>
-                <div className="text-xs text-white/60 mb-2">{section.date}</div>
+                <div className="text-sm text-white/60 mb-2">{section.date}</div>
                 {section.items.map((order, i) => (
                   <div
                     key={i}
@@ -58,13 +55,13 @@ export default function OrdersModal({ onClose }: { onClose: () => void }) {
                     {/* Left: Caret + Info */}
                     <div className="flex items-center gap-2">
                       {order.direction === "up" ? (
-                        <ChevronUp className="text-green-400 w-4 h-4" />
+                        <ChevronUp className="text-green-400 w-6 h-6" />
                       ) : (
-                        <ChevronDown className="text-red-400 w-4 h-4" />
+                        <ChevronDown className="text-red-400 w-6 h-6" />
                       )}
                       <div className="flex flex-col">
-                        <span className="text-sm">{order.pair}</span>
-                        <span className="text-xs text-white/40">
+                        <span className="text-md">{order.pair}</span>
+                        <span className="text-sm text-white/40">
                           {order.time}
                         </span>
                         {order.assetRate && (
@@ -77,18 +74,18 @@ export default function OrdersModal({ onClose }: { onClose: () => void }) {
 
                     {/* Right: Amount + Stake */}
                     <div className="text-right">
-                      <div className="text-green-400 text-sm">
-                        +₦{order.amount.toFixed(2)}
-                      </div>
-                      <div className="text-white/40 text-xs">
-                        ₦{order.stake.toFixed(2)}
+                      <div className="text-md">+${order.amount.toFixed(2)}</div>
+                      <div className="text-white/40 text-sm">
+                        ${order.stake.toFixed(2)}
                       </div>
                     </div>
 
-                    {/* Close Badge */}
                     {order.closed && (
-                      <div className="ml-2 text-xs px-2 py-1 bg-white/10 rounded text-green-400 border border-green-400">
-                        Close
+                      <div className="ml-2 text-sm pl-7 pr-3 flex flex-col items-end gap-1 justify-center text-left py-1 h-16 bg-[#1c1216] relative -bottom-[9.8px] text-[#fff] border-l-2 border-b-2 border-[#2f2629]">
+                        <span>Close</span>
+                        <div className="text-green-400 text-sm">
+                          ${order.stake.toFixed(2)}
+                        </div>
                       </div>
                     )}
                   </div>
@@ -96,7 +93,7 @@ export default function OrdersModal({ onClose }: { onClose: () => void }) {
               </div>
             ))
           ) : (
-            <div className="flex flex-col items-center justify-center gap-2 mt-24">
+            <div className="flex flex-col h-full items-center justify-center gap-2">
               <Image
                 src="/images/emptyOrders.png"
                 alt="emptyOrders"
@@ -112,7 +109,7 @@ export default function OrdersModal({ onClose }: { onClose: () => void }) {
                 <span className="text-[#79DA7E]">Place a Trade</span>
                 <Image
                   src="/images/right-green.png"
-                  alt="Right Arrow"
+                  alt="Left Arrow"
                   width={5}
                   height={5}
                   className="w-1 h-2"
@@ -122,20 +119,6 @@ export default function OrdersModal({ onClose }: { onClose: () => void }) {
           )}
         </div>
       </div>
-
-      {/* Custom scrollbar styles */}
-      <style jsx>{`
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background-color: rgba(255, 255, 255, 0.1);
-          border-radius: 2px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: transparent;
-        }
-      `}</style>
     </motion.div>
   );
 }
