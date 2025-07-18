@@ -5,8 +5,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ModalView, Transaction } from "../cashierModal";
 import { ChevronRight } from "lucide-react";
-// import profile from "@/data/trader/profile.json";
-// import { apiClient } from "@/lib/api-client";
 
 const statusOptions = ["Confirmed", "Pending", "Canceled"];
 const categoryOptions = ["All Types", "Deposit", "Withdrawal", "Swap"];
@@ -61,10 +59,10 @@ const TxFilters = ({ onApply, handleViewChange, transactions }: Props) => {
               key={preset}
               onClick={() => setSelectedPreset(preset)}
               className={`
-                px-3 py-2 rounded-md border text-sm
+                px-3 py-2 rounded-md text-sm
                 ${
                   selectedPreset === preset
-                    ? "bg-primary text-black"
+                    ? "bg-[#43B75D]/60 text-white"
                     : "border-white/20 text-white/60"
                 }
               `}
@@ -82,9 +80,9 @@ const TxFilters = ({ onApply, handleViewChange, transactions }: Props) => {
             selected={startDate}
             onChange={(date) => setStartDate(date)}
             placeholderText="Start date"
-            className={`px-3 py-2 rounded-[8px] border text-sm w-full ${
+            className={`px-3 py-2 rounded-[8px] text-sm w-full ${
               startDate
-                ? "bg-primary text-black"
+                ? "bg-[#43B75D]/60 text-white"
                 : "border-white/20 text-white/60"
             }`}
             dateFormat="dd MMM yyyy"
@@ -94,9 +92,9 @@ const TxFilters = ({ onApply, handleViewChange, transactions }: Props) => {
             selected={endDate}
             onChange={(date) => setEndDate(date)}
             placeholderText="End date"
-            className={` px-3 py-2 rounded-[8px] border text-sm w-full ${
+            className={` px-3 py-2 rounded-[8px] text-sm w-full ${
               endDate
-                ? "bg-primary text-black"
+                ? "bg-[#43B75D]/60 text-white"
                 : "border-white/20 text-white/60"
             }`}
             dateFormat="dd MMM yyyy"
@@ -112,10 +110,10 @@ const TxFilters = ({ onApply, handleViewChange, transactions }: Props) => {
               key={status}
               onClick={() => setSelectedStatus(status)}
               className={`
-                px-3 py-2 rounded-[8px] border text-sm
+                px-3 py-2 rounded-[8px] text-sm
                 ${
                   selectedStatus === status
-                    ? "bg-primary text-black"
+                    ? "bg-[#43B75D]/60 text-white"
                     : "border-white/20 text-white/60"
                 }
               `}
@@ -134,10 +132,10 @@ const TxFilters = ({ onApply, handleViewChange, transactions }: Props) => {
               key={cat}
               onClick={() => setSelectedCategory(cat)}
               className={`
-                px-3 py-2 rounded-[8px] border text-sm
+                px-3 py-2 rounded-[8px] text-sm
                 ${
                   selectedCategory === cat
-                    ? "bg-primary text-black"
+                    ? "bg-[#43B75D]/60 text-white"
                     : "border-white/20 text-white/60"
                 }
               `}

@@ -14,6 +14,7 @@ export default function DashboardPage() {
   const [openGraphStyleModal, setOpenGraphStyleModal] = useState(false);
   const [chartStyle, setChartStyle] = useState("lines");
   const [showTraderFeed, setShowTraderFeed] = useState(false);
+  const [openCashierModal, setOpenCashierModal] = useState<boolean>(false);
   const [selectedSideNavTab, setSelectedSideNavTab] = useState("Trade");
 
   const contextValue: DashboardPropsType = {
@@ -25,9 +26,10 @@ export default function DashboardPage() {
     setShowTraderFeed,
     selectedSideNavTab,
     setSelectedSideNavTab,
+    openCashierModal,
+    setOpenCashierModal,
   };
 
-  const [isOpen, setIsOpen] = useState<boolean>(true);
   return (
     <DashboardContext.Provider value={contextValue}>
       <div
@@ -39,7 +41,7 @@ export default function DashboardPage() {
         <ControlPanel />
         <SideNav />
         <GraphStyleModal />
-        <CashierModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+        <CashierModal />
       </div>
     </DashboardContext.Provider>
   );

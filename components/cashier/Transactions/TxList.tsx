@@ -32,26 +32,6 @@ const TxList = ({
     { label: "Swap (Real – Profit)", src: swap },
   ];
 
-  // const fetchTransactions = async (cursor: string | null) => {
-  //   if (loading || !hasMore) return;
-
-  //   setLoading(true);
-  //   try {
-  //     const res = await apiClient.get(
-  //       `/transactions/${profile.id}/search
-  //       ${cursor ? `?cursorId=${cursor}` : ""}`
-  //     );
-  //     const data = await res.data;
-  //     setTransactions((prev) => [...prev, ...data.transactions]);
-  //     setNextCursorId(data.nextCursorId);
-  //     setHasMore(data.hasMore);
-  //   } catch (error) {
-  //     console.error("Failed to fetch transactions", error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   const handleScroll = () => {
     const container = containerRef.current;
     if (!container || loading || !hasMore) return;
