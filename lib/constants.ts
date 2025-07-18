@@ -134,7 +134,7 @@ export const AUTH_ENDPOINTS = [
 export const EXCLUDEFROMNAV_ENDPOINTS = [
   "/login",
   "/signup",
-  "/reset-password",
+  "/forgot-password",
   "/verify-account",
   "password-reset",
 ];
