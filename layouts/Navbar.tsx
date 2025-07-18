@@ -11,13 +11,15 @@ import Button from "@/components/Button2";
 import OverlayNav from "@/components/OverlayNav";
 import { AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
+import { EXCLUDEFROMNAV_ENDPOINTS } from "@/lib/constants";
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
-  const isLogOrReg =
-    pathname.startsWith("/login") || pathname.startsWith("/signup");
+  const isLogOrReg = EXCLUDEFROMNAV_ENDPOINTS.some((endpoint) =>
+    pathname.startsWith(endpoint)
+  );
 
   if (pathname.startsWith("/dashboard")) {
     return null;
