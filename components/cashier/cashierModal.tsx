@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import ModalWrapper from "../modalWrapper";
+import { AnimatePresence, motion } from "framer-motion";
 import { StaticImageData } from "next/image";
 import CashierList from "./CashierList";
 import DepositList from "./deposit/DepositList";
@@ -15,6 +16,8 @@ import SuccessModal from "./withdrawal/SuccessModal";
 import TxList from "./Transactions/TxList";
 import TxFilters from "./Transactions/TxFilters";
 import { apiClient } from "@/lib/api-client";
+import SwapView from "./swap/SwapView";
+import { useDashboardContext } from "@/context/DashboardContext";
 
 export type SelectedCrypto =
   | "USDT (ERC20)"
@@ -55,12 +58,8 @@ export type CryptoData = {
   redeemScript: string;
 };
 
-interface Props {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-export default function CashierModal({ isOpen, onClose }: Props) {
+export default function CashierModal() {
+  const { openCashierModal, setOpenCashierModal } = useDashboardContext();
   const [view, setView] = useState<ModalView>("My Cashier");
   const [iconOrImage, setIconOrImage] = useState<StaticImageData | string>("");
   const [selectedCrypto, setSelectedCrypto] = useState<string | null>(null);
@@ -124,7 +123,7 @@ export default function CashierModal({ isOpen, onClose }: Props) {
     fetchTransactions(filters);
   };
 
-  if (!isOpen) return null;
+  if (!openCashierModal) return null;
 
   const handleViewChange = (nextView: ModalView) => setView(nextView);
 
@@ -171,6 +170,11 @@ export default function CashierModal({ isOpen, onClose }: Props) {
             setOpenOtp={setOpenOtp}
           />
         );
+      case "Swap (Profit bal - Real bal)":
+        return (
+          // setView("Swap");
+          <SwapView />
+        );
       case "Transaction History":
         return (
           <TxList
@@ -195,18 +199,19 @@ export default function CashierModal({ isOpen, onClose }: Props) {
   };
 
   return (
-    <div>
-      <ModalWrapper
-        title={view}
-        icon={iconOrImage}
-        onClose={onClose}
-        onCloseHandler={onCloseHandler}
-        handleViewChange={handleViewChange}
-        setIconOrImage={setIconOrImage}
-      >
-        {renderView()}
-      </ModalWrapper>
-
+    <motion.div layout>
+      <AnimatePresence>
+        <ModalWrapper
+          title={view}
+          icon={iconOrImage}
+          onClose={() => setOpenCashierModal(false)}
+          onCloseHandler={onCloseHandler}
+          handleViewChange={handleViewChange}
+          setIconOrImage={setIconOrImage}
+        >
+          {renderView()}
+        </ModalWrapper>
+      </AnimatePresence>
       {openOtp && (
         <OtpModal
           title={view}
@@ -216,6 +221,6 @@ export default function CashierModal({ isOpen, onClose }: Props) {
         />
       )}
       {openSuccess && <SuccessModal close={() => setOpenSuccess(false)} />}
-    </div>
+    </motion.div>
   );
 }

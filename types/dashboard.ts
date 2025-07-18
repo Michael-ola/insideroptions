@@ -7,4 +7,6 @@ export interface DashboardPropsType {
   setShowTraderFeed: (val: boolean) => void;
   selectedSideNavTab: string;
   setSelectedSideNavTab: (val: string) => void;
+  openCashierModal: boolean;
+  setOpenCashierModal: (val: boolean) => void;
 }
