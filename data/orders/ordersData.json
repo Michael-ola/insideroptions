@@ -1,0 +1,89 @@
+[
+  {
+    "date": "15th April 2025",
+    "items": [
+      {
+        "direction": "up",
+        "pair": "EUR/USD",
+        "amount": 1000.2,
+        "stake": 60,
+        "time": "08:12:32",
+        "assetRate": "1.2432",
+        "closed": true
+      },
+      {
+        "direction": "up",
+        "pair": "EUR/USD",
+        "amount": 100.2,
+        "stake": 60,
+        "time": "08:12:32"
+      },
+      {
+        "direction": "down",
+        "pair": "EUR/USD",
+        "amount": 0,
+        "stake": 80,
+        "time": "08:12:32"
+      },
+      {
+        "direction": "up",
+        "pair": "EUR/USD",
+        "amount": 100.2,
+        "stake": 60,
+        "time": "08:12:32"
+      }
+    ]
+  },
+  {
+    "date": "10th April 2025",
+    "items": [
+      {
+        "direction": "up",
+        "pair": "EUR/USD",
+        "amount": 100.2,
+        "stake": 60,
+        "time": "08:12:32"
+      },
+      {
+        "direction": "up",
+        "pair": "EUR/USD",
+        "amount": 100.2,
+        "stake": 60,
+        "time": "08:12:32"
+      },
+      {
+        "direction": "down",
+        "pair": "EUR/USD",
+        "amount": 0,
+        "stake": 80,
+        "time": "08:12:32"
+      },
+      {
+        "direction": "up",
+        "pair": "EUR/USD",
+        "amount": 100.2,
+        "stake": 60,
+        "time": "08:12:32"
+      }
+    ]
+  },
+  {
+    "date": "18th April 2025",
+    "items": [
+      {
+        "direction": "down",
+        "pair": "EUR/USD",
+        "amount": 120.4,
+        "stake": 80,
+        "time": "08:12:32"
+      },
+      {
+        "direction": "up",
+        "pair": "EUR/USD",
+        "amount": 1600.7,
+        "stake": 1000,
+        "time": "08:12:32"
+      }
+    ]
+  }
+]
