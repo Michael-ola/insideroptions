@@ -166,7 +166,7 @@ export default function AssetModal({ isOpen, onClose }: AssetModalProps) {
 
       <ul
         ref={listRef}
-        className="thin-dark-scrollbar flex-1 overflow-y-auto overscroll-contain px-1 pb-6"
+        className="custom-scrollbar flex-1 overflow-y-auto overscroll-contain px-1 pb-6"
       >
         {visibleAssets.map(({ name, icon, change, profit }, idx) => {
           const up = change >= 0;
