@@ -1,6 +1,7 @@
 import { ChevronLeft } from "lucide-react";
 import Image, { StaticImageData } from "next/image";
 import { ReactNode } from "react";
+import { motion } from "framer-motion";
 import { cryptoOptions } from "./cashier/deposit/CryptoView";
 import { depositOptions } from "./cashier/deposit/DepositList";
 import { cashierOptions } from "./cashier/CashierList";
@@ -28,7 +29,14 @@ export default function ModalWrapper({
   onCloseHandler,
 }: ModalWrapperProps) {
   return (
-    <div className="fixed top-0 left-0 h-screen z-40 w-full sm:left-[100px] sm:w-[30%] sm:pt-[5%] sm:pb-[5%] pb-0 pt-0 bg-transparent backdrop-blur-xs bg-opacity-60 flex items-center justify-center">
+    <motion.div
+      layout
+      initial={{ opacity: 0, x: -30 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, height: 0, margin: 0 }}
+      transition={{ duration: 0.3 }}
+      className="fixed top-0 left-0 h-screen z-40 w-full sm:left-[100px] sm:w-[30%] sm:pt-[5%] sm:pb-[5%] pb-0 pt-0 bg-transparent backdrop-blur-xs bg-opacity-60 flex items-center justify-center"
+    >
       <div className="w-full h-full bg-[#00040d] sm:bg-transparent rounded-lg shadow-lg p-6 relative text-white border-r border-green-300/30 flex flex-col gap-6">
         <div className="bg-gradient-to-r from-[#00040d] to-[#13171f] sm:bg-none px-8 py-4 sm:p-0 border-y border-y-[#79DA7E]/30 sm:border-0 flex justify-between items-center gap-3">
           {title !== "My Cashier" && (
@@ -91,6 +99,6 @@ export default function ModalWrapper({
         </div>
         {children}
       </div>
-    </div>
+    </motion.div>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import ModalWrapper from "../modalWrapper";
+import { AnimatePresence, motion } from "framer-motion";
 import { StaticImageData } from "next/image";
 import CashierList from "./CashierList";
 import DepositList from "./deposit/DepositList";
@@ -198,18 +199,19 @@ export default function CashierModal() {
   };
 
   return (
-    <div>
-      <ModalWrapper
-        title={view}
-        icon={iconOrImage}
-        onClose={() => setOpenCashierModal(false)}
-        onCloseHandler={onCloseHandler}
-        handleViewChange={handleViewChange}
-        setIconOrImage={setIconOrImage}
-      >
-        {renderView()}
-      </ModalWrapper>
-
+    <motion.div layout>
+      <AnimatePresence>
+        <ModalWrapper
+          title={view}
+          icon={iconOrImage}
+          onClose={() => setOpenCashierModal(false)}
+          onCloseHandler={onCloseHandler}
+          handleViewChange={handleViewChange}
+          setIconOrImage={setIconOrImage}
+        >
+          {renderView()}
+        </ModalWrapper>
+      </AnimatePresence>
       {openOtp && (
         <OtpModal
           title={view}
@@ -219,6 +221,6 @@ export default function CashierModal() {
         />
       )}
       {openSuccess && <SuccessModal close={() => setOpenSuccess(false)} />}
-    </div>
+    </motion.div>
   );
 }
