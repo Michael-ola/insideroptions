@@ -1,7 +1,7 @@
 import { X, ChevronUp, ChevronDown } from "lucide-react";
 import { useEffect } from "react";
 import Image from "next/image";
-import OrdersIcon from "../icons/OrdersIcon.svg";
+import OrdersIcon from "../icons/OrdersIcon";
 import { motion } from "framer-motion";
 
 // Mock Data (same as above but clean values)

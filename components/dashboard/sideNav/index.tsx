@@ -4,14 +4,14 @@ import clsx from "clsx";
 import { useDashboardContext } from "@/context/DashboardContext";
 import OrdersHistoryModal from "@/components/dashboard/OrdersHistory";
 
-import TradeIcon from "../icons/tradeIcon.svg";
-import OrdersIcon from "../icons/OrdersIcon.svg";
-import CashierIcon from "../icons/cashierIcon.svg";
-import PartnerIcon from "../icons/partnerIcon.svg";
-import HelpIcon from "../icons/helpIcon.svg";
-import AssetManagerIcon from "../icons/assetManagerIcon.svg";
-import AutoTradeIcon from "../icons/autoTradeIcon.svg";
-import LogoutIcon from "../icons/logoutIcon.svg";
+import TradeIcon from "../icons/tradeIcon";
+import OrdersIcon from "../icons/OrdersIcon";
+import CashierIcon from "../icons/cashierIcon";
+import PartnerIcon from "../icons/partnerIcon";
+import HelpIcon from "../icons/helpIcon";
+import AssetManagerIcon from "../icons/assetManagerIcon";
+import AutoTradeIcon from "../icons/autoTradeIcon";
+import LogoutIcon from "../icons/logoutIcon";
 
 const navItems = [
   { label: "Trade", icon: TradeIcon },
