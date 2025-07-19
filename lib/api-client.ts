@@ -24,8 +24,7 @@ apiClient.interceptors.response.use(
     const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
     console.log("Interceptor caught error", error);
     return error.response?.status === 401 &&
-      !originalRequest._retry &&
-      isAuthRequest(originalRequest.url) ?
+      !originalRequest._retry ?
       handle401Error(originalRequest) : Promise.reject(error);
   }
 );
