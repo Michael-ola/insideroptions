@@ -44,7 +44,7 @@ export const depositOptions: DepositOption[] = [
 const DepositList = ({ handleViewChange, setIconOrImage }: Props) => {
   return (
     <>
-      <div className="space-y-4 sm:space-y-2">
+      <div className="space-y-4 sm:space-y-2 overflow-y-auto custom-scrollbar">
         {depositOptions.map(({ label, icon, comingSoon }) => (
           <div
             key={label}

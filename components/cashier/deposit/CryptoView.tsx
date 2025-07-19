@@ -110,7 +110,7 @@ const CryptoView = ({
   };
 
   return (
-    <div className="space-y-16 sm:space-y-13 px-8 pt-6">
+    <div className="space-y-16 sm:space-y-13 px-8 pt-6 overflow-y-auto custom-scrollbar">
       <div className="space-y-6">
         {cryptoOptions.map(({ label, icon, speed }) => (
           <div

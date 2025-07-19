@@ -48,7 +48,7 @@ const TxList = ({
 
   return (
     <div
-      className="space-y-4 w-full h-full flex-1 overflow-y-auto px-4 py-4"
+      className="space-y-4 w-full h-full flex-1 overflow-y-auto custom-scrollbar px-2 py-4"
       ref={containerRef}
       onScroll={handleScroll}
     >
@@ -120,7 +120,7 @@ const TxList = ({
               <p>Transaction is empty</p>
               <p
                 onClick={() => handleViewChange("Deposit")}
-                className="text-primary text-base font-semibold flex items-center gap-2"
+                className="text-primary text-base font-semibold flex items-center gap-2 cursor-pointer"
               >
                 Make a Deposit <ChevronRight className="w-4 h-4" />
               </p>
