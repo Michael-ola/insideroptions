@@ -24,18 +24,18 @@ apiClient.interceptors.response.use(
     const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
     console.log("Interceptor caught error", error);
     return error.response?.status === 401 &&
-      !originalRequest._retry ?
+      !originalRequest._retry && window !== undefined ?
       handle401Error(originalRequest) : Promise.reject(error);
   }
 );
 
 const handle401Error = async (originalRequest: InternalAxiosRequestConfig & { _retry?: boolean }) => {
   originalRequest._retry = true;
-  return axios.post(`${baseUrl}/api/v1/auth/refresh-token`, {}, { withCredentials: true })
+  return apiClient.post(`/auth/refresh-token`)
     .then((res) => {
       const newToken = res.data.accessToken;
       localStorage.setItem("token", newToken);
-      originalRequest.headers["Authorization"] = `Bearer ${newToken}`;
+      originalRequest.headers.set("Authorization", `Bearer ${newToken}`);
       return apiClient(originalRequest);
     }).catch((refreshError) => {
       localStorage.removeItem("token");
