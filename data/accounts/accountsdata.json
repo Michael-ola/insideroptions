@@ -1,0 +1,9 @@
+{
+  "profitBalance": "300.00",
+  "accounts": [
+    { "id": "real", "name": "Real Balance", "amount": "700.00" },
+    { "id": "frozen", "name": "Frozen Balance", "amount": "0.00" },
+    { "id": "tt", "name": "TT Balance", "amount": "0.00" },
+    { "id": "demo", "name": "Demo Balance", "amount": "5000.00" }
+  ]
+}

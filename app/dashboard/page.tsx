@@ -8,6 +8,7 @@ import TopTraderFeedCard from "@/components/dashboard/topTraderFeed";
 import { DashboardContext } from "@/context/DashboardContext";
 import type { DashboardPropsType } from "@/types/dashboard";
 import SideNav from "@/components/dashboard/sideNav";
+import TopNav from "@/components/dashboard/TopNav";
 
 export default function DashboardPage() {
   const [openGraphStyleModal, setOpenGraphStyleModal] = useState(false);
@@ -15,6 +16,7 @@ export default function DashboardPage() {
   const [showTraderFeed, setShowTraderFeed] = useState(false);
   const [openCashierModal, setOpenCashierModal] = useState<boolean>(false);
   const [selectedSideNavTab, setSelectedSideNavTab] = useState("Trade");
+  const [selectedAccount, setSelectedAccount] = useState("real");
 
   const contextValue: DashboardPropsType = {
     openGraphStyleModal,
@@ -27,6 +29,8 @@ export default function DashboardPage() {
     setSelectedSideNavTab,
     openCashierModal,
     setOpenCashierModal,
+    selectedAccount,
+    setSelectedAccount,
   };
 
   return (
@@ -36,6 +40,7 @@ export default function DashboardPage() {
         style={{ minHeight: "100dvh" }}
       >
         <TopTraderFeedCard />
+        <TopNav />
         <AssetComponent />
         <ControlPanel />
         <SideNav />
