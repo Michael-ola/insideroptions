@@ -1,6 +1,5 @@
 "use client";
 
-import CashierModal from "@/components/cashier/cashierModal";
 import AssetComponent from "@/components/dashboard/assets/AssetComponent";
 import ControlPanel from "@/components/dashboard/control-panel";
 import { useState } from "react";
@@ -46,7 +45,6 @@ export default function DashboardPage() {
         <ControlPanel />
         <SideNav />
         <GraphStyleModal />
-        <CashierModal />
       </div>
     </DashboardContext.Provider>
   );
