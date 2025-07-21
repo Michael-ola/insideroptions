@@ -1,0 +1,80 @@
+import React from "react";
+import referral from "@/lib/assets/referral_banner.png";
+import Image from "next/image";
+import { Share2 } from "lucide-react";
+import copy from "@/lib/assets/copy.png";
+
+const Referral = () => {
+  const options = [
+    {
+      header: "Invite your friends",
+      details:
+        "by sharing assigned referral link above.",
+   
+    },
+    {
+      header: "Friends must register",
+      details:
+        "with Promo code or referral link on the platform.",
+    },
+    {
+      header: "Deposit",
+      details: "You will get 6-10% on their first traded deposit.",
+      more: "Learn more"
+    },
+    {
+      header: "You start earning",
+      details: "As soon as they start trading,",
+    },
+  ];
+  return (
+    <div className="w-full h-full min-h-screen px-6 pt-2 pb-24 space-y-6 overflow-y-auto custom-scrollbar">
+      <Image
+        src={referral}
+        alt="Referral Bannner"
+        priority
+        className="w-full h-auto border-b border-b-white/5"
+      />
+      <div className="space-y-4">
+        <div className="flex flex-col gap-3 p-6 bg-primary/5 border border-[#FFFFFF]/5 rounded-xl">
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center justify-between">
+              <div className="text-sm">
+                <p className="text-white/20">Referral link</p>
+                <p>shortly.com/83421</p>
+              </div>
+              <Share2 className="text-white/60" />
+            </div>
+            <hr className="text-white-25" />
+            <div className="flex items-center justify-between">
+              <div className="text-sm">
+                <p className="text-white/20">Profile Code</p>
+                <p>1582-6784-7943</p>
+              </div>
+              <Image src={copy} alt="clipboard copy" />
+            </div>
+          </div>
+        </div>
+        <h4 className="text-sm font-semibold">How It Works</h4>
+        <div className="w-full grid grid-cols-2 gap-[10px] py-3">
+          {options.map((itm, idx) => (
+            <div
+              key={idx}
+              className="bg-[#79DA7E]/10 px-4 py-6 border border-[#FFFFFF]/5 rounded-xl flex flex-col gap-3"
+            >
+             <div className="w-6 h-6 rounded-full bg-[#79DA7E]/20 text-primary text-sm flex items-center justify-center">{idx + 1}</div>
+              <div className="flex flex-col gap-2">
+                <h4 className="font-semibold text-xs">{itm.header}</h4>
+                <span className="text-[10px] font-medium text-gray-400">
+                  {itm.details}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Referral;

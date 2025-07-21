@@ -13,8 +13,9 @@ import AssetManagerIcon from "../icons/assetManagerIcon";
 import AutoTradeIcon from "../icons/autoTradeIcon";
 import LogoutIcon from "../icons/logoutIcon";
 import CashierModal from "@/components/cashier/cashierModal";
+import PartnerModal from "@/components/partner";
 
-const navItems = [
+export const navItems = [
   { label: "Trade", icon: TradeIcon },
   { label: "Orders", icon: OrdersIcon },
   { label: "Cashier", icon: CashierIcon },
@@ -106,9 +107,14 @@ const ModalComponent = ({
 
   if (nav === "Orders") {
     return <OrdersHistoryModal onClose={closeModalFunction} />;
-  } else if (nav === "Cashier") {
+  } 
+  else if (nav === "Cashier") {
     return <CashierModal onClose={closeModalFunction} />;
-  } else {
+  } 
+  else if (nav === "Partner") {
+    return <PartnerModal onClose={closeModalFunction} />;
+  } 
+  else {
     return <></>;
   }
 };
