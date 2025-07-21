@@ -1,25 +1,10 @@
 "use client";
 import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import profitBanner from "@/lib/assets/profit_banner.png";
-
-const mockData = [
-  { id: "323454", date: "4th Apr 2025", deposited: "$1000", status: "Active" },
-  { id: "323454", date: "4th Apr 2025", deposited: "$0", status: "Inactive" },
-  { id: "323454", date: "4th Apr 2025", deposited: "$1000", status: "Active" },
-  { id: "323454", date: "4th Apr 2025", deposited: "$900", status: "Active" },
-  { id: "323454", date: "4th Apr 2025", deposited: "$0", status: "Inactive" },
-  { id: "323454", date: "4th Apr 2025", deposited: "$1000", status: "Active" },
-  { id: "323454", date: "4th Apr 2025", deposited: "$0", status: "Inactive" },
-  { id: "323454", date: "4th Apr 2025", deposited: "$1000", status: "Active" },
-  { id: "323454", date: "4th Apr 2025", deposited: "$1000", status: "Active" },
-  { id: "323454", date: "4th Apr 2025", deposited: "$0", status: "Inactive" },
-  { id: "323454", date: "4th Apr 2025", deposited: "$1000", status: "Active" },
-  { id: "323454", date: "4th Apr 2025", deposited: "$1000", status: "Active" },
-  { id: "323454", date: "4th Apr 2025", deposited: "$0", status: "Inactive" },
-  { id: "323454", date: "4th Apr 2025", deposited: "$1000", status: "Active" },
-];
+import mockData from "@/data/partner/mockData.json";
+import mockData2 from "@/data/partner/bonusData.json";
 
 const TABS = ["Referral details", "Redeem Bonus"];
 
@@ -34,8 +19,12 @@ const Profit = () => {
     (page - 1) * ITEMS_PER_PAGE,
     page * ITEMS_PER_PAGE
   );
+  const paginatedDat2 = mockData2.slice(
+    (page - 1) * ITEMS_PER_PAGE,
+    page * ITEMS_PER_PAGE
+  );
   return (
-    <div className="w-full h-full px-4 pt-2 pb-24 overflow-y-auto custom-scrollbar text-white">
+    <div className="w-full h-full px-4 pt-2 text-white">
       <section className="mb-4 rounded-lg overflow-hidden">
         <Image
           src={profitBanner}
@@ -59,44 +48,58 @@ const Profit = () => {
           </div>
         </section>
 
-        <section>
-          <h1 className="text-base font-semibold mb-4 text-center">
+        <section className="flex flex-col gap-4">
+          <h1 className="text-base font-semibold text-center">
             Referral History
           </h1>
 
-          <div className="bg-[#0f1f1c] rounded-xl border border-white/5 flex flex-col gap-3">
-            <div className="flex gap-10 justify-center border-b border-white/10 py-6 px-8">
+          <div className="bg-[#0f1f1c] rounded-xl border mb-4 border-white/5 flex flex-col gap-3">
+            <div className="flex gap-20 justify-center border-b border-white/10 py-6 px-8">
               {TABS.map((t) => (
                 <button
                   key={t}
                   className={`
-                text-sm
+                text-sm font-medium
                 ${tab === t ? "text-primary" : "text-white/25"}
               `}
-                  onClick={() => setTab(t)}
+                  onClick={() => {
+                    setTab(t);
+                    setPage(1);
+                  }}
                 >
                   {t}
                 </button>
               ))}
             </div>
-            <div className="grid grid-cols-4 text-center text-xs text-white/70  px-4">
-              <span>Ref ID</span>
-              <span>Reg. Date</span>
-              <span>Deposited</span>
-              <span>Status</span>
-            </div>
+            {tab === "Referral details" && (
+              <div className="grid grid-cols-4 justify-between text-xs text-white/70 px-4 whitespace-nowrap">
+                <span>Ref ID</span>
+                <span>Reg. Date</span>
+                <span>Deposited</span>
+                <span>Status</span>
+              </div>
+            )}
+            {tab === "Redeem Bonus" && (
+              <div className="grid grid-cols-4 justify-between text-xs text-white/70 px-4">
+                <span>Ref ID</span>
+                <span>Referred</span>
+                <span>Confirmed Date</span>
+                <span>Bonus Amount</span>
+              </div>
+            )}
 
-            {paginatedData.map((item, idx) => (
-              <div
-                key={idx}
-                className="grid grid-cols-4 text-[10px] sm:text-xs font-medium text-center px-4 py-2"
-              >
-                <span>{item.id}</span>
-                <span>{item.date}</span>
-                <span>{item.deposited}</span>
-                <span>
-                  <span
-                    className={`
+            {tab === "Referral details" &&
+              paginatedData.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="grid grid-cols-4 text-[10px] sm:text-xs font-medium px-4 py-2"
+                >
+                  <span>{item.id}</span>
+                  <span>{item.date}</span>
+                  <span>{item.deposited}</span>
+                  <span>
+                    <span
+                      className={`
                     text-[10px] sm:text-xs
                     ${
                       item.status === "Active"
@@ -104,31 +107,58 @@ const Profit = () => {
                         : "text-red-500"
                     }
                   `}
-                  >
-                    {item.status}
+                    >
+                      {item.status}
+                    </span>
                   </span>
-                </span>
+                </div>
+              ))}
+            {tab === "Redeem Bonus" &&
+              paginatedDat2.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="grid grid-cols-4 text-[10px] sm:text-xs font-medium px-4 py-2"
+                >
+                  <span>{item.id}</span>
+                  <span>{item.referred}</span>
+                  <span>{item.date}</span>
+                  <span className="flex items-center justify-between">
+                    {item.amount}
+                    <span
+                      className={`
+                    text-[10px] sm:text-xs p-1.5 rounded-[4px]
+                    ${
+                      item.status === "Active"
+                        ? "bg-primary text-[#0f1f1c]"
+                        : "bg-[#273634] text-gray-400"
+                    }
+                  `}
+                    >
+                      Redeem
+                    </span>
+                  </span>
+                </div>
+              ))}
+            <div className="w-full flex justify-end">
+              <div className="w-[90%] flex justify-between items-center py-6 px-4 text-xs">
+                <button
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  disabled={page === 1}
+                  className="disabled:text-white/30"
+                >
+                  <ArrowLeft className="inline w-4 h-4" />
+                </button>
+                <div className="text-white/70">
+                  Page {page} of {pageCount}
+                </div>
+                <button
+                  onClick={() => setPage((p) => Math.min(pageCount, p + 1))}
+                  disabled={page === pageCount}
+                  className="disabled:text-white/30"
+                >
+                  <ArrowRight className="inline w-4 h-4" />
+                </button>
               </div>
-            ))}
-
-            <div className="flex justify-between items-center py-6 px-4 text-xs">
-              <button
-                onClick={() => setPage((p) => Math.max(1, p - 1))}
-                disabled={page === 1}
-                className="disabled:text-white/30"
-              >
-                <ChevronLeft className="inline w-4 h-4" /> Prev
-              </button>
-              <div className="text-white/70">
-                Page {page} of {pageCount}
-              </div>
-              <button
-                onClick={() => setPage((p) => Math.min(pageCount, p + 1))}
-                disabled={page === pageCount}
-                className="disabled:text-white/30"
-              >
-                Next <ChevronRight className="inline w-4 h-4" />
-              </button>
             </div>
           </div>
         </section>

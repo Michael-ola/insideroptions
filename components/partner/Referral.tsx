@@ -1,26 +1,25 @@
 import React from "react";
+import profile from "@/data/trader/profile.json";
 import referral from "@/lib/assets/referral_banner.png";
 import Image from "next/image";
 import { Share2 } from "lucide-react";
 import copy from "@/lib/assets/copy.png";
+import { toast } from "react-toastify";
 
 const Referral = () => {
   const options = [
     {
       header: "Invite your friends",
-      details:
-        "by sharing assigned referral link above.",
-   
+      details: "by sharing assigned referral link above.",
     },
     {
       header: "Friends must register",
-      details:
-        "with Promo code or referral link on the platform.",
+      details: "with Promo code or referral link on the platform.",
     },
     {
       header: "Deposit",
       details: "You will get 6-10% on their first traded deposit.",
-      more: "Learn more"
+      more: "Learn more",
     },
     {
       header: "You start earning",
@@ -28,7 +27,7 @@ const Referral = () => {
     },
   ];
   return (
-    <div className="w-full h-full min-h-screen px-6 pt-2 pb-24 space-y-6 overflow-y-auto custom-scrollbar">
+    <div className="w-full h-full px-6 pt-2 space-y-6">
       <Image
         src={referral}
         alt="Referral Bannner"
@@ -41,17 +40,33 @@ const Referral = () => {
             <div className="flex items-center justify-between">
               <div className="text-sm">
                 <p className="text-white/20">Referral link</p>
-                <p>shortly.com/83421</p>
+                <p>shortly.com/{profile.refererCode}</p>
               </div>
-              <Share2 className="text-white/60" />
+              <Share2
+                onClick={() => {
+                  navigator.clipboard.writeText(
+                    `shortly.com/${profile.refererCode}` || ""
+                  );
+                   toast.info(`Link copied!`);
+                }}
+                className="text-white/60 cursor-pointer"
+              />
             </div>
             <hr className="text-white-25" />
             <div className="flex items-center justify-between">
               <div className="text-sm">
                 <p className="text-white/20">Profile Code</p>
-                <p>1582-6784-7943</p>
+                <p>{profile.refererCode}</p>
               </div>
-              <Image src={copy} alt="clipboard copy" />
+              <Image
+                onClick={() => {
+                  navigator.clipboard.writeText(profile.refererCode || "")
+                  toast.info(`Code copied!`);
+                }}
+                src={copy}
+                alt="clipboard copy"
+                className="cursor-pointer"
+              />
             </div>
           </div>
         </div>
@@ -62,7 +77,9 @@ const Referral = () => {
               key={idx}
               className="bg-[#79DA7E]/10 px-4 py-6 border border-[#FFFFFF]/5 rounded-xl flex flex-col gap-3"
             >
-             <div className="w-6 h-6 rounded-full bg-[#79DA7E]/20 text-primary text-sm flex items-center justify-center">{idx + 1}</div>
+              <div className="w-6 h-6 rounded-full bg-[#79DA7E]/20 text-primary text-sm flex items-center justify-center">
+                {idx + 1}
+              </div>
               <div className="flex flex-col gap-2">
                 <h4 className="font-semibold text-xs">{itm.header}</h4>
                 <span className="text-[10px] font-medium text-gray-400">
