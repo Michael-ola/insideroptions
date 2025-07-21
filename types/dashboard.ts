@@ -9,4 +9,6 @@ export interface DashboardPropsType {
   setSelectedSideNavTab: (val: string) => void;
   openCashierModal: boolean;
   setOpenCashierModal: (val: boolean) => void;
+  selectedAccount: string;
+  setSelectedAccount: (val: string) => void;
 }
