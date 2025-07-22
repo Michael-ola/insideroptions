@@ -34,7 +34,7 @@ const PartnerTab = ({
       case "Referral link":
         return <Referral />;
       case "Profit":
-        return <Profit />;
+        return <Profit handleNewView={handleNewView} />;
       case "FAQ":
         return <Faq />;
 

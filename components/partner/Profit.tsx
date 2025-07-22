@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import profitBanner from "@/lib/assets/profit_banner.jpg";
 import profile from "@/data/trader/profile.json";
@@ -15,7 +15,25 @@ const realAccount = profile.accounts.find(
   (account) => account.accountType === "INDIVIDUAL"
 );
 
-const Profit = () => {
+const EmptyState = ({ onAction }: { onAction: () => void }) => (
+  <div className="w-full h-full m-auto">
+    <div className="text-gray-400 text-xs flex flex-col items-center justify-center gap-1">
+      <p className="text-center">Nothing to display yet</p>
+      <p
+        onClick={onAction}
+        className="text-primary text-base font-semibold flex items-center gap-2 cursor-pointer"
+      >
+        Invite Traders <ChevronRight className="w-4 h-4" />
+      </p>
+    </div>
+  </div>
+);
+
+const Profit = ({
+  handleNewView,
+}: {
+  handleNewView: (val: string) => void;
+}) => {
   const [tab, setTab] = useState("Referral details");
   const [page, setPage] = useState(1);
 
@@ -28,6 +46,64 @@ const Profit = () => {
     (page - 1) * ITEMS_PER_PAGE,
     page * ITEMS_PER_PAGE
   );
+
+  const renderContent = () => {
+    if (tab === "Referral details") {
+      return paginatedData.length ? (
+        paginatedData.map((item, idx) => (
+          <div
+            key={idx}
+            className="grid grid-cols-4 text-[10px] sm:text-xs font-medium px-4 py-2"
+          >
+            <span>{item.id}</span>
+            <span>{item.date}</span>
+            <span>{item.deposited}</span>
+            <span
+              className={`${
+                item.status === "Active" ? "text-green-600" : "text-red-500"
+              }`}
+            >
+              {item.status}
+            </span>
+          </div>
+        ))
+      ) : (
+        <EmptyState onAction={() => handleNewView("Referral link")} />
+      );
+    }
+
+    if (tab === "Redeem Bonus") {
+      return paginatedDat2.length ? (
+        paginatedDat2.map((item, idx) => (
+          <div
+            key={idx}
+            className="grid grid-cols-4 text-[10px] sm:text-xs font-medium px-4 py-2"
+          >
+            <span>{item.id}</span>
+            <span>{item.referred}</span>
+            <span>{item.date}</span>
+            <span className="flex items-center justify-between">
+              {item.amount}
+              <span
+                className={`text-[10px] sm:text-xs p-1.5 rounded-[4px] ${
+                  item.status === "Active"
+                    ? "bg-primary text-[#0f1f1c]"
+                    : "bg-[#273634] text-gray-400"
+                }`}
+              >
+                Redeem
+              </span>
+            </span>
+          </div>
+        ))
+      ) : (
+        <EmptyState onAction={() => handleNewView("Referral link")} />
+      );
+    }
+
+    return null;
+  };
+
   return (
     <div className="w-full h-full px-4 pt-2 text-white">
       <section className="mb-4 rounded-lg overflow-hidden">
@@ -60,7 +136,7 @@ const Profit = () => {
             Referral History
           </h1>
 
-          <div className="relative bg-[#0f1f1c] rounded-xl border mb-4 border-white/5 flex flex-col gap-3">
+          <div className="w-full h-full min-h-[380px] bg-[#0f1f1c] rounded-xl border mb-4 border-white/5 flex flex-col gap-3">
             <div className="flex gap-20 justify-center border-b border-white/10 py-6 px-8">
               {TABS.map((t) => (
                 <button
@@ -95,58 +171,8 @@ const Profit = () => {
               </div>
             )}
 
-            {tab === "Referral details" &&
-              paginatedData.map((item, idx) => (
-                <div
-                  key={idx}
-                  className="grid grid-cols-4 text-[10px] sm:text-xs font-medium px-4 py-2"
-                >
-                  <span>{item.id}</span>
-                  <span>{item.date}</span>
-                  <span>{item.deposited}</span>
-                  <span>
-                    <span
-                      className={`
-                    text-[10px] sm:text-xs
-                    ${
-                      item.status === "Active"
-                        ? "text-green-600"
-                        : "text-red-500"
-                    }
-                  `}
-                    >
-                      {item.status}
-                    </span>
-                  </span>
-                </div>
-              ))}
-            {tab === "Redeem Bonus" &&
-              paginatedDat2.map((item, idx) => (
-                <div
-                  key={idx}
-                  className="grid grid-cols-4 text-[10px] sm:text-xs font-medium px-4 py-2"
-                >
-                  <span>{item.id}</span>
-                  <span>{item.referred}</span>
-                  <span>{item.date}</span>
-                  <span className="flex items-center justify-between">
-                    {item.amount}
-                    <span
-                      className={`
-                    text-[10px] sm:text-xs p-1.5 rounded-[4px]
-                    ${
-                      item.status === "Active"
-                        ? "bg-primary text-[#0f1f1c]"
-                        : "bg-[#273634] text-gray-400"
-                    }
-                  `}
-                    >
-                      Redeem
-                    </span>
-                  </span>
-                </div>
-              ))}
-            <div className="aboslute w-full flex justify-end">
+            {renderContent()}
+            <div className="w-full mt-auto flex justify-end">
               <div className="w-[90%] flex justify-between items-center py-6 px-4 text-xs">
                 <button
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
@@ -159,13 +185,15 @@ const Profit = () => {
                 <div className="px-3 py-1 flex items-center justify-center rounded-lg bg-[#2b2b2b] text-lg">
                   {page}
                 </div>
-                {(page + 1 !== pageCount && page !== pageCount) && (
+                {page + 1 !== pageCount && page !== pageCount && (
                   <div className="px-3 py-1 text-lg">{page + 1}</div>
                 )}
-                {(page + 1 !== pageCount &&  page + 2 !== pageCount && page !== pageCount) && (
-                  <div className="px-3 py-1 text-lg">...</div>
-                )}
-                {(page !== pageCount) && (
+                {page + 1 !== pageCount &&
+                  page + 2 !== pageCount &&
+                  page !== pageCount && (
+                    <div className="px-3 py-1 text-lg">...</div>
+                  )}
+                {page !== pageCount && (
                   <div className="px-3 py-1 text-lg">{pageCount}</div>
                 )}
                 <button
