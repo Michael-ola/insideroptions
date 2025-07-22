@@ -18,6 +18,8 @@ interface ModalWrapperProps {
   >;
   icon?: StaticImageData | string;
   onCloseHandler?: () => void;
+  handleBackNavigationForPartner: () => void;
+  canBack: boolean;
 }
 
 export default function ModalWrapper({
@@ -28,6 +30,8 @@ export default function ModalWrapper({
   handleViewChange,
   setIconOrImage,
   onCloseHandler,
+  handleBackNavigationForPartner,
+  canBack,
 }: ModalWrapperProps) {
   return (
     <motion.div
@@ -37,49 +41,52 @@ export default function ModalWrapper({
       transition={{ duration: 0.5 }}
       className="fixed top-0 left-0 z-50 w-full h-[calc(100vh-57px)] sm:left-[100px] sm:w-[25%] bg-transparent backdrop-blur-xs bg-opacity-60 flex items-center justify-center"
     >
-      <div className="w-full h-full bg-[#00040d] sm:bg-transparent rounded-lg shadow-lg p-6 sm:p-0 relative text-white border-r border-primary/10 flex flex-col gap-6">
+      <div className="w-full h-full bg-[#00040d] sm:bg-[#03080f]/20 rounded-lg shadow-lg py-4 sm:p-0 relative text-white sm:border-r sm:border-primary/15 flex flex-col gap-6">
         <div className="bg-gradient-to-r from-[#00040d] to-[#13171f] sm:bg-none px-8 py-4 border-y border-y-[#79DA7E]/30 sm:border-0 flex justify-between items-center gap-3">
           {title !== "My Cashier" &&
             !navItems.some((item) => item.label === title) && (
               <button
                 onClick={() => {
-                  const depositOptionLabels = depositOptions.map(
-                    (option) => option.label
+                  const isDepositLabel = depositOptions.some(
+                    (option) => option.label === title
                   );
-                  if (depositOptionLabels.includes(title)) {
+                  const isCryptoLabel = cryptoOptions.some(
+                    (option) => option.label === title
+                  );
+
+                  if (isDepositLabel) {
                     setIconOrImage(
                       cashierOptions.find(
                         (option) => option.label === "Deposit"
                       )?.icon || ""
                     );
                     handleViewChange("Deposit");
-                    if (onCloseHandler) {
-                      onCloseHandler();
-                    }
-                  } else if (
-                    cryptoOptions.map((option) => option.label).includes(title)
-                  ) {
+                  } else if (isCryptoLabel) {
                     setIconOrImage(
                       depositOptions.find(
                         (option) => option.label === "USDT, BITCOIN, ETHEREUM"
                       )?.icon || ""
                     );
                     handleViewChange("USDT, BITCOIN, ETHEREUM");
-                    if (onCloseHandler) {
-                      onCloseHandler();
-                    }
                   } else {
                     handleViewChange("My Cashier");
-                    if (onCloseHandler) {
-                      onCloseHandler();
-                    }
                   }
+
+                  onCloseHandler?.();
                 }}
                 className="text-white cursor-pointer"
               >
                 <ChevronLeft className="w-6 h-6" />
               </button>
             )}
+          {canBack && (
+            <button
+              onClick={handleBackNavigationForPartner}
+              className="text-white cursor-pointer"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+          )}
           <div className="flex items-center gap-3">
             {title !== "My Cashier" &&
               !navItems.some((item) => item.label === title) && (

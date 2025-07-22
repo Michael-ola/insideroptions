@@ -1,6 +1,6 @@
 import React from "react";
 import profile from "@/data/trader/profile.json";
-import referral from "@/lib/assets/referral_banner.png";
+import referral from "@/lib/assets/referral_banner.jpg";
 import Image from "next/image";
 import { Share2 } from "lucide-react";
 import copy from "@/lib/assets/copy.png";

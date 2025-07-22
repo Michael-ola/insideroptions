@@ -2,13 +2,18 @@
 import { useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Image from "next/image";
-import profitBanner from "@/lib/assets/profit_banner.png";
+import profitBanner from "@/lib/assets/profit_banner.jpg";
+import profile from "@/data/trader/profile.json";
 import mockData from "@/data/partner/mockData.json";
 import mockData2 from "@/data/partner/bonusData.json";
 
 const TABS = ["Referral details", "Redeem Bonus"];
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 6;
+
+const realAccount = profile.accounts.find(
+  (account) => account.accountType === "INDIVIDUAL"
+);
 
 const Profit = () => {
   const [tab, setTab] = useState("Referral details");
@@ -39,7 +44,9 @@ const Profit = () => {
           <div className="flex justify-between items-center">
             <div>
               <p className="text-sm text-white/70">Referral balance:</p>
-              <p className="text-3xl font-semibold">$0.00</p>
+              <p className="text-3xl font-semibold">
+                ${realAccount?.referralBalance}
+              </p>
             </div>
             <div className="text-right">
               <p className="text-sm text-white/70">All time invites</p>
@@ -53,7 +60,7 @@ const Profit = () => {
             Referral History
           </h1>
 
-          <div className="bg-[#0f1f1c] rounded-xl border mb-4 border-white/5 flex flex-col gap-3">
+          <div className="relative bg-[#0f1f1c] rounded-xl border mb-4 border-white/5 flex flex-col gap-3">
             <div className="flex gap-20 justify-center border-b border-white/10 py-6 px-8">
               {TABS.map((t) => (
                 <button
@@ -139,7 +146,7 @@ const Profit = () => {
                   </span>
                 </div>
               ))}
-            <div className="w-full flex justify-end">
+            <div className="aboslute w-full flex justify-end">
               <div className="w-[90%] flex justify-between items-center py-6 px-4 text-xs">
                 <button
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
@@ -148,9 +155,19 @@ const Profit = () => {
                 >
                   <ArrowLeft className="inline w-4 h-4" />
                 </button>
-                <div className="text-white/70">
-                  Page {page} of {pageCount}
+
+                <div className="px-3 py-1 flex items-center justify-center rounded-lg bg-[#2b2b2b] text-lg">
+                  {page}
                 </div>
+                {(page + 1 !== pageCount && page !== pageCount) && (
+                  <div className="px-3 py-1 text-lg">{page + 1}</div>
+                )}
+                {(page + 1 !== pageCount &&  page + 2 !== pageCount && page !== pageCount) && (
+                  <div className="px-3 py-1 text-lg">...</div>
+                )}
+                {(page !== pageCount) && (
+                  <div className="px-3 py-1 text-lg">{pageCount}</div>
+                )}
                 <button
                   onClick={() => setPage((p) => Math.min(pageCount, p + 1))}
                   disabled={page === pageCount}

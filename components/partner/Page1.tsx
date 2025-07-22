@@ -4,8 +4,10 @@ import React from "react";
 
 const Page1 = ({
   handleViewChange,
+  setCanBack,
 }: {
   handleViewChange: (val: string) => void;
+  setCanBack: (val: boolean) => void;
 }) => {
   const optionDetails = [
     "Join the InsiderOption LLC prop trading affiliate program and start earning!",
@@ -43,7 +45,10 @@ const Page1 = ({
         </div>
         <hr className="text-[#FFFFFF]/10" />
         <button
-          onClick={() => handleViewChange("Page 2")}
+          onClick={() => {
+            handleViewChange("Page 2");
+            setCanBack(true);
+          }}
           className="w-full text-black bg-primary px-6 py-3 rounded-xl flex items-center justify-center hover:bg-gradient-to-tr  from-primary to-[#b4e6b8]"
         >
           Get Started

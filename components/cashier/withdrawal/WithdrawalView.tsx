@@ -53,7 +53,7 @@ const WithdrawalView = ({
   ];
 
   return (
-    <div className="space-y-6 text-white p-4">
+    <div className="w-full h-full space-y-6 text-white p-4 overflow-y-auto custom-scrollbar">
       
       <div className="bg-[#79DA7E]/3 p-6 rounded-xl border border-white/3">
         <div className="flex items-start gap-3">

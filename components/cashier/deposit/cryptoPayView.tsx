@@ -4,7 +4,7 @@ import { QRCodeCanvas } from "qrcode.react";
 
 const CryptoPayView = ({ cryptoData }: { cryptoData: CryptoData | null }) => {
   return (
-    <div className="space-y- 16 sm:space-y-13 px-8 pt-6">
+    <div className="w-full h-full space-y- 16 sm:space-y-13 px-8 pt-6 overflow-y-auto custom-scrollbar">
       <div className="space-y-6">
         <p className="text-xs text-gray-400">
           Great, you are almost there! To complete the transaction, please
