@@ -45,7 +45,7 @@ const PartnerTab = ({
 
   return (
     <div className="w-full h-full pb-8 flex flex-col relative">
-      <div className="flex-1 overflow-y-auto custom-scrollbar">
+      <div className="flex-1 pb-8 overflow-y-auto custom-scrollbar">
         {renderView()}
       </div>
       {newView !== "Page 1" && (

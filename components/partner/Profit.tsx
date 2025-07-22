@@ -55,7 +55,7 @@ const Profit = () => {
           </div>
         </section>
 
-        <section className="flex flex-col gap-4">
+        <section className="flex flex-col gap-4 pb-10">
           <h1 className="text-base font-semibold text-center">
             Referral History
           </h1>

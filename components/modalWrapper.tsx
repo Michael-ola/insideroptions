@@ -39,9 +39,9 @@ export default function ModalWrapper({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="fixed top-0 left-0 z-50 w-full h-[calc(100vh-57px)] sm:left-[100px] sm:w-[25%] bg-transparent backdrop-blur-xs bg-opacity-60 flex items-center justify-center"
+      className="fixed top-0 left-0 h-[87vh] mt-[13vh] xl:h-[89vh] xl:mt-[11vh] z-50 w-full sm:left-[100px] sm:w-[25%] bg-transparent backdrop-blur-xs bg-opacity-60 flex items-center justify-center"
     >
-      <div className="w-full h-full bg-[#00040d] sm:bg-[#03080f]/20 rounded-lg shadow-lg py-4 sm:p-0 relative text-white sm:border-r sm:border-primary/15 flex flex-col gap-6">
+      <div className="w-full h-full bg-[#00040d] sm:bg-[#03080f]/20 rounded-lg shadow-lg py-4 relative text-white sm:border-r sm:border-primary/15 flex flex-col gap-6">
         <div className="bg-gradient-to-r from-[#00040d] to-[#13171f] sm:bg-none px-8 py-4 border-y border-y-[#79DA7E]/30 sm:border-0 flex justify-between items-center gap-3">
           {title !== "My Cashier" &&
             !navItems.some((item) => item.label === title) && (

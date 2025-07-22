@@ -102,7 +102,7 @@ const Faq = () => {
           </div>
         </div>
 
-        <div className="bg-primary/3 rounded-xl p-4 space-y-4 border border-white/5">
+        <div className="bg-primary/3 rounded-xl p-4 mb-8 space-y-4 border border-white/5">
           {faqs.map((faq, i) => (
             <div key={i} className="space-y-1 text-sm font-medium">
               <p className=" text-primary">{faq.q}</p>
