@@ -19,7 +19,7 @@ export default function TopNav() {
         width={45}
         height={45}
       />
-      <div className="flex gap-2 ml-auto h-[57px] items-center max-sm:mx-auto">
+      <div className="flex gap-2 ml-auto h-[52px] items-center max-sm:mx-auto">
         <div className="h-full bg-[#374143] mr-auto border-2 border-[#1A2C28] flex items-center justify-center cursor-pointer rounded-xl px-4 sm:hidden">
           <Image
             src="/images/hamburger-stack.png"
