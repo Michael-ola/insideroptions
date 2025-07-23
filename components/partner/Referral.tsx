@@ -40,12 +40,12 @@ const Referral = () => {
             <div className="flex items-center justify-between">
               <div className="text-sm">
                 <p className="text-white/20">Referral link</p>
-                <p>shortly.com/{profile.refererCode}</p>
+                <p>{`https://insider-option-web.vercel.app/signup?referral=${profile.refererCode}`}</p>
               </div>
               <Share2
                 onClick={() => {
                   navigator.clipboard.writeText(
-                    `shortly.com/${profile.refererCode}` || ""
+                    `https://insider-option-web.vercel.app/signup?referral=${profile.refererCode}` || ""
                   );
                    toast.info(`Link copied!`);
                 }}
