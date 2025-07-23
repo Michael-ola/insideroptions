@@ -5,14 +5,14 @@ import { motion } from "framer-motion";
 import { cryptoOptions } from "./cashier/deposit/CryptoView";
 import { depositOptions } from "./cashier/deposit/DepositList";
 import { cashierOptions } from "./cashier/CashierList";
-import { ModalView } from "./cashier/cashierModal";
 import { navItems } from "./dashboard/sideNav";
+import { helpOptions } from "./help/HelpList";
 
 interface ModalWrapperProps {
   title: string;
   onClose: () => void;
   children: ReactNode;
-  handleViewChange: (view: ModalView) => void;
+  handleViewChange: (view: string) => void;
   setIconOrImage: React.Dispatch<
     React.SetStateAction<StaticImageData | string>
   >;
@@ -53,6 +53,9 @@ export default function ModalWrapper({
                   const isCryptoLabel = cryptoOptions.some(
                     (option) => option.label === title
                   );
+                  const ishelpLabel = helpOptions.some(
+                    (option) => option.label === title
+                  );
 
                   if (isDepositLabel) {
                     setIconOrImage(
@@ -68,6 +71,9 @@ export default function ModalWrapper({
                       )?.icon || ""
                     );
                     handleViewChange("USDT, BITCOIN, ETHEREUM");
+                  } else if (ishelpLabel) {
+                    setIconOrImage("");
+                    handleViewChange("Help");
                   } else {
                     handleViewChange("My Cashier");
                   }
