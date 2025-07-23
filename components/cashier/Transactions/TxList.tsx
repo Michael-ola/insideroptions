@@ -55,7 +55,7 @@ const TxList = ({
       <div className="flex justify-end">
         <div
           onClick={() => handleViewChange("Filters")}
-          className="border border-primary/30 rounded-[8px] p-4"
+          className="border border-primary/30 rounded-[8px] p-4  cursor-pointer"
         >
           <Image src={filter} alt="Filter" />
         </div>
