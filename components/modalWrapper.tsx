@@ -18,8 +18,8 @@ interface ModalWrapperProps {
   >;
   icon?: StaticImageData | string;
   onCloseHandler?: () => void;
-  handleBackNavigationForPartner: () => void;
-  canBack: boolean;
+  handleBackNavigationForPartner?: () => void;
+  canBack?: boolean;
 }
 
 export default function ModalWrapper({
