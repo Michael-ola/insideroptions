@@ -32,7 +32,7 @@ const CashierList = ({ handleViewChange, setIconOrImage }: Props) => {
       {cashierOptions.map(({ label, icon }) => (
         <div
           key={label}
-          className="flex items-center gap-3 cursor-pointer text-gray-400 hover:text-green-400"
+          className="flex items-center px-6 gap-3 cursor-pointer text-gray-400 hover:text-green-400"
           onClick={() => {
             setIconOrImage(icon);
             handleViewChange(label as ModalView);

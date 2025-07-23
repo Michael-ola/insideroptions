@@ -168,7 +168,6 @@ export default function CashierModal({ onClose }: { onClose: () => void }) {
         );
       case "Swap (Profit bal - Real bal)":
         return (
-          // setView("Swap");
           <SwapView />
         );
       case "Transaction History":
