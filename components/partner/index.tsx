@@ -20,6 +20,7 @@ const PartnerModal = ({ onClose }: { onClose: () => void }) => {
   function handleBackNavigationForPartner() {
     const previousView = viewMap[view] || "Page 1";
     handleNewView(previousView);
+    setCanBack(false);
   }
 
   const renderView = () => {
