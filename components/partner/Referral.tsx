@@ -34,7 +34,7 @@ const Referral = () => {
         priority
         className="w-full h-auto border-b border-b-white/5"
       />
-      <div className="space-y-4">
+      <div className="space-y-4 pb-12">
         <div className="flex flex-col gap-3 p-6 bg-primary/5 border border-[#FFFFFF]/5 rounded-xl">
           <div className="flex flex-col gap-3">
             <div className="flex items-center justify-between">

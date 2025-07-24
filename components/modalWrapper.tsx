@@ -41,7 +41,7 @@ export default function ModalWrapper({
       transition={{ duration: 0.5 }}
       className="fixed top-0 left-0 h-[87vh] mt-[13vh] xl:h-[89vh] xl:mt-[11vh] z-50 w-full sm:left-[100px] sm:w-[25%] bg-transparent backdrop-blur-xs bg-opacity-60 flex items-center justify-center"
     >
-      <div className="w-full h-full bg-[#00040d] sm:bg-[#03080f]/20 rounded-lg shadow-lg py-4 relative text-white sm:border-r sm:border-primary/15 flex flex-col gap-6">
+      <div className="w-full h-full bg-[#00040d] sm:bg-[#03080f]/20 rounded-lg shadow-lg py-4 relative text-white sm:border-r sm:border-primary/15 flex flex-col gap-2">
         <div className="bg-gradient-to-r from-[#00040d] to-[#13171f] sm:bg-none px-8 py-4 border-y border-y-[#79DA7E]/30 sm:border-0 flex items-center gap-8">
           {title !== "My Cashier" &&
             !navItems.some((item) => item.label === title) && (

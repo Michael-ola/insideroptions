@@ -7,6 +7,8 @@ import profile from "@/data/trader/profile.json";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { apiClient } from "@/lib/api-client";
+import greenSwap from "@/lib/assets/green_swap.png";
+import Image from "next/image";
 
 const SwapView = () => {
   const [source, setSource] = useState<"profit" | "referral" | "real">("real");
@@ -99,7 +101,9 @@ const SwapView = () => {
 
               <span className="text-gray-400 text-xs">From:</span>
             </div>
-            <div className="absolute z-50 right-[20%] top-[50%] -translate-x-1/2 -translate-y-1/2 bg-[#0C0F16] w-12 h-12 rounded-full"></div>
+            <div className="absolute z-50 right-[20%] top-[50%] -translate-x-1/2 -translate-y-1/2 bg-[#0C0F16] w-12 h-12 rounded-full flex items-center justify-center">
+              <Image src={greenSwap} alt="green swap Icon" priority />
+            </div>
 
             <div className="w-full relative bg-[#20282b] px-6 py-4 text-white flex items-start justify-between">
               <div className="w-full text-white">
