@@ -45,11 +45,31 @@ const PartnerTab = ({
 
   return (
     <div className="w-full h-full pb-8 flex flex-col relative">
-      <div className="flex-1 pb-8 overflow-y-auto custom-scrollbar">
+      {newView !== "Page 1" && (
+        <div className="sticky left-0 top-0 z-50 sm:hidden w-full px-10 bg-[#182421] py-6 border-b border-b-primary/20  mb-4">
+          <div className="w-full flex items-center justify-between">
+            {links.map((link, idx) => (
+              <div
+                key={idx}
+                onClick={() => handleNewView(link.label)}
+                className={`flex items-center gap-2 cursor-pointer ${
+                  newView === link.label && "text-primary"
+                }`}
+              >
+                <Image src={link.imgSrc} alt={link.label} />{" "}
+                <span className="font-medium text-xs whitespace-nowrap">
+                  {link.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+      <div className="flex-1 pb-8 pt-8 sm:pt-0 overflow-y-auto custom-scrollbar">
         {renderView()}
       </div>
       {newView !== "Page 1" && (
-        <div className="sticky bottom-0 left-0 w-full px-10 bg-[#182421] py-6 border-t border-t-primary/20 rounded-bl-2xl rounded-br-2xl">
+        <div className="sticky left-0 bottom-0 max-sm:hidden w-full px-10 bg-[#182421] py-6 border-t border-t-primary/20 rounded-bl-2xl rounded-br-2xl">
           <div className="w-full flex items-center justify-between">
             {links.map((link, idx) => (
               <div
