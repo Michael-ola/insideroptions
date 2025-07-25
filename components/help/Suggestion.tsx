@@ -1,12 +1,18 @@
-import React, { useState } from "react";
-import SuggestionForm from "./SuggestionForm";
+import React, { forwardRef, useState } from "react";
+import SuggestionForm, { SuggestionFormRef } from "./SuggestionForm";
 
-const Suggestion = () => {
-  const [form, setForm] = useState<boolean>(false);
-  return (
-    <div className="px-8 pt-6 w-full h-full space-y-12 overflow-y-auto custom-scrollbar">
-      {!form ? (
-        <div className="flex flex-col gap-6">
+interface Props {
+  setIsClear: (val: boolean) => void;
+  setIsConfirm: (val: boolean) => void;
+}
+
+const Suggestion = forwardRef<SuggestionFormRef, Props>(
+  ({ setIsClear, setIsConfirm }, ref) => {
+    const [form, setForm] = useState(false);
+
+    return (
+      <div className="px-8 pt-6 w-full h-full space-y-12 overflow-y-auto custom-scrollbar">
+        <div className={form ? "hidden" : "flex flex-col gap-6"}>
           <div className="space-y-2">
             <h4 className="font-semibold text-base text-center">
               Recommend a new feature
@@ -33,11 +39,14 @@ const Suggestion = () => {
             </p>
           </div>
         </div>
-      ) : (
-        <SuggestionForm />
-      )}
-    </div>
-  );
-};
 
+        <div className={form ? "block" : "hidden"}>
+          <SuggestionForm ref={ref} setIsClear={setIsClear} setIsConfirm={setIsConfirm} />
+        </div>
+      </div>
+    );
+  }
+);
+
+Suggestion.displayName = "Suggestion";
 export default Suggestion;

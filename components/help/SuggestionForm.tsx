@@ -1,12 +1,39 @@
 "use client";
 
-import React, { useState } from "react";
+import React, {
+  forwardRef,
+  ForwardRefRenderFunction,
+  useImperativeHandle,
+  useState,
+} from "react";
 import { Check, ChevronDown, Upload } from "lucide-react";
+import Image from "next/image";
+import { toast } from "react-toastify";
 
-const SuggestionForm = () => {
-  const [category, setCategory] = useState("");
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+interface Props {
+  setIsClear: (val: boolean) => void;
+  setIsConfirm: (val: boolean) => void;
+}
+
+export interface SuggestionFormRef {
+  clearForm: () => void;
+  confirmForm: () => void;
+}
+
+const SuggestionForm: ForwardRefRenderFunction<SuggestionFormRef, Props> = (
+  { setIsClear, setIsConfirm },
+  ref
+) => {
+  const [formData, setFormData] = useState({
+    category: "",
+    title: "",
+    description: "",
+    fileUrl: "",
+  });
+  //   const [category, setCategory] = useState("");
+  //   const [title, setTitle] = useState("");
+  //   const [description, setDescription] = useState("");
+  //   const [url, setUrl] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [agreed, setAgreed] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -19,13 +46,30 @@ const SuggestionForm = () => {
     "Other suggestions",
   ];
 
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   const handleClear = () => {
-    setCategory("");
-    setTitle("");
-    setDescription("");
+    formData.category = "";
+    formData.title = "";
+    formData.description = "";
+    formData.fileUrl = "";
     setFile(null);
     setAgreed(false);
   };
+
+  const handleForm = () => {
+    console.log("Submit Form: ", formData);
+    handleClear();
+  };
+
+  useImperativeHandle(ref, () => ({
+    clearForm: handleClear,
+    confirmForm: handleForm,
+  }));
 
   return (
     <div className="w-full text-white space-y-6">
@@ -45,7 +89,7 @@ const SuggestionForm = () => {
           className="w-full bg-[#161a21] rounded-tl-xl rounded-tr-xl border-b border-b-white/10 px-4 py-3 flex justify-between items-center text-left"
           onClick={() => setIsOpen(!isOpen)}
         >
-          {category || "Select Category"}
+          {formData.category || "Select Category"}
           <ChevronDown className="w-4 h-4 text-gray-400" />
         </button>
 
@@ -55,7 +99,7 @@ const SuggestionForm = () => {
               <li
                 key={label}
                 onClick={() => {
-                  setCategory(label);
+                  setFormData({ ...formData, ["category"]: label });
                   setIsOpen(false);
                 }}
                 className="px-4 py-2 hover:bg-white/10 cursor-pointer text-sm"
@@ -71,9 +115,10 @@ const SuggestionForm = () => {
       <div>
         <label className="block mb-2 text-sm text-white/80">Title</label>
         <input
-          disabled={!category}
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          name="title"
+          disabled={!formData.category}
+          value={formData.title}
+          onChange={handleChange}
           placeholder="Title"
           maxLength={256}
           className="w-full px-4 py-3 bg-transparent border border-white/20 rounded-xl text-white outline-none placeholder:text-white/40 focus:border-0 focus:ring-1 focus-within:ring-primary"
@@ -87,9 +132,10 @@ const SuggestionForm = () => {
       <div>
         <label className="block mb-2 text-sm text-white/80">Description</label>
         <textarea
-          disabled={!category}
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          name="description"
+          disabled={!formData.category}
+          value={formData.description}
+          onChange={handleChange}
           placeholder="Write something"
           minLength={10}
           rows={2}
@@ -108,24 +154,52 @@ const SuggestionForm = () => {
         <input
           type="file"
           accept="image/*,.pdf"
-          onChange={(e) => setFile(e.target.files?.[0] || null)}
+          onChange={(e) => {
+            const selected = e.target.files?.[0] || null;
+            if (selected) {
+              if (selected.size > 5000000) {
+                toast.error("File Size is greater than 5Mb");
+                return;
+              }
+              setFile(selected);
+              setFormData({
+                ...formData,
+                ["fileUrl"]: URL.createObjectURL(selected),
+              });
+            } else {
+              console.log("No file selected");
+            }
+          }}
           className="hidden"
           id="file-upload"
         />
         <label
           htmlFor="file-upload"
-          className="w-full cursor-pointer bg-[#79DA7E] text-black text-sm font-medium flex items-center justify-center gap-2 px-4 py-3 rounded-xl hover:bg-gradient-to-tr  from-primary to-[#b4e6b8]"
+          className="w-full cursor-pointer bg-primary text-black text-sm font-medium flex items-center justify-center gap-2 px-4 py-3 rounded-xl hover:bg-gradient-to-tr  from-primary to-[#b4e6b8]"
         >
           <Upload className="w-4 h-4" />
           Upload
         </label>
+        {file?.type.startsWith("image/") && formData.fileUrl ? (
+          <div className="w-full flex justify-center">
+            <Image
+              src={formData.fileUrl}
+              alt="Image Preview"
+              width={200}
+              height={200}
+              className="rounded-xl"
+            />
+          </div>
+        ) : (
+          <div className="text-white/70 text-sm text-center">{file?.name}</div>
+        )}
       </div>
 
       {/* Terms */}
       <div className="flex items-center gap-3">
         <div
           onClick={() => {
-            if (!description && !title && !file) return;
+            if (!formData.description && !formData.title && !file) return;
             setAgreed(!agreed);
           }}
           className={`
@@ -147,12 +221,16 @@ const SuggestionForm = () => {
       <div className="w-full flex items-center gap-2 pb-8">
         <button
           disabled={!agreed}
-          onClick={handleClear}
+          onClick={() => setIsClear(true)}
           className="px-6 py-3 w-full text-primary border border-primary rounded-xl bg-transparent text-sm font-semibold"
         >
           Clear
         </button>
-        <button className="px-6 py-3 w-full bg-primary text-black text-sm font-semibold rounded-xl">
+        <button
+          disabled={!agreed}
+          onClick={() => setIsConfirm(true)}
+          className="px-6 py-3 w-full bg-primary text-black text-sm font-semibold rounded-xl"
+        >
           Send
         </button>
       </div>
@@ -160,4 +238,4 @@ const SuggestionForm = () => {
   );
 };
 
-export default SuggestionForm;
+export default forwardRef(SuggestionForm);

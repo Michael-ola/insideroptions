@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ModalWrapper from "../modalWrapper";
 import { AnimatePresence, motion } from "framer-motion";
 import { StaticImageData } from "next/image";
@@ -8,28 +8,9 @@ import HelpList from "./HelpList";
 import Support from "./Support";
 import Faq from "./Faq";
 import Suggestion from "./Suggestion";
+import ConfirmModal from "../ConfirmationModal";
+import { SuggestionFormRef } from "./SuggestionForm";
 
-export type SelectedCrypto =
-  | "USDT (ERC20)"
-  | "BITCOIN (BTC)"
-  | "USDT (TRC20)"
-  | "ETHEREUM (ETH)";
-
-export type DepositOption =
-  | "USDT, BITCOIN, ETHEREUM"
-  | "Bank Transfer"
-  | "Binance Pay"
-  | "Visa/Master Card";
-
-export type ModalView =
-  | "My Cashier"
-  | "Deposit"
-  | "Withdrawals"
-  | "Swap (Profit bal - Real bal)"
-  | "Transaction History"
-  | "Filters"
-  | DepositOption
-  | SelectedCrypto;
 
 export type Transaction = {
   id: string;
@@ -51,8 +32,20 @@ export type CryptoData = {
 export default function HelpModal({ onClose }: { onClose: () => void }) {
   const [view, setView] = useState<string>("Help");
   const [iconOrImage, setIconOrImage] = useState<StaticImageData | string>("");
+   const [isClear, setIsClear] = useState<boolean>(false);
+   const [isConfirm, setIsConfirm] = useState<boolean>(false);
 
   const handleViewChange = (nextView: string) => setView(nextView);
+
+  const suggestionFormRef = useRef<SuggestionFormRef>(null);
+
+  const triggerClear = () => {
+    suggestionFormRef.current?.clearForm();
+  };
+
+  const triggerConfirm = () => {
+    suggestionFormRef.current?.confirmForm();
+  }
 
   const renderView = () => {
     switch (view) {
@@ -68,28 +61,46 @@ export default function HelpModal({ onClose }: { onClose: () => void }) {
       case "FAQ":
         return <Faq />;
       case "Suggestions":
-        return <Suggestion />;
+        return <Suggestion ref={suggestionFormRef} setIsClear={setIsClear} setIsConfirm={setIsConfirm} />;
       default:
         return null;
     }
   };
 
   return (
-    <motion.div layout>
-      <AnimatePresence>
-        <ModalWrapper
-          title={view}
-          icon={iconOrImage}
-          onClose={() => {
-            onClose();
-          }}
-          //   onCloseHandler={onCloseHandler}
-          handleViewChange={handleViewChange}
-          setIconOrImage={setIconOrImage}
-        >
-          {renderView()}
-        </ModalWrapper>
-      </AnimatePresence>
-    </motion.div>
+    <div>
+      <motion.div layout>
+        <AnimatePresence>
+          <ModalWrapper
+            title={view}
+            icon={iconOrImage}
+            onClose={() => {
+              onClose();
+            }}
+            handleViewChange={handleViewChange}
+            setIconOrImage={setIconOrImage}
+          >
+            {renderView()}
+          </ModalWrapper>
+        </AnimatePresence>
+      </motion.div>
+
+      {isClear && (
+        <ConfirmModal
+          onCancel={() => setIsClear(false)}
+          onConfirm={triggerClear}
+          title="Close Deal"
+          message="Are you sure you want to clear the Suggestion?"
+        />
+      )}
+      {isConfirm && (
+        <ConfirmModal
+          onCancel={() => setIsConfirm(false)}
+          onConfirm={triggerConfirm}
+          title="Confirm submission"
+          message="Are you sure you want to submit the Suggestion?"
+        />
+      )}
+    </div>
   );
 }
