@@ -1,8 +1,10 @@
+export type SeriesType = 'area' | 'candles' | 'lines';
+
 export interface DashboardPropsType {
   openGraphStyleModal: boolean;
   setOpenGraphStyleModal: (val: boolean) => void;
-  chartStyle: string;
-  setChartStyle: (val: string) => void;
+  chartStyle: SeriesType;
+  setChartStyle: (val: SeriesType) => void;
   showTraderFeed: boolean;
   setShowTraderFeed: (val: boolean) => void;
   selectedSideNavTab: string;

@@ -6,13 +6,14 @@ import { useState } from "react";
 import GraphStyleModal from "@/components/dashboard/graphStyleModal";
 import TopTraderFeedCard from "@/components/dashboard/topTraderFeed";
 import { DashboardContext } from "@/context/DashboardContext";
-import type { DashboardPropsType } from "@/types/dashboard";
+import type { DashboardPropsType, SeriesType } from "@/types/dashboard";
 import SideNav from "@/components/dashboard/sideNav";
 import TopNav from "@/components/dashboard/TopNav";
+import TradingChart from "@/components/dashboard/tradingChart";
 
 export default function DashboardPage() {
   const [openGraphStyleModal, setOpenGraphStyleModal] = useState(false);
-  const [chartStyle, setChartStyle] = useState("lines");
+  const [chartStyle, setChartStyle] = useState<SeriesType>("area");
   const [showTraderFeed, setShowTraderFeed] = useState(false);
   const [openCashierModal, setOpenCashierModal] = useState<boolean>(false);
   const [selectedSideNavTab, setSelectedSideNavTab] = useState("Trade");
@@ -44,6 +45,7 @@ export default function DashboardPage() {
         <AssetComponent />
         <ControlPanel />
         <SideNav />
+        <TradingChart />
         <GraphStyleModal />
       </div>
     </DashboardContext.Provider>
