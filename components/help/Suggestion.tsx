@@ -1,5 +1,7 @@
 import React, { forwardRef, useState } from "react";
 import SuggestionForm, { SuggestionFormRef } from "./SuggestionForm";
+import SuggestionCard from "./SuggestionTag";
+import suggestions from "@/data/help/suggestions.json";
 
 interface Props {
   setIsClear: (val: boolean) => void;
@@ -38,10 +40,20 @@ const Suggestion = forwardRef<SuggestionFormRef, Props>(
               you like, or don&apos;t
             </p>
           </div>
+          <div className="space-y-4">
+            {suggestions.length &&
+              suggestions.map((sugg, idx) => (
+                <SuggestionCard key={idx} {...sugg} />
+              ))}
+          </div>
         </div>
 
         <div className={form ? "block" : "hidden"}>
-          <SuggestionForm ref={ref} setIsClear={setIsClear} setIsConfirm={setIsConfirm} />
+          <SuggestionForm
+            ref={ref}
+            setIsClear={setIsClear}
+            setIsConfirm={setIsConfirm}
+          />
         </div>
       </div>
     );
