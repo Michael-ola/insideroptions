@@ -30,10 +30,6 @@ const SuggestionForm: ForwardRefRenderFunction<SuggestionFormRef, Props> = (
     description: "",
     fileUrl: "",
   });
-  //   const [category, setCategory] = useState("");
-  //   const [title, setTitle] = useState("");
-  //   const [description, setDescription] = useState("");
-  //   const [url, setUrl] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [agreed, setAgreed] = useState(false);
   const [isOpen, setIsOpen] = useState(false);

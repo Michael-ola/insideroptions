@@ -10,6 +10,7 @@ import Faq from "./Faq";
 import Suggestion from "./Suggestion";
 import ConfirmModal from "../ConfirmationModal";
 import { SuggestionFormRef } from "./SuggestionForm";
+import Regulations from "./Regulations";
 
 
 export type Transaction = {
@@ -62,6 +63,8 @@ export default function HelpModal({ onClose }: { onClose: () => void }) {
         return <Faq />;
       case "Suggestions":
         return <Suggestion ref={suggestionFormRef} setIsClear={setIsClear} setIsConfirm={setIsConfirm} />;
+      case "Regulations":
+        return <Regulations />;
       default:
         return null;
     }
