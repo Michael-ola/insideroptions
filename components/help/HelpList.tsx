@@ -6,7 +6,7 @@ import faq from "@/lib/assets/faq_icon.png";
 import regulation from "@/lib/assets/regulation_icon.png";
 
 export interface HelpList {
-  label: string;
+  label: "Support" | "FAQ" | "Suggestions" | "Regulations";
   icon: StaticImageData;
 }
 
@@ -30,7 +30,7 @@ const HelpList = ({ handleViewChange, setIconOrImage }: Props) => {
       {helpOptions.map(({ label, icon }) => (
         <div
           key={label}
-          className="flex items-center px-6 gap-3 cursor-pointer text-gray-400 hover:text-green-400"
+          className="flex items-center px-6 gap-3 cursor-pointer text-gray-400 hover:text-primary"
           onClick={() => {
             setIconOrImage(icon);
             handleViewChange(label as string);

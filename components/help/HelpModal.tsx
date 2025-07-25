@@ -5,6 +5,9 @@ import ModalWrapper from "../modalWrapper";
 import { AnimatePresence, motion } from "framer-motion";
 import { StaticImageData } from "next/image";
 import HelpList from "./HelpList";
+import Support from "./Support";
+import Faq from "./Faq";
+import Suggestion from "./Suggestion";
 
 export type SelectedCrypto =
   | "USDT (ERC20)"
@@ -51,11 +54,6 @@ export default function HelpModal({ onClose }: { onClose: () => void }) {
 
   const handleViewChange = (nextView: string) => setView(nextView);
 
-  //   const onCloseHandler = () => {
-  //     setSelectedCrypto(null);
-  //     // setConfirmed(false);
-  //   };
-
   const renderView = () => {
     switch (view) {
       case "Help":
@@ -65,6 +63,12 @@ export default function HelpModal({ onClose }: { onClose: () => void }) {
             setIconOrImage={setIconOrImage}
           />
         );
+      case "Support":
+        return <Support />;
+      case "FAQ":
+        return <Faq />;
+      case "Suggestions":
+        return <Suggestion />;
       default:
         return null;
     }
