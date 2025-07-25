@@ -45,13 +45,12 @@ const TradingChart = () => {
     }, [chartInstance, chartStyle]);
 
     return (
-        <div style={{ padding: 12 }}>
+        <div className="w-full h-full relative">
             <div
                 ref={containerRef}
                 style={{
                     width: '100%',
                     height: '68vh',
-                    position: 'relative',
                 }}
             />
         </div>

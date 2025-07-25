@@ -43,9 +43,9 @@ export default function DashboardPage() {
         <TopTraderFeedCard />
         <TopNav />
         <AssetComponent />
+        <TradingChart />
         <ControlPanel />
         <SideNav />
-        <TradingChart />
         <GraphStyleModal />
       </div>
     </DashboardContext.Provider>
