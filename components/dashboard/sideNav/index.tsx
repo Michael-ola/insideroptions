@@ -14,6 +14,7 @@ import AutoTradeIcon from "../icons/autoTradeIcon";
 import LogoutIcon from "../icons/logoutIcon";
 import CashierModal from "@/components/cashier/cashierModal";
 import PartnerModal from "@/components/partner";
+import HelpModal from "@/components/help/HelpModal";
 
 export const navItems = [
   { label: "Trade", icon: TradeIcon },
@@ -113,6 +114,9 @@ const ModalComponent = ({
   } 
   else if (nav === "Partner") {
     return <PartnerModal onClose={closeModalFunction} />;
+  } 
+  else if (nav === "Help") {
+    return <HelpModal onClose={closeModalFunction} />;
   } 
   else {
     return <></>;

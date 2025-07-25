@@ -107,10 +107,6 @@ export default function Navbar() {
                     className="w-full h-auto"
                   />
                 </div>
-
-                {/* <Image src={line} alt="Line Or Divider" /> */}
-
-                {/* <Image src={years} alt="4 years Logo" className="max-sm:hidden" /> */}
               </div>
             </div>
           ) : (
