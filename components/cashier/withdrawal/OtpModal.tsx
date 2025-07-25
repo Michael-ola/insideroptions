@@ -136,7 +136,7 @@ export default function OtpModal({
                   onChange={(e) => handleChange(e.target.value, index)}
                   onKeyDown={(e) => handleKeyDown(e, index)}
                   onPaste={handlePaste}
-                  className="w-10 h-12 rounded-md bg-secondary text-center text-white text-lg font-bold border border-white/20 focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-10 h-12 rounded-md bg-secondary text-center text-white text-lg font-bold border border-white/20 focus:outline-none focus:ring-1 focus:ring-primary"
                 />
               ))}
             </div>
