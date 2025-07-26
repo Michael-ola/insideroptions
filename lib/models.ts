@@ -47,3 +47,17 @@ export type ContactUsFormData = {
   message: string;
   recaptchaToken: string;
 };
+
+export interface Asset {
+  id: number;
+  symbol: string;
+  assetName: string;
+  assetType: string;
+  basePrice: number;
+  imageUrl: string;
+  createdDate: Date;
+  lastModifiedDate: Date;
+  change: number;
+  profit: number;
+  status: string;
+}

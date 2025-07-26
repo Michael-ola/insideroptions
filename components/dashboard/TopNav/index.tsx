@@ -11,7 +11,7 @@ export default function TopNav() {
   const { selectedAccount } = useDashboardContext();
 
   return (
-    <nav className="relative w-full px-6 py-3 h-[13vh] xl:h-[11vh] flex justify-between items-center bg-[#0D1117] max-sm:mb-auto max-sm:pt-7 max-sm:h-[12vh] max-sm:bg-transparent">
+    <nav className="relative w-full px-6 py-3 h-[13vh] xl:h-[11vh] flex justify-between items-center bg-[#0D1117] max-sm:pt-7 max-sm:h-[10vh] max-sm:bg-transparent max-sm:fixed max-sm:top-0 max-sm:left-0 max-sm:right-0">
       <Image
         src="/images/logo.png"
         className="ml-2 pt-2 max-sm:hidden"

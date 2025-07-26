@@ -45,9 +45,9 @@ const TradingChart = () => {
     }, [chartInstance, chartStyle]);
 
     return (
-        <div className="w-full h-[90vh] max-sm:h-[50vh] flex items-center justify-center">
+        <div className="w-full h-[90vh] max-sm:h-[55vh] max-sm:z-0 flex items-center justify-center">
             <div
-                className="w-full h-full relative"
+                className="w-full h-full"
                 ref={containerRef}
                 style={{
                     width: '100%',

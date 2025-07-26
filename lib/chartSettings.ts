@@ -1,3 +1,4 @@
+import { streamAssetPriceByAssetId } from "@/services/assetService";
 import { SeriesType } from "@/types/dashboard";
 import {
     AreaSeries,
@@ -73,7 +74,10 @@ export const createSeries = (chartInstance: any, type: SeriesType): ISeriesApi<a
         case 'area':
             series = chartInstance.addSeries(AreaSeries);
             series.applyOptions(areaChartOptions);
-            series.setData(sampleAreaData);
+            streamAssetPriceByAssetId(1, (data) => {
+                series.update({ time: data.timestamp, value: data.price });
+            });
+            // series.setData(sampleAreaData);
             break;
         case 'candles':
             series = chartInstance.addSeries(CandlestickSeries);
