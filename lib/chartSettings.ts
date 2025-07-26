@@ -12,7 +12,7 @@ export const chartOptions = {
     },
     rightPriceScale: {
         // This disables the "time label" shown near the last value
-        visible: false,
+        visible: true,
         borderVisible: false,
         entireTextOnly: true,
     },
