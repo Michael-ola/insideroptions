@@ -43,12 +43,8 @@ export default function DashboardPage() {
         <TopTraderFeedCard />
         <TopNav />
         <AssetComponent />
-        <div className="relative">
-          <TradingChart />
-          <div className="absolute top-4 right-4 z-10">
-            <ControlPanel />
-          </div>
-        </div>
+        <TradingChart />
+        <ControlPanel />
       </div>
       <SideNav />
       <GraphStyleModal />
