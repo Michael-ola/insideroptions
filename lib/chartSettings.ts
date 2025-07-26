@@ -1,5 +1,11 @@
 import { SeriesType } from "@/types/dashboard";
-import { AreaSeries, CandlestickSeries, ColorType, ISeriesApi, LineSeries } from "lightweight-charts";
+import {
+    AreaSeries,
+    CandlestickSeries,
+    ColorType,
+    ISeriesApi,
+    LineSeries
+} from "lightweight-charts";
 
 export const chartOptions = {
     layout: {

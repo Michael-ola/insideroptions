@@ -43,11 +43,15 @@ export default function DashboardPage() {
         <TopTraderFeedCard />
         <TopNav />
         <AssetComponent />
-        <TradingChart />
-        <ControlPanel />
-        <SideNav />
-        <GraphStyleModal />
+        <div className="relative">
+          <TradingChart />
+          <div className="absolute top-4 right-4 z-10">
+            <ControlPanel />
+          </div>
+        </div>
       </div>
+      <SideNav />
+      <GraphStyleModal />
     </DashboardContext.Provider>
   );
 }
