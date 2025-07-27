@@ -41,7 +41,7 @@ export default function BalanceCard({
   return (
     <>
       <div
-        className={`bg-[#1B1F23] border-2 border-[#1A2C28] text-white px-4 py-1 justify-center h-full rounded-xl flex flex-col items-start ${className}`}
+        className={`bg-[#1B1F23] border border-[#1A2C28] text-white px-4 py-1 pt-2 justify-center h-[70%] max-sm:h-[72%] rounded-xl flex flex-col items-start ${className}`}
         {...rest}
         onClick={() =>
           accountType &&
@@ -49,8 +49,8 @@ export default function BalanceCard({
           setOpenAccountsModal(true)
         }
       >
-        <span className="font-medium text-lg leading-5">{`$${amount}`}</span>
-        <div className="flex items-center text-sm max-sm:text-[12px]">
+        <span className="font-medium text-xs leading-2.5">{`$${amount}`}</span>
+        <div className="flex items-center text-[10px] max-sm:text-[12px]">
           <span className="text-white/60 capitalize">{displayLabel}</span>
           {dropdown && <ChevronDown className="w-4 h-4 text-white/60 ml-1" />}
         </div>

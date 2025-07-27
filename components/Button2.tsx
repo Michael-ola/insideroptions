@@ -6,6 +6,7 @@ type MyButtonProps = {
   children: ReactNode;
   link?: string;
   caret?: boolean;
+  image?: string;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button: React.FC<MyButtonProps> = ({
@@ -13,6 +14,7 @@ const Button: React.FC<MyButtonProps> = ({
   link,
   className,
   caret,
+  image,
   ...rest
 }) => {
   return link ? (
@@ -22,11 +24,11 @@ const Button: React.FC<MyButtonProps> = ({
         className={`flex items-center justify-center cursor-pointer gap-4 bg-[#99E39E] text-black w-[148px] h-[44px] rounded-[12px] transition-all duration-300 hover:bg-gradient-to-r hover:from-[#99E39E] hover:to-[#b3ffb8] ${className}`}
       >
         {children}
-        {caret && (
+        {(caret || image) && (
           <Image
             width={7.36}
             height={12.73}
-            src="/images/right-caret.png"
+            src={image || "/images/right-caret.png"}
             alt=">"
           />
         )}
@@ -38,11 +40,11 @@ const Button: React.FC<MyButtonProps> = ({
       className={`flex items-center justify-center cursor-pointer gap-4 bg-[#99E39E] text-black w-[148px] h-[44px] rounded-[12px] transition-all duration-300 hover:bg-gradient-to-r hover:from-[#99E39E] hover:to-[#b3ffb8] ${className}`}
     >
       {children}
-      {caret && (
+      {(caret || image) && (
         <Image
           width={7.36}
           height={12.73}
-          src="/images/right-caret.png"
+          src={image || "/images/right-caret.png"}
           alt=">"
         />
       )}

@@ -24,7 +24,7 @@ const styles = [
     id: "lines",
     label: "Lines",
     icon: "/images/lineChart.png",
-    darkIcon: "/images/lineChart.png",
+    darkIcon: "/images/darkLineIcon.png",
   },
 ];
 

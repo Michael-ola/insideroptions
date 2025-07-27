@@ -92,8 +92,8 @@ export default function AssetModal({ isOpen, onClose }: AssetModalProps) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="absolute top-15 max-sm:-top-1 max-sm:w-[80vw] max-sm:fixed max-sm:h-[70vh] inset-0 max-sm:-left-[35vw] z-[60] pb-10 flex flex-col w-[293px] md:w-[320px] h-[85vh]
-                 overflow-hidden rounded-2xl text-sm ring-1 ring-white/10"
+      className="absolute top-10 max-sm:-top-1 max-sm:w-[90vw] max-sm: max-sm:fixed max-sm:h-[70vh] inset-0 max-sm:-left-[41vw] z-[60] pb-10 flex flex-col w-[293px] md:w-[320px] h-[85vh]
+                 overflow-hidden rounded-2xl text-sm"
     >
       <div className="absolute inset-0 -z-10">
         {/* Background for larger screens */}
@@ -109,7 +109,7 @@ export default function AssetModal({ isOpen, onClose }: AssetModalProps) {
         </div>
 
         {/* Background for mobile screens */}
-        <div className="block sm:hidden h-full relative">
+        <div className="block sm:hidden h-full w-full relative">
           <div className="absolute inset-0 backdrop-blur-sm" />
           <div className="absolute inset-0 bg-[#050d15] opacity-30" />
         </div>

@@ -82,7 +82,22 @@
   background: transparent;
 }
 
+.modal-offset {
+  /* padding-top: var(--top-nav-height); */
+  padding-left: var(--side-nav-width);
+  @apply max-sm:pl-0;
+}
+
+.dashboard-chart-offset {
+  width: calc(100vw - --side-nav-width);
+  margin-left: var(--side-nav-width);
+  margin-top: calc(var(--top-nav-height) * -1);
+  @apply max-sm:ml-0;
+}
+
 :root {
+  --top-nav-height: 7vh;
+  --side-nav-width: 80px;
   --primary: hsla(123, 57%, 66%, 1);
   --primary-btn-gradient-start: hsla(123, 57%, 66%, 1);
   --primary-btn-gradient-end: hsla(124, 100%, 85%, 1);

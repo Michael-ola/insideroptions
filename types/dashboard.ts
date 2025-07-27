@@ -1,3 +1,5 @@
+import { TraderDataType } from "./TraderDataType";
+
 export interface DashboardPropsType {
   openGraphStyleModal: boolean;
   setOpenGraphStyleModal: (val: boolean) => void;
@@ -11,4 +13,6 @@ export interface DashboardPropsType {
   setOpenCashierModal: (val: boolean) => void;
   selectedAccount: string;
   setSelectedAccount: (val: string) => void;
+  traderData: TraderDataType | null;
+  setTraderData: React.Dispatch<React.SetStateAction<TraderDataType | null>>;
 }

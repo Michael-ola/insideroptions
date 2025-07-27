@@ -10,7 +10,7 @@ export default function UserMenu() {
     <>
       <div
         onClick={() => setOpenProfileModal(true)}
-        className="w-10 h-10 ml-4 rounded-full bg-[#335E35]/20 flex items-center justify-center max-sm:hidden cursor-pointer"
+        className="w-8 h-8 ml-4 rounded-full bg-[#335E35]/20 flex items-center justify-center max-sm:hidden cursor-pointer"
       >
         <Image
           src="/images/user.png"
