@@ -7,7 +7,7 @@ import { AnimatePresence } from "framer-motion";
 const AssetComponent = () => {
   const [open, setOpen] = useState(false);
   return (
-    <div className="absolute top-2 left-1/2 -translate-x-1/2 z-30 max-sm:top-[8%]">
+    <div className="absolute top-4 left-1/2 -translate-x-1/2 z-30 max-sm:top-[8%]">
       <button
         onClick={() => setOpen((prev) => !prev)}
         className="w-[30px] h-[30px] z-[60] flex items-center justify-center rounded-[8px]

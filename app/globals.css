@@ -102,7 +102,7 @@
 }
 
 :root {
-  --top-nav-height: 7vh;
+  --top-nav-height: 7.5vh;
   --side-nav-width: 80px;
   --primary: hsla(123, 57%, 66%, 1);
   --primary-btn-gradient-start: hsla(123, 57%, 66%, 1);

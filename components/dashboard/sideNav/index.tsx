@@ -89,7 +89,7 @@ export default function DashboardSidebar() {
       </div>
 
       {/* Logout */}
-      <div className="flex flex-col items-center mt-4 max-sm:hidden">
+      <div className="flex flex-col items-center mt-2 max-sm:hidden">
         <button className="flex flex-col items-center text-xs text-red-500 hover:text-red-600 transition-all py-2">
           <LogoutIcon className="w-5 h-5 mb-1" />
           Log out

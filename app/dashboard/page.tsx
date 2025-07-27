@@ -12,7 +12,6 @@ import TopNav from "@/components/dashboard/TopNav";
 import { apiClient } from "@/lib/api-client";
 import type { TraderDataType } from "@/types/TraderDataType";
 import TradingChart from "@/components/dashboard/tradingChart";
-import PortalWrapper from "@/components/PortalWrapper";
 
 export default function DashboardPage() {
   const [openGraphStyleModal, setOpenGraphStyleModal] = useState(false);
