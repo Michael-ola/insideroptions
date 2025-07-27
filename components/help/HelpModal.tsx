@@ -12,24 +12,6 @@ import ConfirmModal from "../ConfirmationModal";
 import { SuggestionFormRef } from "./SuggestionForm";
 import Regulations from "./Regulations";
 
-
-export type Transaction = {
-  id: string;
-  type: string;
-  pair: string;
-  amount: string;
-  status: string;
-  date: string;
-  time: string;
-};
-
-export type CryptoData = {
-  id: string;
-  coin: string;
-  depositAddress: string;
-  redeemScript: string;
-};
-
 export default function HelpModal({ onClose }: { onClose: () => void }) {
   const [view, setView] = useState<string>("Help");
   const [iconOrImage, setIconOrImage] = useState<StaticImageData | string>("");

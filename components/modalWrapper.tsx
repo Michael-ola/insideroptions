@@ -44,6 +44,7 @@ export default function ModalWrapper({
       <div className="w-full h-full bg-[#00040d] sm:bg-[#03080f]/20 rounded-lg shadow-lg py-4 relative text-white sm:border-r sm:border-primary/15 flex flex-col gap-2">
         <div className="bg-gradient-to-r from-[#00040d] to-[#13171f] sm:bg-none px-8 py-4 border-y border-y-[#79DA7E]/30 sm:border-0 flex items-center gap-8">
           {title !== "My Cashier" &&
+            title !== "Current Investment" &&
             !navItems.some((item) => item.label === title) && (
               <button
                 onClick={() => {
@@ -96,6 +97,7 @@ export default function ModalWrapper({
           <div className="flex-1 flex justify-between">
             <div className="flex items-center gap-3">
               {title !== "My Cashier" &&
+                title !== "Current Investment" &&
                 !navItems.some((item) => item.label === title) && (
                   <Image src={icon ?? ""} alt="icon" className="w-7 h-auto" />
                 )}

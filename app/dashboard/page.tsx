@@ -18,6 +18,8 @@ export default function DashboardPage() {
   const [chartStyle, setChartStyle] = useState<SeriesType>("area");
   const [showTraderFeed, setShowTraderFeed] = useState(false);
   const [openCashierModal, setOpenCashierModal] = useState<boolean>(false);
+  const [openConfirmation, setOpenConfirmation] = useState<boolean>(false);
+  const [openAutoTrade, setOpenAutoTrade] = useState<boolean>(false);
   const [selectedSideNavTab, setSelectedSideNavTab] = useState("Trade");
   const [selectedAccount, setSelectedAccount] = useState("real");
   const [traderData, setTraderData] = useState<TraderDataType | null>(null);
@@ -51,6 +53,10 @@ export default function DashboardPage() {
     setSelectedAccount,
     traderData,
     setTraderData,
+    openConfirmation,
+    setOpenConfirmation,
+    openAutoTrade,
+    setOpenAutoTrade,
   };
 
   return (
