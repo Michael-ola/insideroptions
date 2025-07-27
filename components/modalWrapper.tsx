@@ -41,7 +41,7 @@ export default function ModalWrapper({
       transition={{ duration: 0.5 }}
       className="fixed side-nav-modal-offset inset-0 bg-black/20 z-50 w-screen h-screen cursor-default max-sm:left-0 max-sm:bg-[#000510] max-sm:h-[calc(100vh-57px)]"
     >
-      <div className="w-[25%] h-full bg-[#00040d] sm:bg-[#03080f]/20 rounded-lg shadow-lg py-4 relative text-white sm:border-r sm:border-primary/15 flex flex-col gap-2">
+      <div className="w-full sm:w-[25%] h-full rounded-lg backdrop-blur-sm py-4 relative text-white sm:border-r sm:border-primary/15 flex flex-col gap-2">
         <div className="bg-gradient-to-r from-[#00040d] to-[#13171f] sm:bg-none px-8 py-4 border-y border-y-[#79DA7E]/30 sm:border-0 flex items-center gap-8">
           {title !== "My Cashier" &&
             title !== "Current Investment" &&
