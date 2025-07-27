@@ -110,15 +110,17 @@ export default function DashboardSidebar() {
         />
       </PortalWrapper>
       {openConfirmation && (
-        <ConfirmModal
-          onCancel={() => setOpenConfirmation(false)}
-          onConfirm={() => {
-            setSelectedSideNavTab("Auto trade");
-            setOpenAutoTrade(true);
-          }}
-          title="Auto trade"
-          message="Are you sure you want to switch to Auto trade dashboard?"
-        />
+        <PortalWrapper>
+          <ConfirmModal
+            onCancel={() => setOpenConfirmation(false)}
+            onConfirm={() => {
+              setSelectedSideNavTab("Auto trade");
+              setOpenAutoTrade(true);
+            }}
+            title="Auto trade"
+            message="Are you sure you want to switch to Auto trade dashboard?"
+          />
+        </PortalWrapper>
       )}
     </aside>
   );

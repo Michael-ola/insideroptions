@@ -3,14 +3,15 @@
 import { getErrorMessage } from "@/lib/authUtils";
 import { RiLoader4Line } from "@remixicon/react";
 import { ChevronDown } from "lucide-react";
-import profile from "@/data/trader/profile.json";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { apiClient } from "@/lib/api-client";
 import greenSwap from "@/lib/assets/green_swap.png";
 import Image from "next/image";
+import { useDashboardContext } from "@/context/DashboardContext";
 
 const SwapView = () => {
+  const { traderData } = useDashboardContext();
   const [source, setSource] = useState<"profit" | "referral" | "real">("real");
   const [target, setTarget] = useState<"profit" | "real">("profit");
   const [showFromDropdown, setShowFromDropdown] = useState<boolean>(false);
@@ -22,7 +23,7 @@ const SwapView = () => {
   let profitBalance = 0;
   let referralBalance = 0;
 
-  const realAccount = profile.accounts.find(
+  const realAccount = traderData?.accounts.find(
     (account) => account.accountType === "INDIVIDUAL"
   );
   if (realAccount) {
@@ -48,7 +49,7 @@ const SwapView = () => {
     try {
       if (percent === 0) return;
       setIsSwapping(true);
-      const url = `/transactions/${profile.id}/swap`;
+      const url = `/transactions/${traderData?.id}/swap`;
       const payload = {
         toBalance: target === "real" ? "REAL_BALANCE" : "PROFIT_BALANCE",
         fromBalance:

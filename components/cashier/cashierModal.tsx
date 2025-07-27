@@ -5,8 +5,8 @@ import ModalWrapper from "../modalWrapper";
 import { AnimatePresence, motion } from "framer-motion";
 import { StaticImageData } from "next/image";
 import CashierList from "./CashierList";
+import { useDashboardContext } from "@/context/DashboardContext";
 import DepositList from "./deposit/DepositList";
-import profile from "@/data/trader/profile.json";
 import CryptoView from "./deposit/CryptoView";
 import BankTransfer from "./deposit/BankTransfer";
 import CryptoPayView from "./deposit/cryptoPayView";
@@ -58,6 +58,7 @@ export type CryptoData = {
 };
 
 export default function CashierModal({ onClose }: { onClose: () => void }) {
+  const { traderData } = useDashboardContext();
   const [view, setView] = useState<string>("My Cashier");
   const [iconOrImage, setIconOrImage] = useState<StaticImageData | string>("");
   const [selectedCrypto, setSelectedCrypto] = useState<string | null>(null);
@@ -100,7 +101,7 @@ export default function CashierModal({ onClose }: { onClose: () => void }) {
       if (cursorId) query.append("cursorId", cursorId);
 
       const res = await apiClient.get(
-        `/transactions/${profile.id}/search?${query.toString()}`
+        `/transactions/${traderData?.id}/search?${query.toString()}`
       );
 
       const data = res.data;
@@ -167,9 +168,7 @@ export default function CashierModal({ onClose }: { onClose: () => void }) {
           />
         );
       case "Swap (Profit bal - Real bal)":
-        return (
-          <SwapView />
-        );
+        return <SwapView />;
       case "Transaction History":
         return (
           <TxList

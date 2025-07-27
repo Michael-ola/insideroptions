@@ -4,12 +4,12 @@ import { AlertCircle, ChevronRight, ChevronDown, Check } from "lucide-react";
 import { useState } from "react";
 import bank from "@/lib/assets/bank_transfer.png";
 import crypto from "@/lib/assets/crypto.png";
-import profile from "@/data/trader/profile.json";
 import Image, { StaticImageData } from "next/image";
 import { IoSwapHorizontal } from "react-icons/io5";
 import { cashierOptions } from "../CashierList";
 import { ModalView } from "../cashierModal";
 import { cryptoOptions } from "../deposit/CryptoView";
+import { useDashboardContext } from "@/context/DashboardContext";
 // import { RiLoader4Line } from "@remixicon/react";
 
 type Props = {
@@ -25,6 +25,7 @@ const WithdrawalView = ({
   setIconOrImage,
   setOpenOtp,
 }: Props) => {
+    const { traderData } = useDashboardContext();
   const [agreed, setAgreed] = useState<boolean>(false);
 
   const [amount, setAmount] = useState<string | number>("");
@@ -245,7 +246,7 @@ const WithdrawalView = ({
           />
         </div>
         <span>
-          I, {profile.firstName} {profile.lastName} agree that the above
+          I, {traderData?.firstName} {traderData?.lastName} agree that the above
           provided{" "}
           {method === "Bank Transfer" ? "Bank account" : "Bitcoin address"} is
           correct, and <span className="font-semibold">InsiderOption LLC</span>{" "}

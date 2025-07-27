@@ -3,39 +3,40 @@ import { useState } from "react";
 import { ArrowLeft, ArrowRight, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import profitBanner from "@/lib/assets/profit_banner.jpg";
-import profile from "@/data/trader/profile.json";
 import mockData from "@/data/partner/mockData.json";
 import mockData2 from "@/data/partner/bonusData.json";
-
-const TABS = ["Referral details", "Redeem Bonus"];
-
-const ITEMS_PER_PAGE = 6;
-
-const realAccount = profile.accounts.find(
-  (account) => account.accountType === "INDIVIDUAL"
-);
-
-const EmptyState = ({ onAction }: { onAction: () => void }) => (
-  <div className="w-full h-full m-auto">
-    <div className="text-gray-400 text-xs flex flex-col items-center justify-center gap-1">
-      <p className="text-center">Nothing to display yet</p>
-      <p
-        onClick={onAction}
-        className="text-primary text-base font-semibold flex items-center gap-2 cursor-pointer"
-      >
-        Invite Traders <ChevronRight className="w-4 h-4" />
-      </p>
-    </div>
-  </div>
-);
+import { useDashboardContext } from "@/context/DashboardContext";
 
 const Profit = ({
   handleNewView,
 }: {
   handleNewView: (val: string) => void;
 }) => {
+  const { traderData } = useDashboardContext();
   const [tab, setTab] = useState("Referral details");
   const [page, setPage] = useState(1);
+
+  const TABS = ["Referral details", "Redeem Bonus"];
+
+  const ITEMS_PER_PAGE = 6;
+
+  const realAccount = traderData?.accounts.find(
+    (account) => account.accountType === "INDIVIDUAL"
+  );
+
+  const EmptyState = ({ onAction }: { onAction: () => void }) => (
+    <div className="w-full h-full m-auto">
+      <div className="text-gray-400 text-xs flex flex-col items-center justify-center gap-1">
+        <p className="text-center">Nothing to display yet</p>
+        <p
+          onClick={onAction}
+          className="text-primary text-base font-semibold flex items-center gap-2 cursor-pointer"
+        >
+          Invite Traders <ChevronRight className="w-4 h-4" />
+        </p>
+      </div>
+    </div>
+  );
 
   const pageCount = Math.ceil(mockData.length / ITEMS_PER_PAGE);
   const paginatedData = mockData.slice(

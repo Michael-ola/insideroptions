@@ -1,12 +1,13 @@
 import React from "react";
-import profile from "@/data/trader/profile.json";
 import referral from "@/lib/assets/referral_banner.jpg";
 import Image from "next/image";
 import { Share2 } from "lucide-react";
 import copy from "@/lib/assets/copy.png";
 import { toast } from "react-toastify";
+import { useDashboardContext } from "@/context/DashboardContext";
 
 const Referral = () => {
+  const { traderData } = useDashboardContext();
   const options = [
     {
       header: "Invite your friends",
@@ -40,14 +41,15 @@ const Referral = () => {
             <div className="flex items-center justify-between">
               <div className="text-sm">
                 <p className="text-white/20">Referral link</p>
-                <p>{`https://insider-option-web.vercel.app/signup?referral=${profile.refererCode}`}</p>
+                <p>{`https://insider-option-web.vercel.app/signup?referral=${traderData?.refererCode}`}</p>
               </div>
               <Share2
                 onClick={() => {
                   navigator.clipboard.writeText(
-                    `https://insider-option-web.vercel.app/signup?referral=${profile.refererCode}` || ""
+                    `https://insider-option-web.vercel.app/signup?referral=${traderData?.refererCode}` ||
+                      ""
                   );
-                   toast.info(`Link copied!`);
+                  toast.info(`Link copied!`);
                 }}
                 className="text-white/60 cursor-pointer"
               />
@@ -56,11 +58,11 @@ const Referral = () => {
             <div className="flex items-center justify-between">
               <div className="text-sm">
                 <p className="text-white/20">Profile Code</p>
-                <p>{profile.refererCode}</p>
+                <p>{traderData?.refererCode}</p>
               </div>
               <Image
                 onClick={() => {
-                  navigator.clipboard.writeText(profile.refererCode || "")
+                  navigator.clipboard.writeText(traderData?.refererCode || "");
                   toast.info(`Code copied!`);
                 }}
                 src={copy}
