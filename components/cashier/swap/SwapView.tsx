@@ -7,10 +7,14 @@ import profile from "@/data/trader/profile.json";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { apiClient } from "@/lib/api-client";
+import greenSwap from "@/lib/assets/green_swap.png";
+import Image from "next/image";
 
 const SwapView = () => {
-  const [source, setSource] = useState<"profit" | "referral">("profit");
-  const [showDropdown, setShowDropdown] = useState<boolean>(false);
+  const [source, setSource] = useState<"profit" | "referral" | "real">("real");
+  const [target, setTarget] = useState<"profit" | "real">("profit");
+  const [showFromDropdown, setShowFromDropdown] = useState<boolean>(false);
+  const [showToDropdown, setShowToDropdown] = useState<boolean>(false);
   const [isSwapping, setIsSwapping] = useState<boolean>(false);
   const [percent, setPercent] = useState<number>(0);
 
@@ -28,9 +32,6 @@ const SwapView = () => {
       accountBalance: realBalance,
     } = realAccount);
   }
-  // const realBalance = 50000;
-  // const profitBalance = 10000;
-  // const referralBalance = 1000;
 
   const handleQuickSelect = (value: number) => {
     setPercent(value);
@@ -49,8 +50,13 @@ const SwapView = () => {
       setIsSwapping(true);
       const url = `/transactions/${profile.id}/swap`;
       const payload = {
-        toBalance: "REAL_BALANCE",
-        fromBalance: source === "profit" ? "PROFIT_BALANCE" : "REFERRAL_BALANCE",
+        toBalance: target === "real" ? "REAL_BALANCE" : "PROFIT_BALANCE",
+        fromBalance:
+          source === "profit"
+            ? "PROFIT_BALANCE"
+            : source === "referral"
+            ? "REFERRAL_BALANCE"
+            : "REAL_BALANCE",
         percent: percent,
       };
       await apiClient.post(url, payload);
@@ -66,14 +72,14 @@ const SwapView = () => {
 
   return (
     <div className="space-y-6 p-4">
-      {!showDropdown && (
+      {!showFromDropdown && !showToDropdown && (
         <>
           <div className="w-full relative space-y-6">
             {/* Source Balance Dropdown */}
             <div className="w-full relative px-6 py-4 bg-[#1A2E22] flex items-start justify-between">
               <div className="w-full text-white">
                 <button
-                  onClick={() => setShowDropdown((prev) => !prev)}
+                  onClick={() => setShowFromDropdown((prev) => !prev)}
                   className="w-full flex items-center gap-3"
                 >
                   <div className="flex flex-col gap-2 items-start">
@@ -83,6 +89,8 @@ const SwapView = () => {
                       {(
                         (source === "profit"
                           ? profitBalance
+                          : source === "real"
+                          ? realBalance
                           : referralBalance) - parseFloat(getFromAmount())
                       ).toFixed(2)}
                     </span>
@@ -93,14 +101,28 @@ const SwapView = () => {
 
               <span className="text-gray-400 text-xs">From:</span>
             </div>
-            <div className="absolute z-50 right-[20%] top-[50%] -translate-x-1/2 -translate-y-1/2 bg-[#0C0F16] w-12 h-12 rounded-full"></div>
+            <div className="absolute z-50 right-[20%] top-[50%] -translate-x-1/2 -translate-y-1/2 bg-[#0C0F16] w-12 h-12 rounded-full flex items-center justify-center">
+              <Image src={greenSwap} alt="green swap Icon" priority />
+            </div>
 
             <div className="w-full relative bg-[#20282b] px-6 py-4 text-white flex items-start justify-between">
-              <div className="flex flex-col gap-2 items-start">
-                <span className="capitalize">real balance</span>
-                <span className="text-xl font-semibold">
-                  $ {(realBalance + parseFloat(getFromAmount())).toFixed(2)}
-                </span>
+              <div className="w-full text-white">
+                <button
+                  onClick={() => setShowToDropdown((prev) => !prev)}
+                  className="w-full flex items-center gap-3"
+                >
+                  <div className="flex flex-col gap-2 items-start">
+                    <span className="capitalize">{target} balance</span>
+                    <span className="text-xl font-semibold">
+                      ${" "}
+                      {(
+                        (target === "profit" ? profitBalance : realBalance) +
+                        parseFloat(getFromAmount())
+                      ).toFixed(2)}
+                    </span>
+                  </div>
+                  <ChevronDown className="w-5 h-5" />
+                </button>
               </div>
               <span className="text-xs text-gray-400">To:</span>
             </div>
@@ -142,15 +164,19 @@ const SwapView = () => {
         </>
       )}
 
-      {showDropdown && (
+      {showFromDropdown && (
         <div className="w-full flex flex-col gap-3">
-          {["profit", "referral"].map((item) => (
+          {["real", "profit", "referral"].map((item) => (
             <button
               key={item}
               onClick={() => {
-                setSource(item as "profit" | "referral");
+                setSource(item as "real" | "profit" | "referral");
                 setPercent(0);
-                setShowDropdown(false);
+                setShowFromDropdown(false);
+                if (item === target) {
+                  const newTarget = ["real", "profit"].find((t) => t !== item)!;
+                  setTarget(newTarget as "real" | "profit");
+                }
               }}
               className="w-full bg-white/20 px-6 py-4 cursor-pointer text-sm capitalize flex flex-col gap-2 items-start text-white"
             >
@@ -159,7 +185,38 @@ const SwapView = () => {
                 $
                 {item === "profit"
                   ? profitBalance.toFixed(2)
+                  : item === "real"
+                  ? realBalance.toFixed(2)
                   : referralBalance.toFixed(2)}
+              </span>
+            </button>
+          ))}
+        </div>
+      )}
+      {showToDropdown && (
+        <div className="w-full flex flex-col gap-3">
+          {["real", "profit"].map((item) => (
+            <button
+              key={item}
+              onClick={() => {
+                setTarget(item as "real" | "profit");
+                setPercent(0);
+                setShowToDropdown(false);
+                if (item === source) {
+                  const newSource = ["real", "profit", "referral"].find(
+                    (s) => s !== item
+                  )!;
+                  setSource(newSource as "real" | "profit" | "referral");
+                }
+              }}
+              className="w-full bg-white/20 px-6 py-4 cursor-pointer text-sm capitalize flex flex-col gap-2 items-start text-white"
+            >
+              {item} balance
+              <span className="text-xl font-semibold">
+                $
+                {item === "profit"
+                  ? profitBalance.toFixed(2)
+                  : realBalance.toFixed(2)}
               </span>
             </button>
           ))}

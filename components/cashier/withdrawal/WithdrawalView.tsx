@@ -27,7 +27,7 @@ const WithdrawalView = ({
 }: Props) => {
   const [agreed, setAgreed] = useState<boolean>(false);
 
-  const [amount, setAmount] = useState<string>("");
+  const [amount, setAmount] = useState<string | number>("");
   const [method, setMethod] = useState<"Bank Transfer" | "Crypto">(
     "Bank Transfer"
   );
@@ -53,8 +53,7 @@ const WithdrawalView = ({
   ];
 
   return (
-    <div className="space-y-6 text-white p-4">
-      
+    <div className="w-full h-full space-y-6 text-white p-4 overflow-y-auto custom-scrollbar">
       <div className="bg-[#79DA7E]/3 p-6 rounded-xl border border-white/3">
         <div className="flex items-start gap-3">
           <AlertCircle className="w-8 h-8 text-gray-400" />
@@ -142,10 +141,13 @@ const WithdrawalView = ({
             {method === "Bank Transfer" ? "₦" : "$"}
           </span>
           <input
-            type="number"
-            onChange={(e) => setAmount(e.target.value)}
+            type="text"
+            onChange={(e) => {
+              const val = e.target.value;
+              if (val === "" || /^\d*\.?\d{0,2}$/.test(val)) setAmount(val);
+            }}
             value={amount}
-            className="w-full bg-transparent font-bold text-white border border-white/20 pr-4 py-4 pl-10 rounded-xl placeholder:text-gray-400 placeholder:font-bold placeholder:text-xl text-xl outline-none focus:border-0 focus:ring-2 focus-within:ring-[#79DA7E]"
+            className="w-full appearance-none bg-transparent font-bold text-white border border-white/20 pr-4 py-4 pl-10 rounded-xl placeholder:text-gray-400 placeholder:font-bold placeholder:text-xl text-xl outline-none focus:border-0 focus:ring-1 focus-within:ring-primary"
             placeholder="0.00"
           />
         </div>
@@ -217,7 +219,7 @@ const WithdrawalView = ({
         </label>
         <input
           type="text"
-          className="w-full bg-transparent border border-white/20 px-4 py-3 rounded-xl placeholder:text-white/40 text-sm outline-none focus:border-0 focus:ring-2 focus-within:ring-[#79DA7E]"
+          className="w-full bg-transparent border border-white/20 px-4 py-3 rounded-xl placeholder:text-white/40 text-sm outline-none focus:border-0 focus:ring-1 focus-within:ring-primary"
           onChange={(e) => setAccountOrAddress(e.target.value)}
           value={accountOrAddress}
           placeholder={

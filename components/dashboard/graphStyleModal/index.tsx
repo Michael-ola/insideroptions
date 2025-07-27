@@ -6,6 +6,7 @@ import { X } from "lucide-react";
 import clsx from "clsx";
 import { useDashboardContext } from "@/context/DashboardContext";
 import Button from "@/components/Button2";
+import { SeriesType } from "@/types/dashboard";
 
 const styles = [
   {
@@ -43,6 +44,7 @@ export default function GraphStyleModal() {
 
   const handleConfirm = () => {
     setChartStyle(selected);
+    setOpenGraphStyleModal(false)
   };
 
   return (
@@ -72,7 +74,7 @@ export default function GraphStyleModal() {
               return (
                 <button
                   key={style.id}
-                  onClick={() => setSelected(style.id)}
+                  onClick={() => setSelected(style.id as SeriesType)}
                   className={clsx(
                     "w-24 h-32 max-sm:w-full max-sm:h-16 flex flex-col items-center justify-center rounded-xl border border-[#1F2A32] px-2 py-3 transition backdrop-blur-md max-sm:flex-row max-sm:gap-3",
                     {

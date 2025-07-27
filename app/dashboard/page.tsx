@@ -6,15 +6,16 @@ import { useEffect, useState } from "react";
 import GraphStyleModal from "@/components/dashboard/graphStyleModal";
 import TopTraderFeedCard from "@/components/dashboard/topTraderFeed";
 import { DashboardContext } from "@/context/DashboardContext";
-import type { DashboardPropsType } from "@/types/dashboard";
+import type { DashboardPropsType, SeriesType } from "@/types/dashboard";
 import SideNav from "@/components/dashboard/sideNav";
 import TopNav from "@/components/dashboard/TopNav";
 import { apiClient } from "@/lib/api-client";
 import type { TraderDataType } from "@/types/TraderDataType";
+import TradingChart from "@/components/dashboard/tradingChart";
 
 export default function DashboardPage() {
   const [openGraphStyleModal, setOpenGraphStyleModal] = useState(false);
-  const [chartStyle, setChartStyle] = useState("lines");
+  const [chartStyle, setChartStyle] = useState<SeriesType>("area");
   const [showTraderFeed, setShowTraderFeed] = useState(false);
   const [openCashierModal, setOpenCashierModal] = useState<boolean>(false);
   const [selectedSideNavTab, setSelectedSideNavTab] = useState("Trade");
@@ -61,10 +62,11 @@ export default function DashboardPage() {
         <div className="dashboard-chart-offset h-[100dvh] w-screen max-sm:h-[calc(100dvh-57px)] bg-[#142222]">
           CHART
         </div>
+        <TradingChart />
         <ControlPanel />
-        <SideNav />
-        <GraphStyleModal />
       </div>
+      <SideNav />
+      <GraphStyleModal />
     </DashboardContext.Provider>
   );
 }

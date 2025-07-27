@@ -4,9 +4,6 @@ import React, { useState } from "react";
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import hexagon from "@/lib/assets/hex_frame.png";
-import years from "@/lib/assets/4years.png";
-import line from "@/lib/assets/Line 610.png";
 import Button from "@/components/Button2";
 import OverlayNav from "@/components/OverlayNav";
 import { AnimatePresence } from "framer-motion";
@@ -91,23 +88,22 @@ export default function Navbar() {
                   <Image
                     width={186}
                     height={32}
-                    src="/images/logo-extended.png"
+                    src="/images/Logo and year - Web.svg"
                     alt="Insider Options"
-                    className="w-[186px] h-[32px]"
+                    className="w-full h-auto"
+
                   />
                 </div>
 
                 <div className={`flex items-center sm:hidden cursor-pointer `}>
                   <Image
-                    src={hexagon}
+                    src="/images/Logo icon and year - mobile.svg"
                     alt="Insider Options"
-                    className="w-5 h-auto"
+                    width={186}
+                    height={32}
+                    className="w-full h-auto"
                   />
                 </div>
-
-                <Image src={line} alt="Line Or Divider" />
-
-                <Image src={years} alt="4 years Logo" />
               </div>
             </div>
           ) : (

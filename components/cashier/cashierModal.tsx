@@ -58,7 +58,7 @@ export type CryptoData = {
 };
 
 export default function CashierModal({ onClose }: { onClose: () => void }) {
-  const [view, setView] = useState<ModalView>("My Cashier");
+  const [view, setView] = useState<string>("My Cashier");
   const [iconOrImage, setIconOrImage] = useState<StaticImageData | string>("");
   const [selectedCrypto, setSelectedCrypto] = useState<string | null>(null);
   const [openOtp, setOpenOtp] = useState<boolean>(false);
@@ -121,7 +121,7 @@ export default function CashierModal({ onClose }: { onClose: () => void }) {
     fetchTransactions(filters);
   };
 
-  const handleViewChange = (nextView: ModalView) => setView(nextView);
+  const handleViewChange = (nextView: string) => setView(nextView);
 
   const onCloseHandler = () => {
     setSelectedCrypto(null);
@@ -168,7 +168,6 @@ export default function CashierModal({ onClose }: { onClose: () => void }) {
         );
       case "Swap (Profit bal - Real bal)":
         return (
-          // setView("Swap");
           <SwapView />
         );
       case "Transaction History":
