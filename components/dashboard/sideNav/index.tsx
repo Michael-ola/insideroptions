@@ -3,6 +3,7 @@
 import clsx from "clsx";
 import { useDashboardContext } from "@/context/DashboardContext";
 import OrdersHistoryModal from "@/components/dashboard/OrdersHistory";
+import PortalWrapper from "@/components/PortalWrapper";
 
 import TradeIcon from "../icons/tradeIcon";
 import OrdersIcon from "../icons/OrdersIcon";
@@ -29,7 +30,14 @@ export const navItems = [
 export default function DashboardSidebar() {
   const { selectedSideNavTab, setSelectedSideNavTab } = useDashboardContext();
   return (
-    <aside className="fixed top-0 left-0 h-[87vh] mt-[13vh] xl:h-[89vh] xl:mt-[11vh] border-r border-[#071014] z-40 w-[100px] max-sm:w-full max-sm:h-[57px] max-sm:static bg-[#01060e] flex flex-col justify-between py-4 pt-[3%] pb-[3%] max-sm:pb-0 max-sm:pt-0 max-sm:mt-0">
+    <aside
+      style={{
+        marginTop: "var(--top-nav-height)",
+        height: "calc(100vh - var(--top-nav-height))",
+        width: "var(--side-nav-width)",
+      }}
+      className="fixed top-0 left-0 border-r border-[#071014] z-10 max-sm:!w-full max-sm:!h-[57px] max-sm:static bg-[#01060e] flex flex-col justify-between py-4 pt-[3%] pb-[3%] max-sm:pb-0 max-sm:pt-0 max-sm:!mt-0"
+    >
       <div className="flex flex-col  max-sm:flex-row  items-center space-y-1/3 w-full max-sm:space-y-0">
         {navItems.map((item) => {
           const isActive = selectedSideNavTab === item.label;
@@ -49,7 +57,7 @@ export default function DashboardSidebar() {
                 console.log(item.label);
               }}
               className={clsx(
-                "relative cursor-pointer flex flex-col items-center w-full max-sm:w-1/3 py-2 2xl:py-3 max-sm:pt-1 max-sm:pb-2 text-xs transition-all duration-150",
+                "relative cursor-pointer flex flex-col items-center w-full max-sm:w-1/3 py-3 max-sm:pt-1 max-sm:pb-2 text-[10px] transition-all duration-150",
                 isActive
                   ? "text-[#79DA7E] font-medium"
                   : "text-white/80 hover:text-[#79DA7E]",
@@ -81,16 +89,18 @@ export default function DashboardSidebar() {
       </div>
 
       {/* Logout */}
-      <div className="flex flex-col items-center mt-4 max-sm:hidden">
+      <div className="flex flex-col items-center mt-2 max-sm:hidden">
         <button className="flex flex-col items-center text-xs text-red-500 hover:text-red-600 transition-all py-2">
           <LogoutIcon className="w-5 h-5 mb-1" />
           Log out
         </button>
       </div>
-      <ModalComponent
-        nav={selectedSideNavTab}
-        setSelectedSideNavTab={setSelectedSideNavTab}
-      />
+      <PortalWrapper>
+        <ModalComponent
+          nav={selectedSideNavTab}
+          setSelectedSideNavTab={setSelectedSideNavTab}
+        />
+      </PortalWrapper>
     </aside>
   );
 }
@@ -108,17 +118,13 @@ const ModalComponent = ({
 
   if (nav === "Orders") {
     return <OrdersHistoryModal onClose={closeModalFunction} />;
-  } 
-  else if (nav === "Cashier") {
+  } else if (nav === "Cashier") {
     return <CashierModal onClose={closeModalFunction} />;
-  } 
-  else if (nav === "Partner") {
+  } else if (nav === "Partner") {
     return <PartnerModal onClose={closeModalFunction} />;
-  } 
-  else if (nav === "Help") {
+  } else if (nav === "Help") {
     return <HelpModal onClose={closeModalFunction} />;
-  } 
-  else {
+  } else {
     return <></>;
   }
 };

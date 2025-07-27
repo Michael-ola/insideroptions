@@ -10,18 +10,18 @@ const BuySellButtons = ({ className }: { className?: string }) => {
   }
   return (
     <div
-      className={`flex flex-1 max-sm:pb-7 max-sm:bg-[#070f17] max-sm:w-full max-sm:flex max-sm:justify-center max-sm:flex-0 max-sm:px-3 ${className}`}
+      className={`flex flex-1 max-sm:pb-3 bg-transparent max-sm:w-full max-sm:flex max-sm:justify-center max-sm:flex-0 max-sm:px-3 ${className}`}
     >
       <button
         onClick={() => handleClick("SELL")}
-        className="relative bg-[#EC221F] hover:bg-[#C00F0C] w-1/2 text-white px-10 py-1 text-center rounded-xl font-semibold flex flex-col items-center justify-center transition max-sm:h-20 "
+        className="relative bg-[#EC221F] hover:bg-[#C00F0C] w-1/2 text-white px-10 py-1 text-center rounded-xl font-semibold flex flex-col items-center justify-center transition max-sm:h-10 "
       >
         SELL
         <Image
           src="/images/sell.png"
           alt="sell"
-          width={30}
-          height={40}
+          width={20}
+          height={30}
           className="absolute top-0 right-3"
         />
       </button>
@@ -33,8 +33,8 @@ const BuySellButtons = ({ className }: { className?: string }) => {
         <Image
           src="/images/buy.png"
           alt="buy"
-          width={30}
-          height={40}
+          width={20}
+          height={20}
           className="absolute bottom-0 right-3"
         />
       </button>
@@ -56,31 +56,31 @@ export default function ControlPanel() {
     {
       label: "Arrow Left",
       icon: "/images/right.png",
-      className: "w-16 h-7 rotate-180",
+      className: "w-16 h-5 rotate-180",
       alt: "Arrow Left",
     },
     {
       label: "Arrow Right",
       icon: "/images/right.png",
-      className: "w-16 h-7",
+      className: "w-16 h-5",
       alt: "Arrow Right",
     },
     {
       label: "Settings",
       icon: "/images/arc.png",
-      className: "w-16 h-7",
+      className: "w-16 h-5",
       alt: "Settings",
     },
     {
       label: "Chart",
       icon: "/images/chart-type.png",
-      className: "w-16 h-7",
+      className: "w-16 h-5",
       alt: "Waves",
     },
     {
       label: "User",
       icon: "/images/user_.png",
-      className: "w-16 h-7",
+      className: "w-16 h-5",
       alt: "User",
     },
   ];
@@ -94,9 +94,9 @@ export default function ControlPanel() {
         <Image
           src={icon}
           alt={alt}
-          width={14}
+          width={10}
           height={10}
-          className={`${label.includes("Arrow") && "w-[7px]"}`}
+          className={`${label.includes("Arrow") && "w-[5px]"}`}
         />
       </button>
     );
@@ -115,27 +115,29 @@ export default function ControlPanel() {
 
   return (
     <>
-      <div className="fixed z-50 bottom-6 left-1/2 -translate-x-1/2 flex bg-[#070f17] max-sm:w-full max-sm:flex max-sm:justify-center max-sm:items-center max-sm:rounded-none max-sm:relative max-sm:bottom-0 max-sm:gap-2 max-sm:border-none rounded-lg overflow-hidden text-white shadow-lg p-3">
+      <div className="fixed bottom-0 z-5 left-1/2 -translate-x-1/2 flex bg-transparent max-sm:w-full max-sm:flex max-sm:justify-center max-sm:items-center max-sm:rounded-none max-sm:bottom-[110px] max-sm:gap-2 max-sm:border-none rounded-lg overflow-hidden text-white shadow-lg p-3">
         {/* Trade Amount Panel */}
         <div className="flex flex-col justify-center items-center max-sm:flex-row-reverse max-sm:gap-2 max-sm:items-stretch max-sm:w-[50%]">
-          <div className="bg-[#0e161d] border border-[#192f2c] w-full flex-1 flex flex-col items-center justify-center rounded-lg py-2 max-sm:px-5">
-            <span className="text-xs text-neutral-400 mb-1">Trade Amount</span>
-            <span className="text-lg font-semibold">${amount}</span>
+          <div className="bg-[#0e161d] border border-[#192f2c] w-full flex-1 flex flex-col items-center justify-center rounded-lg py-0">
+            <span className="text-xs text-neutral-400 mb-1/2">
+              Trade Amount
+            </span>
+            <span className="text-md font-semibold">${amount}</span>
           </div>
 
-          <div className="flex items-center mt-2 max-sm:mt-0 space-x-2 max-sm:flex-col max-sm:space-x-0 max-sm:space-y-2">
+          <div className="flex items-center mt-1 max-sm:mt-0 space-x-2 max-sm:flex-col max-sm:space-x-0 max-sm:space-y-2">
             <button
               onClick={decreaseAmount}
-              className="w-14 h-8 bg-[#0e161d] border border-[#192f2c] rounded flex items-center justify-center hover:bg-[#151d24] transition"
+              className="w-14 h-5 max-sm:w-9 bg-[#0e161d] border border-[#192f2c] rounded flex items-center justify-center hover:bg-[#151d24] transition"
             >
               −
             </button>
-            <span className="text-xs bg-[#0e161d] border border-[#192f2c] rounded w-13 h-8  flex items-center justify-center max-sm:hidden">
+            <span className="text-xs bg-[#0e161d] border border-[#192f2c] rounded w-13 h-6  flex items-center justify-center max-sm:hidden">
               100%
             </span>
             <button
               onClick={increaseAmount}
-              className="w-14 h-8 bg-[#0e161d] border border-[#192f2c] rounded flex items-center justify-center hover:bg-[#151d24] transition"
+              className="w-14 h-5 max-sm:w-9 bg-[#0e161d] border border-[#192f2c] rounded flex items-center justify-center hover:bg-[#151d24] transition"
             >
               +
             </button>
@@ -163,8 +165,8 @@ export default function ControlPanel() {
 
         {/* Trade Duration Panel */}
         <div className="flex flex-col justify-between items-center max-sm:flex-row max-sm:gap-2 max-sm:items-stretch max-sm:w-[50%]">
-          <div className="border border-[#192f2c] bg-[#0e161d] flex-1 hover:bg-[#151d24] cursor-pointer rounded-md flex flex-col items-center justify-center w-full py-2 max-sm:w-[60%]">
-            <span className="text-xs text-neutral-400 mb-1 flex items-center justify-center gap-1">
+          <div className="border border-[#192f2c] bg-[#0e161d] flex-1 hover:bg-[#151d24] cursor-pointer rounded-md flex flex-col items-center justify-center w-full py-1 max-sm:w-[60%]">
+            <span className="text-xs text-neutral-400 flex items-center justify-center gap-1">
               {" "}
               <Image
                 src="/images/time.png"
@@ -175,26 +177,26 @@ export default function ControlPanel() {
               />
               Trade Duration
             </span>
-            <span className="text-lg font-semibold">00:30</span>
+            <span className="text-md font-semibold">00:30</span>
           </div>
 
-          <div className="flex items-center mt-2 space-x-2 max-sm:flex-col max-sm:space-x-0 max-sm:space-y-2 max-sm:mt-0">
+          <div className="flex items-center mt-1 space-x-2 max-sm:flex-col max-sm:space-x-0 max-sm:space-y-2 max-sm:mt-0">
             <button
               onClick={() => handleClick("Decrease Duration")}
-              className="w-14 h-8 border bg-[#0e161d] border-[#192f2c] rounded-md flex items-center justify-center hover:bg-[#151d24] transition"
+              className="w-14 h-5 max-sm:w-9 border bg-[#0e161d] border-[#192f2c] rounded-md flex items-center justify-center hover:bg-[#151d24] transition"
             >
               −
             </button>
             <button
               onClick={() => handleClick("Increase Duration")}
-              className="w-14 h-8 bg-[#0e161d] border border-[#192f2c] rounded-md flex items-center justify-center hover:bg-[#151d24] transition"
+              className="w-14 h-5 max-sm:w-9 bg-[#0e161d] border border-[#192f2c] rounded-md flex items-center justify-center hover:bg-[#151d24] transition"
             >
               +
             </button>
           </div>
         </div>
       </div>
-      <BuySellButtons className="sm:hidden" />
+      <BuySellButtons className="sm:hidden max-sm:fixed max-sm:bottom-[60px]" />
     </>
   );
 }

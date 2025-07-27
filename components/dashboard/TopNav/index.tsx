@@ -6,21 +6,26 @@ import CashierButton from "./CashierButton";
 import UserMenu from "./UserMenu";
 import Image from "next/image";
 import { useDashboardContext } from "@/context/DashboardContext";
-
+import Link from "next/link";
 export default function TopNav() {
   const { selectedAccount } = useDashboardContext();
 
   return (
-    <nav className="relative w-full px-6 py-3 h-[13vh] xl:h-[11vh] flex justify-between items-center bg-[#0D1117] max-sm:pt-7 max-sm:h-[10vh] max-sm:bg-transparent max-sm:fixed max-sm:top-0 max-sm:left-0 max-sm:right-0">
-      <Image
-        src="/images/logo.png"
-        className="ml-2 pt-2 max-sm:hidden"
-        alt="Logo"
-        width={45}
-        height={45}
-      />
-      <div className="flex gap-2 ml-auto h-[57px] items-center max-sm:mx-auto">
-        <div className="h-full bg-[#374143] mr-auto border-2 border-[#1A2C28] flex items-center justify-center cursor-pointer rounded-xl px-4 sm:hidden">
+    <nav
+      style={{ height: "var(--top-nav-height)" }}
+      className="relative w-full px-6 py-3 pt-4 flex z-10 justify-between items-center bg-transparent max-sm:mb-auto max-sm:pt-3 max-sm:h-[12vh] max-sm:bg-transparent"
+    >
+      <Link href="/dashboard">
+        <Image
+          src="/images/logo.png"
+          className=" pt-2 mt-3 max-sm:hidden"
+          alt="Logo"
+          width={35}
+          height={35}
+        />
+      </Link>
+      <div className="flex gap-2 ml-auto h-[52px] items-center max-sm:mx-auto">
+        <div className="py-2.5 bg-[#374143] mr-auto border border-[#1A2C28] flex items-center justify-center cursor-pointer rounded-xl px-4 sm:hidden">
           <Image
             src="/images/hamburger-stack.png"
             className=""
@@ -46,7 +51,7 @@ export default function TopNav() {
         <CashierButton />
         <UserMenu />
       </div>
-      <div className="nav-bottom-line absolute left-0 right-0 bottom-0 w-full max-sm:hidden"></div>
+      <div className="nav-bottom-line absolute left-0 right-0 bottom-0 w-full hidden max-sm:hidden"></div>
     </nav>
   );
 }
