@@ -12,6 +12,7 @@ import TopNav from "@/components/dashboard/TopNav";
 import { apiClient } from "@/lib/api-client";
 import type { TraderDataType } from "@/types/TraderDataType";
 import TradingChart from "@/components/dashboard/tradingChart";
+import PortalWrapper from "@/components/PortalWrapper";
 
 export default function DashboardPage() {
   const [openGraphStyleModal, setOpenGraphStyleModal] = useState(false);
@@ -59,9 +60,6 @@ export default function DashboardPage() {
         <TopTraderFeedCard />
         <TopNav />
         <AssetComponent />
-        <div className="dashboard-chart-offset h-[100dvh] w-screen max-sm:h-[calc(100dvh-57px)] bg-[#142222]">
-          CHART
-        </div>
         <TradingChart />
         <ControlPanel />
       </div>

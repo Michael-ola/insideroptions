@@ -13,7 +13,7 @@ export default function TopNav() {
   return (
     <nav
       style={{ height: "var(--top-nav-height)" }}
-      className="relative w-full px-6 py-3 flex justify-between items-center bg-transparent max-sm:mb-auto max-sm:pt-3 max-sm:h-[12vh] max-sm:bg-transparent"
+      className="relative w-full px-6 py-3 flex z-10 justify-between items-center bg-transparent max-sm:mb-auto max-sm:pt-3 max-sm:h-[12vh] max-sm:bg-transparent"
     >
       <Link href="/dashboard">
         <Image

@@ -88,11 +88,17 @@
   @apply max-sm:pl-0;
 }
 
+.side-nav-modal-offset {
+  margin-left: var(--side-nav-width);
+  width: calc(100vw - var(--side-nav-width));
+  @apply max-sm:ml-0 w-full;
+}
+
 .dashboard-chart-offset {
-  width: calc(100vw - --side-nav-width);
+  width: calc(100vw - var(--side-nav-width));
   margin-left: var(--side-nav-width);
   margin-top: calc(var(--top-nav-height) * -1);
-  @apply max-sm:ml-0;
+  @apply max-sm:ml-0 w-full;
 }
 
 :root {

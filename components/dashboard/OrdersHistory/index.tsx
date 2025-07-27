@@ -22,9 +22,9 @@ export default function OrdersModal({ onClose }: { onClose: () => void }) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="fixed modal-offset inset-0 bg-black/20 z-50 w-screen h-screen cursor-default max-sm:left-0 max-sm:bg-[#000510] max-sm:h-[calc(100vh-57px)]"
+      className="fixed side-nav-modal-offset inset-0 bg-black/20 z-50 w-screen h-screen cursor-default max-sm:left-0 max-sm:bg-[#000510] max-sm:h-[calc(100vh-57px)]"
     >
-      <div className="relative top-0 bottom-0 max-h-full left-0 w-[25%] z-50 flex flex-col backdrop-blur-sm pt-3 max-sm:w-full">
+      <div className="relative top-0 bottom-0 max-h-full left-0 w-[25%] flex flex-col backdrop-blur-sm pt-3 max-sm:w-full">
         <div className="flex justify-between items-center px-4 py-3 text-white text-sm pl-8">
           <button onClick={onClose}>
             <Image

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import ProfileModal from "@/components/dashboard/ProfileModal";
 import { useState } from "react";
+import PortalWrapper from "@/components/PortalWrapper";
 
 export default function UserMenu() {
   const [openProfileModal, setOpenProfileModal] = useState(false);
@@ -21,7 +22,9 @@ export default function UserMenu() {
         />
       </div>
       {openProfileModal ? (
-        <ProfileModal onClose={() => setOpenProfileModal(false)} />
+        <PortalWrapper>
+          <ProfileModal onClose={() => setOpenProfileModal(false)} />
+        </PortalWrapper>
       ) : null}
     </>
   );

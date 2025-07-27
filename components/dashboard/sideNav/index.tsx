@@ -3,6 +3,7 @@
 import clsx from "clsx";
 import { useDashboardContext } from "@/context/DashboardContext";
 import OrdersHistoryModal from "@/components/dashboard/OrdersHistory";
+import PortalWrapper from "@/components/PortalWrapper";
 
 import TradeIcon from "../icons/tradeIcon";
 import OrdersIcon from "../icons/OrdersIcon";
@@ -35,7 +36,7 @@ export default function DashboardSidebar() {
         height: "calc(100vh - var(--top-nav-height))",
         width: "var(--side-nav-width)",
       }}
-      className="fixed top-0 left-0 border-r border-[#071014] z-40 max-sm:!w-full max-sm:!h-[57px] max-sm:static bg-[#01060e] flex flex-col justify-between py-4 pt-[3%] pb-[3%] max-sm:pb-0 max-sm:pt-0 max-sm:!mt-0"
+      className="fixed top-0 left-0 border-r border-[#071014] z-10 max-sm:!w-full max-sm:!h-[57px] max-sm:static bg-[#01060e] flex flex-col justify-between py-4 pt-[3%] pb-[3%] max-sm:pb-0 max-sm:pt-0 max-sm:!mt-0"
     >
       <div className="flex flex-col  max-sm:flex-row  items-center space-y-1/3 w-full max-sm:space-y-0">
         {navItems.map((item) => {
@@ -94,10 +95,12 @@ export default function DashboardSidebar() {
           Log out
         </button>
       </div>
-      <ModalComponent
-        nav={selectedSideNavTab}
-        setSelectedSideNavTab={setSelectedSideNavTab}
-      />
+      <PortalWrapper>
+        <ModalComponent
+          nav={selectedSideNavTab}
+          setSelectedSideNavTab={setSelectedSideNavTab}
+        />
+      </PortalWrapper>
     </aside>
   );
 }
@@ -115,17 +118,13 @@ const ModalComponent = ({
 
   if (nav === "Orders") {
     return <OrdersHistoryModal onClose={closeModalFunction} />;
-  } 
-  else if (nav === "Cashier") {
+  } else if (nav === "Cashier") {
     return <CashierModal onClose={closeModalFunction} />;
-  } 
-  else if (nav === "Partner") {
+  } else if (nav === "Partner") {
     return <PartnerModal onClose={closeModalFunction} />;
-  } 
-  else if (nav === "Help") {
+  } else if (nav === "Help") {
     return <HelpModal onClose={closeModalFunction} />;
-  } 
-  else {
+  } else {
     return <></>;
   }
 };

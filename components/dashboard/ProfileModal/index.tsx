@@ -60,7 +60,7 @@ export default function ProfileModal({ onClose }: ProfileModalProps) {
 
   return (
     <div className="modal-offset fixed inset-0 z-50 bg-black/50 flex justify-start max-sm:hidden">
-      <div className="relative w-[25%] min-w-[359px] max-w-md backdrop-blur-sm border-r border-[#1D3F2F] text-white p-6 shadow-xl">
+      <div className="relative w-[25%] min-w-[359px] z-40 max-w-md backdrop-blur-sm border-r border-[#1D3F2F] text-white p-6 shadow-xl">
         <div className="flex justify-between items-center mb-4">
           <button onClick={onClose}>
             <Image

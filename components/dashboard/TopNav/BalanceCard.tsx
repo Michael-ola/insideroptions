@@ -5,6 +5,7 @@ import { HTMLAttributes } from "react";
 import AccountModal from "../AccountsModal";
 import { useState } from "react";
 import api from "@/data/accounts/accountsdata.json";
+import PortalWrapper from "@/components/PortalWrapper";
 
 interface BalanceCardProps extends HTMLAttributes<HTMLDivElement> {
   label?: string;
@@ -55,11 +56,13 @@ export default function BalanceCard({
           {dropdown && <ChevronDown className="w-4 h-4 text-white/60 ml-1" />}
         </div>
       </div>
-      <AccountModal
-        accounts={api.accounts}
-        openAccountsModal={openAccountsModal}
-        setOpenAccountsModal={setOpenAccountsModal}
-      />
+      <PortalWrapper>
+        <AccountModal
+          accounts={api.accounts}
+          openAccountsModal={openAccountsModal}
+          setOpenAccountsModal={setOpenAccountsModal}
+        />
+      </PortalWrapper>
     </>
   );
 }
