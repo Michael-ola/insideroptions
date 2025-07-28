@@ -8,6 +8,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useDashboardContext } from "@/context/DashboardContext";
 import Button from "@/components/Button2";
+import copyToClipboardFallback from "@/lib/copyToClipboard";
 interface ProfileModalProps {
   onClose: () => void;
 }
@@ -52,15 +53,28 @@ export default function ProfileModal({ onClose }: ProfileModalProps) {
     return () => window.removeEventListener("keydown", handleEscape);
   }, [onClose]);
 
+  const copyToClipboard = (text: string) => {
+    if (
+      navigator.clipboard &&
+      typeof navigator.clipboard.writeText === "function"
+    ) {
+      navigator.clipboard
+        .writeText(text)
+        .catch(() => copyToClipboardFallback(text));
+    } else {
+      copyToClipboardFallback(text);
+    }
+  };
+
   const handleCopy = () => {
-    navigator.clipboard.writeText(traderData ? traderData.id.toString() : "");
+    copyToClipboard(traderData ? traderData.id.toString() : "");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   return (
-    <div className="modal-offset fixed inset-0 z-50 bg-black/50 flex justify-start max-sm:hidden">
-      <div className="relative w-[25%] min-w-[359px] z-40 max-w-md backdrop-blur-sm border-r border-[#1D3F2F] text-white p-6 shadow-xl">
+    <div className="modal-offset fixed inset-0 z-50 bg-black/50 flex justify-start">
+      <div className="relative w-[25%] min-w-[359px] max-sm:min-w-full z-40 max-w-md max-sm:w-full max-sm:max-w-full backdrop-blur-sm max-sm:backdrop-blur-none max-sm:bg-[#00040D] border-r border-[#1D3F2F] text-white p-6 shadow-xl">
         <div className="flex justify-between items-center mb-4">
           <button onClick={onClose}>
             <Image
@@ -75,9 +89,9 @@ export default function ProfileModal({ onClose }: ProfileModalProps) {
           <X className="text-white cursor-pointer" onClick={onClose} />
         </div>
 
-        <div className="flex flex-col items-center gap-1 mb-4 overflow-y-auto custom-scrollbar">
+        <div className="flex flex-col items-center gap-1 mb-4 mt-[20%] overflow-y-auto custom-scrollbar">
           <Image
-            src="/avatar.png"
+            src="/images/traderAvatar.png"
             alt="Profile"
             width={64}
             height={64}
@@ -116,9 +130,9 @@ export default function ProfileModal({ onClose }: ProfileModalProps) {
                 idx < profileData.length - 1 ? "border-b border-white/10" : ""
               }`}
             >
-              <div className="flex items-center gap-3">
+              <div className="flex items-center">
                 {item.icon}
-                <span className="text-white/60 text-sm">{item.label}</span>
+                <span className="text-white/60 text-sm ml-3">{item.label}</span>
               </div>
               <span className="text-white/80 text-sm">{item.value}</span>
             </div>
