@@ -1,6 +1,7 @@
 import { AlertCircle, Copy } from "lucide-react";
 import { CryptoData } from "../cashierModal";
 import { QRCodeCanvas } from "qrcode.react";
+import { toast } from "react-toastify";
 
 const CryptoPayView = ({ cryptoData }: { cryptoData: CryptoData | null }) => {
   return (
@@ -15,9 +16,9 @@ const CryptoPayView = ({ cryptoData }: { cryptoData: CryptoData | null }) => {
         <div className="flex items-start gap-3 text-xs text-gray-400 mb-4">
           <AlertCircle className="w-24 text-red-400" />
           <p>
-            Please note, we only accept {cryptoData?.coin} to the below
-            address. Any tokens/coins sent other than {cryptoData?.coin} will
-            not be applied to your trading account.
+            Please note, we only accept {cryptoData?.coin} to the below address.
+            Any tokens/coins sent other than {cryptoData?.coin} will not be
+            applied to your trading account.
           </p>
         </div>
       </div>
@@ -28,9 +29,10 @@ const CryptoPayView = ({ cryptoData }: { cryptoData: CryptoData | null }) => {
             {cryptoData?.depositAddress}
           </p>
           <div
-            className="w-full flex items-center justify-center gap-2 text-[#79DA7E] font-semibold"
+            className="w-full flex items-center justify-center gap-2 text-[#79DA7E] font-semibold cursor-pointer"
             onClick={() => {
-              navigator.clipboard.writeText(cryptoData?.depositAddress || "");
+              navigator.clipboard.writeText(cryptoData?.depositAddress ?? "");
+              toast.info("Address Copied");
             }}
           >
             <Copy className="text-2xl" /> <span>Copy address</span>
@@ -40,7 +42,12 @@ const CryptoPayView = ({ cryptoData }: { cryptoData: CryptoData | null }) => {
           Or Scan QR Code
         </p>
         <div className="flex items-center justify-center p-4">
-          <QRCodeCanvas value={cryptoData?.depositAddress || ""} size={320} level="H" marginSize={1} />
+          <QRCodeCanvas
+            value={cryptoData?.depositAddress || ""}
+            size={320}
+            level="H"
+            marginSize={1}
+          />
         </div>
         <p className="text-xs sm:text-sm text-center">
           Once you initiate the transaction in your crypto wallet, we will email

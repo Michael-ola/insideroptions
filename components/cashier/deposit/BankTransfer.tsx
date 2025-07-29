@@ -108,10 +108,10 @@ const BankTransfer = () => {
                 <input
                   type="text"
                   name="amount"
-                  onChange={(e) => handleAmount(e)}
+                  onChange={handleAmount}
                   value={amount}
                   placeholder="0.00"
-                  className="w-full text-white bg-transparent border border-gray-700 px-4 py-3 outline-none rounded-xl text-sm focus:border-0 focus:ring-1 focus-within:ring-green-500"
+                  className="w-full text-white bg-transparent border border-white/5 px-4 py-3 outline-none rounded-xl text-sm focus:border-0 focus:ring-1 focus-within:ring-primary"
                 />
                 <span className="text-[10px] text-start mt-2">
                   Min amount: N50,000 | Max amount: N20,000,000

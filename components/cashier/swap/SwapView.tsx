@@ -76,7 +76,6 @@ const SwapView = () => {
       {!showFromDropdown && !showToDropdown && (
         <>
           <div className="w-full relative space-y-6">
-            {/* Source Balance Dropdown */}
             <div className="w-full relative px-6 py-4 bg-[#1A2E22] flex items-start justify-between">
               <div className="w-full text-white">
                 <button

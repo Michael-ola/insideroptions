@@ -1,11 +1,15 @@
-import React from "react";
-import { X } from "lucide-react";
+"use client";
+
+import React, { useState } from "react";
+import { Check, X } from "lucide-react";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { AnimatePresence, motion } from "framer-motion";
+import { useDashboardContext } from "@/context/DashboardContext";
 
 interface ConfirmClearModalProps {
   title?: string;
   message?: string;
+  canCheck?: boolean;
   onCancel: () => void;
   onConfirm: () => void;
 }
@@ -13,9 +17,12 @@ interface ConfirmClearModalProps {
 const ConfirmModal = ({
   title,
   message,
+  canCheck,
   onCancel,
   onConfirm,
 }: ConfirmClearModalProps) => {
+  const { traderData } = useDashboardContext();
+  const [agreed, setAgreed] = useState<boolean>(false);
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -51,6 +58,32 @@ const ConfirmModal = ({
                 <p className="px-8 text-center text-xl font-medium text-white whitespace-pre-line">
                   {message}
                 </p>
+                {canCheck && (
+                  <label className="px-8 text-left flex items-start gap-3 text-sm text-white/60">
+                    <div
+                      onClick={() => setAgreed(!agreed)}
+                      className={`
+                    w-5 h-5 rounded-sm border  cursor-pointer flex items-center justify-center transition-colors 
+                    ${agreed ? "border-green-500 p-[0.5px]" : "border-gray-400"}
+                     `}
+                    >
+                      <Check
+                        className={`w-5 text-green-500 opacity-0  ${
+                          agreed ? "opacity-100" : ""
+                        } transition-opacity duration-500`}
+                      />
+                    </div>
+                    <span>
+                      I, {traderData?.firstName} {traderData?.lastName} agree to
+                      the{" "}
+                      <span className="font-semibold">
+                        Auto trade terms and conditions
+                      </span>
+                      , and also agree that past performance does not guarantee
+                      future performance.
+                    </span>
+                  </label>
+                )}
               </div>
 
               <div className="w-full flex flex-col-reverse md:flex-row items-center justify-between gap-3 pb-8">
@@ -61,11 +94,12 @@ const ConfirmModal = ({
                   Cancel
                 </button>
                 <button
+                  disabled={canCheck ? !agreed : undefined}
                   onClick={() => {
                     onConfirm();
                     onCancel();
                   }}
-                  className="w-full flex-1 bg-primary text-black font-semibold py-3 px-6 rounded-xl hover:bg-green-300 transition"
+                  className="w-full flex-1 bg-primary text-black font-semibold py-3 px-6 rounded-xl hover:bg-gradient-to-tr  from-primary to-[#b4e6b8] transition"
                 >
                   Confirm
                 </button>
