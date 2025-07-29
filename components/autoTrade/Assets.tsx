@@ -5,14 +5,14 @@ import { useState } from "react";
 // import Image from "next/image";
 
 interface AssetRowProps {
-  icon: string;
+  // icon?: string;
   name: string;
   change: string;
   profit: number;
   onClick?: () => void;
 }
 
-const AssetRow: React.FC<AssetRowProps> = ({ icon, name, change, profit, onClick }) => {
+const AssetRow: React.FC<AssetRowProps> = ({ name, change, profit, onClick }) => {
   const isPositive = parseFloat(change) > 0;
 
   return (
@@ -43,61 +43,61 @@ const AssetRow: React.FC<AssetRowProps> = ({ icon, name, change, profit, onClick
 
 export const assets = [
   {
-    icon: "/icons/apple.png",
+    // icon: "/icons/apple.png",
     name: "Apple",
     change: "+0.13%",
     profit: 77,
   },
   {
-    icon: "/icons/ethereum.png",
+    // icon: "/icons/ethereum.png",
     name: "Ethereum",
     change: "+0.13%",
     profit: 75,
   },
   {
-    icon: "/icons/gbp.png",
+    // icon: "/icons/gbp.png",
     name: "GBP/USD",
     change: "-1.54%",
     profit: 60,
   },
   {
-    icon: "/icons/google.png",
+    // icon: "/icons/google.png",
     name: "Google",
     change: "-1.54%",
     profit: 77,
   },
   {
-    icon: "/icons/gold.png",
+    // icon: "/icons/gold.png",
     name: "Gold",
     change: "-1.54%",
     profit: 69,
   },
   {
-    icon: "/icons/eur.png",
+    // icon: "/icons/eur.png",
     name: "EUR/USD",
     change: "+0.13%",
     profit: 77,
   },
   {
-    icon: "/icons/meta.png",
+    // icon: "/icons/meta.png",
     name: "Facebook (META)",
     change: "-1.54%",
     profit: 65,
   },
   {
-    icon: "/icons/bitcoin.png",
+    // icon: "/icons/bitcoin.png",
     name: "Bitcoin",
     change: "+0.13%",
     profit: 77,
   },
   {
-    icon: "/icons/meta.png",
+    // icon: "/icons/meta.png",
     name: "Facebook (META)",
     change: "+0.13%",
     profit: 66,
   },
   {
-    icon: "/icons/aud.png",
+    // icon: "/icons/aud.png",
     name: "AUD/CAD",
     change: "-1.54%",
     profit: 87,
