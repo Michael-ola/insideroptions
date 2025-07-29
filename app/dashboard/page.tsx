@@ -61,7 +61,7 @@ export default function DashboardPage() {
 
   return (
     <DashboardContext.Provider value={contextValue}>
-      <div className="relative min-h:100dvh overflow-clip bg-[#01060e] text-white max-sm:flex max-sm:flex-col max-sm:items-center max-sm:justify-end">
+      <div className="relative max-h-[100dvh] overflow-clip bg-[#01060e] text-white max-sm:flex max-sm:flex-col max-sm:items-center max-sm:justify-end">
         <TopTraderFeedCard />
         <TopNav />
         <AssetComponent />

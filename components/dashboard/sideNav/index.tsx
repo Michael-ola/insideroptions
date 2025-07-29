@@ -2,9 +2,8 @@
 
 import clsx from "clsx";
 import { useDashboardContext } from "@/context/DashboardContext";
-import OrdersHistoryModal from "@/components/dashboard/OrdersHistory";
 import PortalWrapper from "@/components/PortalWrapper";
-
+import ModalComponent from "../ModalComponent";
 import TradeIcon from "../icons/tradeIcon";
 import OrdersIcon from "../icons/OrdersIcon";
 import CashierIcon from "../icons/cashierIcon";
@@ -13,11 +12,7 @@ import HelpIcon from "../icons/helpIcon";
 import AssetManagerIcon from "../icons/assetManagerIcon";
 import AutoTradeIcon from "../icons/autoTradeIcon";
 import LogoutIcon from "../icons/logoutIcon";
-import CashierModal from "@/components/cashier/cashierModal";
-import PartnerModal from "@/components/partner";
-import HelpModal from "@/components/help/HelpModal";
 import ConfirmModal from "@/components/ConfirmationModal";
-import AutoTradeModal from "@/components/autoTrade/AutoTradeModal";
 
 export const navItems = [
   { label: "Trade", icon: TradeIcon },
@@ -62,7 +57,6 @@ export default function DashboardSidebar() {
                   return;
                 }
                 setSelectedSideNavTab(item.label);
-                console.log(item.label);
               }}
               className={clsx(
                 "relative cursor-pointer flex flex-col items-center w-full max-sm:w-1/3 py-3 max-sm:pt-1 max-sm:pb-2 text-[10px] transition-all duration-150",
@@ -125,30 +119,3 @@ export default function DashboardSidebar() {
     </aside>
   );
 }
-
-const ModalComponent = ({
-  nav,
-  setSelectedSideNavTab,
-}: {
-  nav: string;
-  setSelectedSideNavTab: (tab: string) => void;
-}) => {
-  const closeModalFunction = () => {
-    setSelectedSideNavTab("Trade");
-  };
-  const { openAutoTrade } = useDashboardContext();
-
-  if (nav === "Orders") {
-    return <OrdersHistoryModal onClose={closeModalFunction} />;
-  } else if (nav === "Cashier") {
-    return <CashierModal onClose={closeModalFunction} />;
-  } else if (nav === "Partner") {
-    return <PartnerModal onClose={closeModalFunction} />;
-  } else if (nav === "Help") {
-    return <HelpModal onClose={closeModalFunction} />;
-  } else if (nav === "Auto trade" && openAutoTrade) {
-    return <AutoTradeModal onClose={closeModalFunction} />;
-  } else {
-    return <></>;
-  }
-};
