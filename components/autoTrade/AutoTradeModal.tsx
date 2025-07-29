@@ -8,11 +8,11 @@ import CI from "./CI";
 import TradingPlan from "./TradingPlan";
 import Assets from "./Assets";
 import ConfirmModal from "../ConfirmationModal";
+import { useDashboardContext } from "@/context/DashboardContext";
 
 export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
   const [view, setView] = useState<string>("Current Investment");
   const [isStartAutoTrade, setIsStartAutoTrade] = useState<boolean>(false);
-  const [showTradeStatus, setShowTradeStatus] = useState<boolean>(false);
   const [tradingPlan, setTradingPlan] = useState<string>("");
   const [amount, setAmount] = useState<string | number>("");
   const [asset, setAsset] = useState<string>("EUR/USD");
@@ -20,7 +20,7 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
     "43,200 mins/30days/15%"
   );
   const [iconOrImage, setIconOrImage] = useState<StaticImageData | string>("");
-
+  const { showTradeStatus, setShowTradeStatus } = useDashboardContext();
   const handleViewChange = (nextView: string) => setView(nextView);
 
   const startAutoTrade = () => {
@@ -38,6 +38,7 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
       case "Current Investment":
         return (
           <CI
+            onClose={onClose}
             handleViewChange={handleViewChange}
             tradingPlan={tradingPlan}
             selectedAsset={asset}
@@ -75,6 +76,7 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
             icon={iconOrImage}
             onClose={() => {
               onClose();
+              setShowTradeStatus(false);
             }}
             handleViewChange={handleViewChange}
             setIconOrImage={setIconOrImage}

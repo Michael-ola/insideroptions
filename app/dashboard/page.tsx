@@ -12,6 +12,7 @@ import TopNav from "@/components/dashboard/TopNav";
 import { apiClient } from "@/lib/api-client";
 import type { TraderDataType } from "@/types/TraderDataType";
 import TradingChart from "@/components/dashboard/tradingChart";
+import AutoTradeButton from "@/components/dashboard/AutoTradeButton/AutoTradeButton";
 
 export default function DashboardPage() {
   const [openGraphStyleModal, setOpenGraphStyleModal] = useState(false);
@@ -20,6 +21,7 @@ export default function DashboardPage() {
   const [openCashierModal, setOpenCashierModal] = useState<boolean>(false);
   const [openConfirmation, setOpenConfirmation] = useState<boolean>(false);
   const [openAutoTrade, setOpenAutoTrade] = useState<boolean>(false);
+  const [showTradeStatus, setShowTradeStatus] = useState<boolean>(false);
   const [selectedSideNavTab, setSelectedSideNavTab] = useState("Trade");
   const [selectedAccount, setSelectedAccount] = useState("real");
   const [traderData, setTraderData] = useState<TraderDataType | null>(null);
@@ -57,6 +59,8 @@ export default function DashboardPage() {
     setOpenConfirmation,
     openAutoTrade,
     setOpenAutoTrade,
+    showTradeStatus,
+    setShowTradeStatus,
   };
 
   return (
@@ -66,6 +70,7 @@ export default function DashboardPage() {
         <TopNav />
         <AssetComponent />
         <TradingChart />
+        <AutoTradeButton />
         <ControlPanel />
       </div>
       <SideNav />

@@ -6,6 +6,7 @@ import euro from "@/lib/assets/Euro_Icons.png";
 import { AnimatedCircularProgress } from "./AnimatedCircle";
 
 interface TradeStatusProps {
+  onClose: () => void;
   duration: string;
   asset: string | undefined;
   profitPercent: number | undefined;
@@ -16,6 +17,7 @@ interface TradeStatusProps {
 }
 
 const TradeStatus: React.FC<TradeStatusProps> = ({
+  onClose,
   duration,
   asset,
   profitPercent,
@@ -100,7 +102,10 @@ const TradeStatus: React.FC<TradeStatusProps> = ({
       </div>
 
       <div className="w-full flex justify-between gap-4">
-        <button className="w-full border border-primary rounded-xl px-6 py-3 text-primary hover:bg-green-400/10 transition whitespace-nowrap">
+        <button
+          onClick={() => onClose()}
+          className="w-full border border-primary rounded-xl px-6 py-3 text-primary hover:bg-green-400/10 transition whitespace-nowrap"
+        >
           Show chart
         </button>
         <button className="w-full bg-[#0f1c1b] text-white/60 py-3 px-6 rounded-xl cursor-not-allowed whitespace-nowrap">

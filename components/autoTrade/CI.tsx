@@ -11,6 +11,7 @@ import { assets } from "./Assets";
 import TradeStatus from "./TradeStatus";
 
 const CI = ({
+  onClose,
   handleViewChange,
   tradingPlan,
   selectedAsset,
@@ -21,6 +22,7 @@ const CI = ({
   setIsStartAutoTrade,
   showTradeStatus,
 }: {
+  onClose: () => void;
   handleViewChange: (val: string) => void;
   tradingPlan: string;
   selectedAsset: string;
@@ -51,10 +53,6 @@ const CI = ({
   ];
 
   const mins = selectedTradeOption.split("/")[0];
-  // const days = selectedTradeOption.split("/")[1];
-  const day = selectedTradeOption.split("/")[1].split("days")[0];
-  const perc = selectedTradeOption.split("/")[2].split("%")[0];
-  const percentage = Number(perc) / Number(day);
 
   const handleAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
@@ -97,7 +95,7 @@ const CI = ({
           </div>
 
           <div>
-            <label className="text-sm mb-1 block text-white/70">Amount</label>
+            <label className="text-sm mb-1 block text-white">Amount</label>
             <input
               type="text"
               name="amount"
@@ -117,7 +115,9 @@ const CI = ({
                   onClick={() => {
                     setSelectedTradeOption(opt);
                   }}
-                  className="w-full relative bg-[#EEFFEF]/3 py-2 rounded-lg text-sm text-white text-center hover:bg-[#EEFFEF]/5"
+                  className={`w-full relative bg-[#EEFFEF]/3 py-2 rounded-lg text-sm text-white text-center hover:bg-[#EEFFEF]/5 ${
+                    selectedTradeOption === opt && "border border-primary"
+                  }`}
                 >
                   {opt}
                   {selectedTradeOption === opt && (
@@ -125,7 +125,7 @@ const CI = ({
                       icon="tdesign-secured"
                       width="12px"
                       height="12px"
-                      className="text-primary absolute -top-1 right-[5%]"
+                      className="text-primary absolute -top-1 right-[5%] z-10"
                     />
                   )}
                 </button>
@@ -220,6 +220,7 @@ const CI = ({
       )}
       {showTradeStatus && (
         <TradeStatus
+          onClose={onClose}
           duration={mins}
           asset={asset?.name}
           tradedBalance={800}
