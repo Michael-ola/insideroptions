@@ -18,6 +18,7 @@ export interface TraderDataType {
   lastName: string;
   email: string;
   country: string;
+  refererCode: string;
   emailVerified: "Y" | "N";
   phoneNumberVerified: "Y" | "N";
   accounts: Account[];

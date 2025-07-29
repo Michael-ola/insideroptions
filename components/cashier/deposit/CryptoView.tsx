@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { AlertCircle, Check, ChevronRight } from "lucide-react";
 import Image, { StaticImageData } from "next/image";
 import usdt from "@/lib/assets/usdt.png";
-import profile from "@/data/trader/profile.json";
 import btc from "@/lib/assets/btc.png";
 import trc20 from "@/lib/assets/trc20.png";
 import eth from "@/lib/assets/eth.png";
@@ -13,6 +12,7 @@ import { CryptoData, ModalView } from "../cashierModal";
 import { apiClient } from "@/lib/api-client";
 import { getErrorMessage } from "@/lib/authUtils";
 import { toast } from "react-toastify";
+import { useDashboardContext } from "@/context/DashboardContext";
 
 type CryptoList = {
   label: string;
@@ -58,6 +58,7 @@ const CryptoView = ({
   setSelectedCrypto,
   setCryptoData,
 }: Props) => {
+    const { traderData } = useDashboardContext();
   const [confirmed, setConfirmed] = useState<boolean>(false);
 
   const [isConfirming, setIsConfirming] = useState(false);
@@ -88,7 +89,7 @@ const CryptoView = ({
         maxFeePerGas: 0,
         maxPriorityFeePerGas: 0,
       },
-      accountId: profile.id,
+      accountId: traderData?.id,
     };
   };
 
@@ -179,7 +180,7 @@ const CryptoView = ({
             />
           </div>
           <span className="text-gray-400">
-            I, {profile.firstName} {profile.lastName}, hereby confirm that I
+            I, {traderData?.firstName} {traderData?.lastName}, hereby confirm that I
             have read and understood Deposit & Withdrawal Terms for
             Cryptocurrencies
           </span>

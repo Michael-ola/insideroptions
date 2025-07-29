@@ -12,6 +12,7 @@ import HelpIcon from "../icons/helpIcon";
 import AssetManagerIcon from "../icons/assetManagerIcon";
 import AutoTradeIcon from "../icons/autoTradeIcon";
 import LogoutIcon from "../icons/logoutIcon";
+import ConfirmModal from "@/components/ConfirmationModal";
 
 export const navItems = [
   { label: "Trade", icon: TradeIcon },
@@ -25,6 +26,8 @@ export const navItems = [
 
 export default function DashboardSidebar() {
   const { selectedSideNavTab, setSelectedSideNavTab } = useDashboardContext();
+  const { openConfirmation, setOpenConfirmation } = useDashboardContext();
+  const { setOpenAutoTrade } = useDashboardContext();
   return (
     <aside
       style={{
@@ -49,6 +52,10 @@ export default function DashboardSidebar() {
             <div
               key={item.label}
               onClick={() => {
+                if (item.label === "Auto trade") {
+                  setOpenConfirmation(true);
+                  return;
+                }
                 setSelectedSideNavTab(item.label);
               }}
               className={clsx(
@@ -96,6 +103,19 @@ export default function DashboardSidebar() {
           setSelectedSideNavTab={setSelectedSideNavTab}
         />
       </PortalWrapper>
+      {openConfirmation && (
+        <PortalWrapper>
+          <ConfirmModal
+            onCancel={() => setOpenConfirmation(false)}
+            onConfirm={() => {
+              setSelectedSideNavTab("Auto trade");
+              setOpenAutoTrade(true);
+            }}
+            title="Auto trade"
+            message="Are you sure you want to switch to Auto trade dashboard?"
+          />
+        </PortalWrapper>
+      )}
     </aside>
   );
 }

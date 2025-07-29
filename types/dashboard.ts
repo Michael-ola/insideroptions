@@ -17,4 +17,10 @@ export interface DashboardPropsType {
   setSelectedAccount: (val: string) => void;
   traderData: TraderDataType | null;
   setTraderData: React.Dispatch<React.SetStateAction<TraderDataType | null>>;
+  openConfirmation: boolean;
+  setOpenConfirmation: (val: boolean) => void;
+  openAutoTrade: boolean;
+  setOpenAutoTrade: (val: boolean) => void;
+  showTradeStatus: boolean;
+  setShowTradeStatus: (val: boolean) => void;
 }
