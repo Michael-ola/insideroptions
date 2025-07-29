@@ -88,9 +88,9 @@ const WithdrawalView = ({
       <div className="flex items-center gap-3">
         <div className="w-full flex flex-col items-center justify-center bg-[#070c14] sm:bg-white/3 px-6 py-4 rounded-xl border border-[#79DA7E]/25">
           <p className="text-base font-semibold">
-            ${realAccount?.accountBalance.toFixed(2)}
+            ${realAccount?.profitBalance.toFixed(2)}
           </p>
-          <p className="text-xs text-white/80">Real Balance</p>
+          <p className="text-xs text-white/80">Profit Balance</p>
         </div>
         <button
           type="button"
