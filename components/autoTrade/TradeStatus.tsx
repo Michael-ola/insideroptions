@@ -14,6 +14,7 @@ interface TradeStatusProps {
   amount: string | number;
   tradingPlan: string;
   profitLimit: number;
+  handleViewChange: (val: string)=> void;
 }
 
 const TradeStatus: React.FC<TradeStatusProps> = ({
@@ -25,6 +26,7 @@ const TradeStatus: React.FC<TradeStatusProps> = ({
   amount,
   tradingPlan,
   profitLimit,
+  handleViewChange,
 }) => {
   const [reverse, setReverse] = useState(false);
 
@@ -38,6 +40,7 @@ const TradeStatus: React.FC<TradeStatusProps> = ({
   const [minutes, setMinutes] = useState(initialMins);
   const [seconds, setSeconds] = useState(60);
   useEffect(() => {
+    console.log("Asset: ", asset);
     const interval = setInterval(() => {
       setSeconds((prevSec) => {
         if (prevSec === 0) {
@@ -55,6 +58,7 @@ const TradeStatus: React.FC<TradeStatusProps> = ({
 
     return () => clearInterval(interval);
   }, [minutes]);
+
 
   return (
     <div className="w-full h-full px-6 space-y-6 text-white">
@@ -114,7 +118,7 @@ const TradeStatus: React.FC<TradeStatusProps> = ({
       </div>
 
       <div className="text-center">
-        <button className="text-primary text-sm font-medium hover:text-green-300">
+        <button onClick={()=> handleViewChange("History")} className="text-primary text-sm mt-8 font-medium hover:text-green-300">
           View trade history
         </button>
       </div>

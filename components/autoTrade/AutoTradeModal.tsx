@@ -9,6 +9,7 @@ import TradingPlan from "./TradingPlan";
 import Assets from "./Assets";
 import ConfirmModal from "../ConfirmationModal";
 import { useDashboardContext } from "@/context/DashboardContext";
+import AutoTradeHistory from "./AutoTradeHistory";
 
 export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
   const [view, setView] = useState<string>("Current Investment");
@@ -24,6 +25,8 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
   const handleViewChange = (nextView: string) => setView(nextView);
 
   const startAutoTrade = () => {
+    console.log("auto trade api wire");
+    // onClose();
     setShowTradeStatus(true);
   };
 
@@ -62,6 +65,8 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
         return (
           <Assets handleViewChange={handleViewChange} setAsset={setAsset} />
         );
+      case "History":
+        return <AutoTradeHistory />;
       default:
         return null;
     }

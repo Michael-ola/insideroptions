@@ -228,6 +228,7 @@ const CI = ({
           amount={amount}
           tradingPlan={tradingPlan}
           profitLimit={Number(profitValue)}
+          handleViewChange={handleViewChange}
         />
       )}
     </div>

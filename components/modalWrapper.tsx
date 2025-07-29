@@ -8,12 +8,13 @@ import { cashierOptions } from "./cashier/CashierList";
 import { navItems } from "./dashboard/sideNav";
 import { helpOptions } from "./help/HelpList";
 
-type AutoTrade = "Current Investment" | "Trading Plan" | "Asset List";
+type AutoTrade = "Current Investment" | "Trading Plan" | "Asset List" | "History";
 
 const autoTrade: AutoTrade[] = [
   "Current Investment",
   "Trading Plan",
   "Asset List",
+  "History",
 ];
 
 interface ModalWrapperProps {

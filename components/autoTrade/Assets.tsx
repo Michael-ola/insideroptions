@@ -20,13 +20,11 @@ const AssetRow: React.FC<AssetRowProps> = ({ icon, name, change, profit, onClick
       onClick={onClick}
       className="w-full px-8 flex items-center justify-between py-3 border-b border-white/5 last:border-0 cursor-pointer"
     >
-      {/* Icon + Name */}
       <div className="flex items-center gap-3 w-3/5">
         {/* <Image src={icon} alt={name} className="w-6 h-6 object-contain" /> */}
         <span className="text-sm text-white">{name}</span>
       </div>
 
-      {/* 24h Change */}
       <div className="w-2/5 text-center flex items-center gap-3">
         <span
           className={`text-sm text-white font-medium px-2.5 py-2 rounded-lg ${
@@ -35,7 +33,6 @@ const AssetRow: React.FC<AssetRowProps> = ({ icon, name, change, profit, onClick
         >
           {change}
         </span>
-        {/* Profit */}
         <div className="w-1/4 text-right text-green-400 font-semibold text-sm">
           {profit}%
         </div>
@@ -181,9 +178,9 @@ const Assets = ({
 
       {/* Asset Rows */}
       <div className="flex-1 overflow-y-auto custom-scrollbar">
-        {assets.map((asset) => (
+        {assets.map((asset, idx) => (
           <AssetRow
-            key={asset.name}
+            key={idx}
             onClick={() => {
               setAsset(asset.name);
               handleViewChange("Current Investment");
