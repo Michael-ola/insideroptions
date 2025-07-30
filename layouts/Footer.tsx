@@ -1,6 +1,6 @@
 "use client";
 
-import { navLinks } from "@/lib/constants";
+import {EMPTY_STRING, navLinks} from "@/lib/constants";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -9,7 +9,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   const socialIcons = ["IG", "FB", "X", "TEL", "TIKTOK"];
-  const pathname = usePathname();
+  const pathname = usePathname() || EMPTY_STRING;
   if (pathname.startsWith("/dashboard")) return null;
 
   return (
