@@ -54,7 +54,7 @@ const Regulations = () => {
 
       <div className="rounded-xl overflow-hidden">
         <Image src={cert} alt="Certificate" className="w-full object-cover" />
-        <button className="w-full bg-primary px-6 py-3 text-black font-semibold hover:bg-green-300 transition">
+        <button className="w-full bg-primary px-6 py-3 text-black font-semibold hover:bg-gradient-to-tr  from-primary to-[#b4e6b8] transition">
           View all certificates
         </button>
       </div>

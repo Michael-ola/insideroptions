@@ -103,7 +103,7 @@ const WithdrawalView = ({
             handleViewChange("Swap (Profit bal - Real bal)");
             return;
           }}
-          className="bg-[#79DA7E] text-black flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold hover:bg-green-300"
+          className="bg-[#79DA7E] text-black flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold hover:bg-gradient-to-tr  from-primary to-[#b4e6b8] transition"
         >
           SWAP
           <IoSwapHorizontal className="w-3 h-3" />
