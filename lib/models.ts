@@ -61,3 +61,21 @@ export interface Asset {
   profit: number;
   status: string;
 }
+
+export interface PricePoint {
+  value: number;
+  time: number; // Unix timestamp in seconds
+}
+
+export interface PriceHistory {
+  assetId: number;
+  symbol: string;
+  price: number;
+  timestamp: string; // ISO date string
+}
+
+export enum SeriesType {
+  Area = 'area',
+  Candles = 'candles',
+  Lines = 'lines',
+}

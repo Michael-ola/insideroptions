@@ -1,4 +1,4 @@
-export type SeriesType = 'area' | 'candles' | 'lines';
+import { SeriesType } from "@/lib/models";
 
 export interface DashboardPropsType {
   openGraphStyleModal: boolean;
@@ -14,3 +14,5 @@ export interface DashboardPropsType {
   selectedAccount: string;
   setSelectedAccount: (val: string) => void;
 }
+export { SeriesType };
+
