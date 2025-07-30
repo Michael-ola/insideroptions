@@ -1,6 +1,5 @@
 import { TraderDataType } from "./TraderDataType";
-
-export type SeriesType = "area" | "candles" | "lines";
+import {SeriesType} from "@/lib/models";
 
 export interface DashboardPropsType {
   openGraphStyleModal: boolean;
