@@ -15,7 +15,7 @@ import { getErrorMessage, verifyTraderEmail } from "@/lib/authUtils";
 const VerifyAccountContent = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const email = searchParams.get("email") || EMPTY_STRING;
+  const email = searchParams?.get("email") || EMPTY_STRING;
   const [hasLegalAgreement, setHasLegalAgreement] = useState(false);
   const [otp, setOtp] = useState(EMPTY_STRING);
   const [otpError, setOtpError] = useState<string>(EMPTY_STRING);
