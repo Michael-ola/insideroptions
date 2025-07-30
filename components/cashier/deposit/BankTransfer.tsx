@@ -3,27 +3,28 @@
 import { Check, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
-import profile from "@/data/trader/profile.json";
 import candle from "@/lib/assets/green_candle.png";
 import { RiLoader4Line } from "@remixicon/react";
-
-const tranferDetails = [
-  { label: "Payment method", value: "Bank Transfer" },
-  { label: "Bank", value: "Access Bank" },
-  {
-    label: "Receipeint full name",
-    value: `${profile.firstName} ${profile.lastName}`,
-  },
-  { label: "Currency", value: "USD/NGN" },
-  { label: "Receiving amount", value: "NGN378,250.00" },
-];
+import { useDashboardContext } from "@/context/DashboardContext";
 
 const BankTransfer = () => {
+  const { traderData } = useDashboardContext();
   const [confirmed, setConfirmed] = useState<boolean>(false);
   const [amount, setAmount] = useState<string | number>("");
   const [confirmPayment, setConfirmPayment] = useState<boolean>(false);
   const [isConfirming, setIsConfirming] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  const tranferDetails = [
+    { label: "Payment method", value: "Bank Transfer" },
+    { label: "Bank", value: "Access Bank" },
+    {
+      label: "Receipeint full name",
+      value: `${traderData?.firstName} ${traderData?.lastName}`,
+    },
+    { label: "Currency", value: "USD/NGN" },
+    { label: "Receiving amount", value: "NGN378,250.00" },
+  ];
 
   const handleConfirmPayment = () => {
     try {
@@ -78,7 +79,7 @@ const BankTransfer = () => {
               <input
                 type="text"
                 disabled
-                value={profile.firstName}
+                value={traderData?.firstName}
                 className="w-full bg-transparent border border-gray-700 px-4 py-3 outline-none rounded-xl text-sm text-gray-500"
               />
             </div>
@@ -89,7 +90,7 @@ const BankTransfer = () => {
               <input
                 type="text"
                 disabled
-                value={profile.lastName}
+                value={traderData?.lastName}
                 className="w-full bg-transparent border border-gray-700 px-4 py-3 outline-none rounded-xl text-sm text-gray-500"
               />
             </div>
@@ -107,10 +108,10 @@ const BankTransfer = () => {
                 <input
                   type="text"
                   name="amount"
-                  onChange={(e) => handleAmount(e)}
+                  onChange={handleAmount}
                   value={amount}
                   placeholder="0.00"
-                  className="w-full text-white bg-transparent border border-gray-700 px-4 py-3 outline-none rounded-xl text-sm focus:border-0 focus:ring-1 focus-within:ring-green-500"
+                  className="w-full text-white bg-transparent border border-white/5 px-4 py-3 outline-none rounded-xl text-sm focus:border-0 focus:ring-1 focus-within:ring-primary"
                 />
                 <span className="text-[10px] text-start mt-2">
                   Min amount: N50,000 | Max amount: N20,000,000
@@ -137,7 +138,7 @@ const BankTransfer = () => {
                 />
               </div>
               <span className="text-gray-400">
-                I {profile.firstName} {profile.lastName} agree to 
+                I {traderData?.firstName} {traderData?.lastName} agree to 
                 <a
                   href="/company/terms-and-condition"
                   className="text-green-400"

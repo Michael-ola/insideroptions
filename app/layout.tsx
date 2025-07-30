@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${dmSans.variable} font-sans antialiased`}>
+      <body className={`${dmSans.variable} font-sans antialiased bg-[#0d111c]`}>
         <Navbar />
         {children}
         <ToastContainer />

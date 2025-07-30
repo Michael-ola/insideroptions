@@ -29,8 +29,8 @@ const TradingChart = () => {
         };
     }, []);
 
-    useEffect(() => {
-        if (!chartInstance) return;
+  useEffect(() => {
+    if (!chartInstance) return;
 
     if (seriesRef.current) {
         chartInstance.removeSeries(seriesRef.current);

@@ -1,4 +1,6 @@
-import { SeriesType } from "@/lib/models";
+import { TraderDataType } from "./TraderDataType";
+
+export type SeriesType = "area" | "candles" | "lines";
 
 export interface DashboardPropsType {
   openGraphStyleModal: boolean;
@@ -13,6 +15,12 @@ export interface DashboardPropsType {
   setOpenCashierModal: (val: boolean) => void;
   selectedAccount: string;
   setSelectedAccount: (val: string) => void;
+  traderData: TraderDataType | null;
+  setTraderData: React.Dispatch<React.SetStateAction<TraderDataType | null>>;
+  openConfirmation: boolean;
+  setOpenConfirmation: (val: boolean) => void;
+  openAutoTrade: boolean;
+  setOpenAutoTrade: (val: boolean) => void;
+  showTradeStatus: boolean;
+  setShowTradeStatus: (val: boolean) => void;
 }
-export { SeriesType };
-

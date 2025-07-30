@@ -7,18 +7,18 @@ import { AnimatePresence } from "framer-motion";
 const AssetComponent = () => {
   const [open, setOpen] = useState(false);
   return (
-    <div className="absolute top-6 left-1/2 -translate-x-1/2 z-30">
+    <div className="absolute top-4 left-1/2 -translate-x-1/2 z-30 max-sm:top-[10%]">
       <button
         onClick={() => setOpen((prev) => !prev)}
-        className="w-[40px] h-[40px] z-[60] flex items-center justify-center rounded-[8px]
+        className="w-[30px] h-[30px] z-[60] flex items-center justify-center rounded-[8px]
              bg-[#040b14] border border-[#10201f] text-white
              hover:bg-[#273134] transition cursor-pointer"
       >
         <div className="w-full h-full flex items-center justify-center">
           {open ? (
-            <IoClose className="w-full h-full p-2" />
+            <IoClose className="w-full h-full p-1" />
           ) : (
-            <IoAdd className="w-full h-full p-2" />
+            <IoAdd className="w-full h-full p-1" />
           )}
         </div>
       </button>
