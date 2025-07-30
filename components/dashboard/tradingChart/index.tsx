@@ -38,10 +38,31 @@ const TradingChart = () => {
 
         if (seriesRef.current) {
             chartInstance.removeSeries(seriesRef.current);
+            seriesRef.current = null;
         }
-        const newSeries = createSeries(chartInstance, chartStyle);
-        chartInstance.timeScale().fitContent();
-        seriesRef.current = newSeries;
+
+        // 🧹 Cleanup any previous SSE listener
+        if (cleanupRef.current) {
+            cleanupRef.current();
+            cleanupRef.current = undefined;
+        }
+
+        let isMounted = true;
+
+        (async () => {
+            const { series, cleanup } = await createSeries(chartInstance, chartStyle);
+            if (!isMounted) return;
+            chartInstance.timeScale().fitContent();
+
+            seriesRef.current = series;
+            cleanupRef.current = cleanup;
+        })();
+
+        // Final cleanup when component unmounts
+        return () => {
+            isMounted = false;
+            cleanupRef.current?.();
+        };
     }, [chartInstance, chartStyle]);
 
     return (
