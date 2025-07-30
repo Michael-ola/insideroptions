@@ -40,7 +40,6 @@ const TradeStatus: React.FC<TradeStatusProps> = ({
   const [minutes, setMinutes] = useState(initialMins);
   const [seconds, setSeconds] = useState(60);
   useEffect(() => {
-    console.log("Asset: ", asset);
     const interval = setInterval(() => {
       setSeconds((prevSec) => {
         if (prevSec === 0) {
