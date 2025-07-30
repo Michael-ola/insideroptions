@@ -6,13 +6,14 @@ import { useEffect, useState } from "react";
 import GraphStyleModal from "@/components/dashboard/graphStyleModal";
 import TopTraderFeedCard from "@/components/dashboard/topTraderFeed";
 import { DashboardContext } from "@/context/DashboardContext";
-import { DashboardPropsType, SeriesType } from "@/types/dashboard";
+import { DashboardPropsType } from "@/types/dashboard";
 import SideNav from "@/components/dashboard/sideNav";
 import TopNav from "@/components/dashboard/TopNav";
 import { apiClient } from "@/lib/api-client";
 import type { TraderDataType } from "@/types/TraderDataType";
 import TradingChart from "@/components/dashboard/tradingChart";
 import AutoTradeButton from "@/components/dashboard/AutoTradeButton/AutoTradeButton";
+import {SeriesType} from "@/lib/models";
 
 export default function DashboardPage() {
   const [openGraphStyleModal, setOpenGraphStyleModal] = useState(false);
