@@ -1,6 +1,5 @@
 import { TraderDataType } from "./TraderDataType";
-
-export type SeriesType = "area" | "candles" | "lines";
+import { SeriesType } from "@/lib/models";
 
 export interface DashboardPropsType {
   openGraphStyleModal: boolean;
@@ -23,4 +22,10 @@ export interface DashboardPropsType {
   setSelectedBalanceAmount: (val: number) => void;
   tradeAmount: number;
   setTradeAmount: (val: number) => void;
+  openConfirmation: boolean;
+  setOpenConfirmation: (val: boolean) => void;
+  openAutoTrade: boolean;
+  setOpenAutoTrade: (val: boolean) => void;
+  showTradeStatus: boolean;
+  setShowTradeStatus: (val: boolean) => void;
 }

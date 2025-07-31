@@ -4,12 +4,12 @@ import { AlertCircle, ChevronRight, ChevronDown, Check } from "lucide-react";
 import { useState } from "react";
 import bank from "@/lib/assets/bank_transfer.png";
 import crypto from "@/lib/assets/crypto.png";
-import profile from "@/data/trader/profile.json";
 import Image, { StaticImageData } from "next/image";
 import { IoSwapHorizontal } from "react-icons/io5";
 import { cashierOptions } from "../CashierList";
 import { ModalView } from "../cashierModal";
 import { cryptoOptions } from "../deposit/CryptoView";
+import { useDashboardContext } from "@/context/DashboardContext";
 // import { RiLoader4Line } from "@remixicon/react";
 
 type Props = {
@@ -25,6 +25,7 @@ const WithdrawalView = ({
   setIconOrImage,
   setOpenOtp,
 }: Props) => {
+  const { traderData } = useDashboardContext();
   const [agreed, setAgreed] = useState<boolean>(false);
 
   const [amount, setAmount] = useState<string | number>("");
@@ -52,35 +53,44 @@ const WithdrawalView = ({
     "Keystone Bank",
   ];
 
+  const realAccount = traderData?.accounts.find(
+    (account) => account.accountType === "INDIVIDUAL"
+  );
+
   return (
     <div className="w-full h-full space-y-6 text-white p-4 overflow-y-auto custom-scrollbar">
-      <div className="bg-[#79DA7E]/3 p-6 rounded-xl border border-white/3">
-        <div className="flex items-start gap-3">
-          <AlertCircle className="w-8 h-8 text-gray-400" />
-          <div className="space-y-[10px]">
-            <p className="text-sm text-gray-400">
-              You have insufficient funds to make a withdrawal from this account
-            </p>
-            <button
-              onClick={() => {
-                setIconOrImage(
-                  cashierOptions.find((opt) => opt.label === "Deposit")?.icon ||
-                    ""
-                );
-                handleViewChange("Deposit");
-              }}
-              className="text-[#79DA7E] text-sm font-semibold"
-            >
-              Make deposit <ChevronRight className="inline w-4 h-4" />
-            </button>
+      {realAccount && realAccount?.accountBalance < 1 && (
+        <div className="bg-[#79DA7E]/3 p-6 rounded-xl border border-white/3">
+          <div className="flex items-start gap-3">
+            <AlertCircle className="w-8 h-8 text-gray-400" />
+            <div className="space-y-[10px]">
+              <p className="text-sm text-gray-400">
+                You have insufficient funds to make a withdrawal from this
+                account
+              </p>
+              <button
+                onClick={() => {
+                  setIconOrImage(
+                    cashierOptions.find((opt) => opt.label === "Deposit")
+                      ?.icon || ""
+                  );
+                  handleViewChange("Deposit");
+                }}
+                className="text-[#79DA7E] text-sm font-semibold"
+              >
+                Make deposit <ChevronRight className="inline w-4 h-4" />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       <div className="flex items-center gap-3">
         <div className="w-full flex flex-col items-center justify-center bg-[#070c14] sm:bg-white/3 px-6 py-4 rounded-xl border border-[#79DA7E]/25">
-          <p className="text-base font-semibold">$5000.00</p>
-          <p className="text-xs text-white/80">Real Balance</p>
+          <p className="text-base font-semibold">
+            ${realAccount?.profitBalance.toFixed(2)}
+          </p>
+          <p className="text-xs text-white/80">Profit Balance</p>
         </div>
         <button
           type="button"
@@ -93,7 +103,7 @@ const WithdrawalView = ({
             handleViewChange("Swap (Profit bal - Real bal)");
             return;
           }}
-          className="bg-[#79DA7E] text-black flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold hover:bg-green-300"
+          className="bg-[#79DA7E] text-black flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold hover:bg-gradient-to-tr  from-primary to-[#b4e6b8] transition"
         >
           SWAP
           <IoSwapHorizontal className="w-3 h-3" />
@@ -230,7 +240,7 @@ const WithdrawalView = ({
         />
       </div>
 
-      <label className="flex items-start gap-3 text-sm text-white/70">
+      <label className="flex items-start gap-3 text-sm text-white/60">
         <div
           onClick={() => setAgreed(!agreed)}
           className={`
@@ -245,7 +255,7 @@ const WithdrawalView = ({
           />
         </div>
         <span>
-          I, {profile.firstName} {profile.lastName} agree that the above
+          I, {traderData?.firstName} {traderData?.lastName} agree that the above
           provided{" "}
           {method === "Bank Transfer" ? "Bank account" : "Bitcoin address"} is
           correct, and <span className="font-semibold">InsiderOption LLC</span>{" "}

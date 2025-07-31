@@ -47,7 +47,7 @@ const Page2 = () => {
   ];
 
   return (
-    <div className="w-full h-full pl-8 pt-6 pb-16 pr-1 space-y-3 overflow-y-auto custom-scrollbar">
+    <div className="w-full h-full px-6 pt-6 pb-16 space-y-3 overflow-y-auto custom-scrollbar">
       <div className="flex flex-col gap-9 py-2">
         <div className="px-2">
           <div className="flex flex-col gap-2 items-center justify-center">

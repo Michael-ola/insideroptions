@@ -3,6 +3,8 @@ import PartnerModal from "@/components/partner";
 import HelpModal from "@/components/help/HelpModal";
 import OrdersHistoryModal from "@/components/dashboard/OrdersHistory";
 import ProfileModal from "@/components/dashboard/ProfileModal";
+import AutoTradeModal from "@/components/autoTrade/AutoTradeModal";
+import { useDashboardContext } from "@/context/DashboardContext";
 
 const ModalComponent = ({
   nav,
@@ -14,6 +16,7 @@ const ModalComponent = ({
   const closeModalFunction = () => {
     setSelectedSideNavTab("Trade");
   };
+    const { openAutoTrade } = useDashboardContext();
 
   if (nav === "Orders") {
     return <OrdersHistoryModal onClose={closeModalFunction} />;
@@ -25,6 +28,8 @@ const ModalComponent = ({
     return <PartnerModal onClose={closeModalFunction} />;
   } else if (nav === "Help") {
     return <HelpModal onClose={closeModalFunction} />;
+  } else if (nav === "Auto trade" && openAutoTrade) {
+    return <AutoTradeModal onClose={closeModalFunction} />;
   } else {
     return <></>;
   }

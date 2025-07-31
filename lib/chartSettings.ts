@@ -1,5 +1,4 @@
-import { streamAssetPriceByAssetId } from "@/services/assetService";
-import { SeriesType } from "@/types/dashboard";
+import { fetchPriceHistoryByAssetId, streamAssetPriceByAssetId } from "@/services/assetService";
 import {
     AreaSeries,
     CandlestickSeries,
@@ -7,6 +6,7 @@ import {
     ISeriesApi,
     LineSeries
 } from "lightweight-charts";
+import { PricePoint, SeriesType } from "./models";
 
 export const chartOptions = {
     layout: {
@@ -18,31 +18,56 @@ export const chartOptions = {
         horzLines: { color: 'transparent' },
     },
     rightPriceScale: {
-        // This disables the "time label" shown near the last value
         visible: true,
         borderVisible: false,
         entireTextOnly: true,
     },
     crosshair: {
         vertLine: {
-            labelVisible: false, // Hides the time label near the price axis
+            labelVisible: false,
         },
         horzLine: {
-            labelVisible: false, // Hides the price label on the right axis
+            labelVisible: false,
         },
     },
     timeScale: {
         timeVisible: true,
-        secondsVisible: false,
+        secondsVisible: true,
+        fixLeftEdge: true,
+        visible: true,
+        borderVisible: false,
+        tickMarkFormatter: (time: number) => {
+            const date = new Date(time * 1000);
+            return date.toLocaleTimeString('en-NG', {
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                timeZone: 'Africa/Lagos'
+            }) + '.' + date.getMilliseconds().toString().padStart(3, '0');
+        },
+    },
+    localization: {
+        timeFormatter: (time: number) => {
+            const date = new Date(time * 1000);
+            return date.toLocaleTimeString('en-NG', {
+                hour12: false,
+                timeZone: 'Africa/Lagos'
+            });
+        },
+        priceFormatter: (price: number) => {
+            return price.toFixed(2);
+        },
+    },
+    watermark: {
+        visible: true,
+        text: 'Insider Options',
+        fontSize: 24,
+        horzAlign: 'center',
+        vertAlign: 'center',
+        color: '#ffffff',
     },
 };
-
-export const sampleAreaData = [
-    { time: '2023-10-01', value: 100 },
-    { time: '2023-10-02', value: 105 },
-    { time: '2023-10-03', value: 102 },
-    { time: '2023-10-04', value: 110 },
-];
 
 export const sampleCandleData = [
     { time: '2023-10-01', open: 100, high: 110, low: 95, close: 105 },
@@ -67,29 +92,111 @@ const areaChartOptions = {
     lineWidth: 1,
 };
 
-export const createSeries = (chartInstance: any, type: SeriesType): ISeriesApi<any> => {
-    let series: ISeriesApi<any>;
+// Store cached history and stream states per asset
+const priceCache: Record<number, { history: PricePoint[]; seriesUpdater?: (point: PricePoint) => void }> = {};
+const streamStarted: Record<number, boolean> = {};
 
-    switch (type) {
-        case 'area':
-            series = chartInstance.addSeries(AreaSeries);
-            series.applyOptions(areaChartOptions);
-            streamAssetPriceByAssetId(1, (data) => {
-                series.update({ time: data.timestamp, value: data.price });
-            });
-            // series.setData(sampleAreaData);
-            break;
-        case 'candles':
-            series = chartInstance.addSeries(CandlestickSeries);
-            series.applyOptions(candlestickOptions);
-            series.setData(sampleCandleData);
-            break;
-        default:
-            series = chartInstance.addSeries(LineSeries);
-            series.applyOptions(lineChartOptions);
-            series.setData(sampleAreaData);
-            break;
-    }
+export const createSeries = async (
+    chartInstance: any,
+    type: SeriesType,
+    assetId: number,
+    onStream?: (point: PricePoint) => void
+): Promise<ISeriesApi<any>> => {
+    const series = createAndConfigureSeries(chartInstance, type);
+
+    const history = await getOrFetchHistoricalData(assetId);
+    series.setData(history);
+
+    setupStreaming(assetId, onStream);
 
     return series;
 };
+
+const createAndConfigureSeries = (chartInstance: any, type: SeriesType): ISeriesApi<any> => {
+    switch (type) {
+        case SeriesType.Candles: {
+            const series = chartInstance.addSeries(CandlestickSeries);
+            series.applyOptions(candlestickOptions);
+            series.setData(sampleCandleData);
+            return series;
+        }
+        case SeriesType.Area: {
+            const series = chartInstance.addSeries(AreaSeries);
+            series.applyOptions(areaChartOptions);
+            return series;
+        }
+        case SeriesType.Lines:
+        default: {
+            const series = chartInstance.addSeries(LineSeries);
+            series.applyOptions(lineChartOptions);
+            return series;
+        }
+    }
+};
+
+const getOrFetchHistoricalData = async (assetId: number): Promise<PricePoint[]> => {
+    if (priceCache[assetId]?.history) {
+        return priceCache[assetId].history;
+    }
+
+    const response = await fetchPriceHistoryByAssetId(assetId);
+
+    const parsed = response
+        .filter(item => item.price && item.timestamp)
+        .map(item => ({
+            price: item.price,
+            timestamp: item.timestamp,
+            time: Math.floor(new Date(item.timestamp).getTime() / 1000),
+            value: item.price,
+        }))
+        .sort((a, b) => a.time - b.time);
+
+    const deduplicated = deduplicateTimestamps(parsed);
+
+    priceCache[assetId] = { history: deduplicated };
+
+    return deduplicated;
+};
+
+const deduplicateTimestamps = (points: PricePoint[]): PricePoint[] => {
+    const deduplicated: PricePoint[] = [];
+    let lastTime = -1;
+
+    for (const item of points) {
+        let adjustedTime = item.time;
+        if (adjustedTime <= lastTime) {
+            adjustedTime = lastTime + 1;
+        }
+        deduplicated.push({ ...item, time: adjustedTime });
+        lastTime = adjustedTime;
+    }
+
+    return deduplicated;
+};
+
+const setupStreaming = (
+    assetId: number,
+    onStream?: (point: PricePoint) => void
+): void => {
+    priceCache[assetId].seriesUpdater = onStream;
+
+    if (streamStarted[assetId]) return;
+    streamStarted[assetId] = true;
+
+    streamAssetPriceByAssetId(assetId, (data) => {
+        if (!data?.time || isNaN(data.time)) return;
+
+        const last = priceCache[assetId].history.at(-1);
+        if (last && data.time <= last.time) return;
+
+        const point: PricePoint = {
+            time: data.time,
+            value: data.price,
+        };
+
+        priceCache[assetId].seriesUpdater?.(point);
+        priceCache[assetId].history.push(point);
+    });
+};
+
+

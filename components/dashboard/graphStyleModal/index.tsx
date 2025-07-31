@@ -6,7 +6,7 @@ import { X } from "lucide-react";
 import clsx from "clsx";
 import { useDashboardContext } from "@/context/DashboardContext";
 import Button from "@/components/Button2";
-import { SeriesType } from "@/types/dashboard";
+import {SeriesType} from "@/lib/models";
 
 const styles = [
   {

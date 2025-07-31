@@ -11,7 +11,7 @@ import MobileSideNav from "@/components/dashboard/MobileSideNav";
 import PortalWrapper from "@/components/PortalWrapper";
 
 export default function TopNav() {
-  const { selectedAccount } = useDashboardContext();
+  const { selectedAccount, openAutoTrade } = useDashboardContext();
   const [hamburgerClicked, setHamburgerClicked] = useState(false);
 
   return (
@@ -19,15 +19,18 @@ export default function TopNav() {
       style={{ height: "var(--top-nav-height)" }}
       className="relative w-full px-6 py-3 pt-4 flex z-10 justify-between items-center bg-transparent max-sm:mb-auto max-sm:pt-3 max-sm:h-[12vh] max-sm:bg-transparent"
     >
-      <Link href="/dashboard">
-        <Image
-          src="/images/logo.png"
-          className=" pt-2 mt-3 max-sm:hidden"
-          alt="Logo"
-          width={35}
-          height={35}
-        />
-      </Link>
+      <div className="flex items-center gap-1">
+        <Link href="/dashboard">
+          <Image
+            src="/images/logo.png"
+            className=" pt-2 mt-3 max-sm:hidden"
+            alt="Logo"
+            width={35}
+            height={35}
+          />
+        </Link>
+        {openAutoTrade && <h2 className="text-white/60 mt-4 max-sm:hidden">AUTO TRADE AI INTELLIGENCE MODE</h2>}
+      </div>
       <div className="flex gap-2 ml-auto h-[52px] items-center max-sm:mx-auto">
         <div
           onClick={() => setHamburgerClicked(true)}

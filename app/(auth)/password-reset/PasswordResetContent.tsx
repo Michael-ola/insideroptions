@@ -18,7 +18,7 @@ import { toast } from "react-toastify";
 export default function PasswordResetContent() {
   const searchParams = useSearchParams();
 
-  const code = searchParams.get("code");
+  const code = searchParams?.get("code");
 
   const [sentConfirmation, setSentConfirmation] = useState<boolean>(false);
   const form = useForm<z.infer<typeof passwordResetSchema>>({
