@@ -169,7 +169,7 @@ const BankTransfer = () => {
         </div>
       )}
       {confirmPayment && (
-        <div className="sm:space-y-8 px-8 pt-6">
+        <div className="sm:space-y-8 px-8 pt-6 overflow-y-auto custom-scrollbar">
           <div className="space-y-6 py-6 rounded-xl border border-[#FFFFFF]/5">
             <Image
               src={candle}

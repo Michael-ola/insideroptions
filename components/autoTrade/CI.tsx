@@ -62,7 +62,7 @@ const CI = ({
   };
   const profitValue = "300";
   return (
-    <div className="px-8 pt-6 w-full h-full overflow-y-auto custom-scrollbar">
+    <div className="w-full h-full px-8 pt-6 overflow-y-auto custom-scrollbar">
       {!showTradeStatus && (
         <div className="space-y-8">
           <div className="flex gap-6">
