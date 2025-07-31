@@ -35,7 +35,7 @@ const ConfirmModal = ({
           <div className="bg-[#0E1514] text-white rounded-xl border border-primary/20 w-full max-w-md py-8 relative shadow-xl flex flex-col gap-6">
             <div className="w-full px-8">
               <div className="flex justify-between items-center">
-                <h2 className="w-full text-lg font-semibold text-center">
+                <h2 className="w-full text-base sm:text-xl font-semibold text-center">
                   {title}
                 </h2>
                 <button
@@ -55,11 +55,11 @@ const ConfirmModal = ({
                   height="120"
                   className="text-yellow-500"
                 />
-                <p className="px-8 text-center text-xl font-medium text-white whitespace-pre-line">
+                <p className="px-8 text-center text-sm md:text-lg font-medium text-white whitespace-pre-line">
                   {message}
                 </p>
                 {canCheck && (
-                  <label className="px-8 text-left flex items-start gap-3 text-sm text-white/60">
+                  <label className="px-8 text-left flex items-start gap-3 text-xs sm:text-sm text-white/60">
                     <div
                       onClick={() => setAgreed(!agreed)}
                       className={`
