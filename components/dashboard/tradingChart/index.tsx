@@ -37,9 +37,8 @@ const TradingChart = () => {
             if (!range) return;
             // Get latest bar index from series data length:
             const seriesData = seriesRef.current?.data() ?? [];
-            const lastBarIndex = seriesData.length > 0 ? seriesData[seriesData.length - 1].time : 0;
-            console.log("Last bar index:", lastBarIndex);
-            const scrollPosition = chartInstance.timeScale().scrollPosition() ?? 0;
+            const lastBarIndex: number = seriesData.length > 0 ? seriesData[seriesData.length - 1].time : 0;
+            const scrollPosition = chartInstance.timeScale().scrollPosition() ?? lastBarIndex;
             setRightOffset(Math.abs(Math.round(scrollPosition)));
         };
         chartInstance.timeScale()
@@ -83,7 +82,7 @@ const TradingChart = () => {
     }, [chartInstance, chartStyle, assetId, rightOffset]);
 
     return (
-        <div className="w-full h-[90vh] max-sm:h-[55vh] max-sm:z-0 flex items-center justify-center">
+        <div className="w-full h-[90vh] max-sm:h-[55vh] max-sm:z-50 flex items-center justify-center">
             <div
                 className="w-full h-full"
                 ref={containerRef}
