@@ -70,7 +70,7 @@ const BankTransfer = () => {
   return (
     <div>
       {!confirmPayment && (
-        <div className="space-y-13 px-8 pt-6">
+        <div className="space-y-13 px-8 pt-6 overflow-y-auto custom-scrollbar">
           <div className="space-y-3">
             <div className="flex flex-col gap-2">
               <label htmlFor="first name" className="text-sm font-medium">
