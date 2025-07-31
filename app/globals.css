@@ -101,6 +101,24 @@
   @apply max-sm:ml-0 w-full;
 }
 
+@layer utilities {
+  .snap-always {
+    scroll-snap-align: start;
+  }
+  .snap-mandatory {
+    scroll-snap-type: y mandatory;
+  }
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
 :root {
   --top-nav-height: 7.5vh;
   --side-nav-width: 80px;

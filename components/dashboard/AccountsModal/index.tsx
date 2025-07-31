@@ -4,7 +4,7 @@ import Image from "next/image";
 import { X, AlertTriangle, Plus } from "lucide-react";
 import { useDashboardContext } from "@/context/DashboardContext";
 import { useState } from "react";
-
+import toFloat from "@/lib/toFloat";
 interface AccountStyle {
   bgColor: string;
   textColor: string;
@@ -68,14 +68,20 @@ export default function AccountModal({
   openAccountsModal: boolean;
   setOpenAccountsModal: (value: boolean) => void;
 }) {
-  const { setSelectedAccount: setGlobalSelectedAccount } =
-    useDashboardContext();
+  const {
+    setSelectedAccount: setGlobalSelectedAccount,
+    setSelectedBalanceAmount,
+    setTradeAmount,
+  } = useDashboardContext();
   const [selectedAccount, setSelectedAccount] = useState("real");
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) setOpenAccountsModal(false);
   };
 
-  const handleSelection = (id: string) => {
+  const handleSelection = (id: string, amount: number | string) => {
+    const value = toFloat(amount);
+    setSelectedBalanceAmount(value ? value : 0);
+    setTradeAmount(value ? value : 0);
     setGlobalSelectedAccount(id);
     setOpenAccountsModal(false);
   };
@@ -159,7 +165,7 @@ export default function AccountModal({
                 {isSelected && (
                   <button
                     className="bg-black text-white p-0.5 rounded-sm mr-auto ml-5"
-                    onClick={() => handleSelection(id)}
+                    onClick={() => handleSelection(id, amount)}
                   >
                     <Plus size={14} />
                   </button>

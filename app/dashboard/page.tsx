@@ -12,6 +12,7 @@ import TopNav from "@/components/dashboard/TopNav";
 import { apiClient } from "@/lib/api-client";
 import type { TraderDataType } from "@/types/TraderDataType";
 import TradingChart from "@/components/dashboard/tradingChart";
+import getBalanceAmount from "@/lib/getBalanceAmount";
 
 export default function DashboardPage() {
   const [openGraphStyleModal, setOpenGraphStyleModal] = useState(false);
@@ -19,15 +20,25 @@ export default function DashboardPage() {
   const [showTraderFeed, setShowTraderFeed] = useState(false);
   const [openCashierModal, setOpenCashierModal] = useState<boolean>(false);
   const [selectedSideNavTab, setSelectedSideNavTab] = useState("Trade");
-  const [selectedAccount, setSelectedAccount] = useState("real");
+  const [selectedAccount, setSelectedAccount] = useState("DEMO");
   const [traderData, setTraderData] = useState<TraderDataType | null>(null);
+  const [tradeDuration, setTradeDuration] = useState(300);
+  const [selectedBalanceAmount, setSelectedBalanceAmount] = useState(0);
+  const [tradeAmount, setTradeAmount] = useState(1);
 
   useEffect(() => {
     const fetchTrader = async () => {
       try {
         const res = await apiClient.get("/get-trader");
-        setTraderData(res.data);
-        console.log(res.data);
+        const data: TraderDataType = res.data;
+        setTraderData(data);
+        const accountBalance = getBalanceAmount(
+          data.accounts,
+          selectedAccount
+        ).accountBalance;
+        setSelectedBalanceAmount(accountBalance);
+        setTradeAmount(accountBalance);
+        console.log(data);
       } catch (err) {
         console.error("Failed to fetch trader data", err);
       }
@@ -51,6 +62,12 @@ export default function DashboardPage() {
     setSelectedAccount,
     traderData,
     setTraderData,
+    tradeDuration,
+    setTradeDuration,
+    selectedBalanceAmount,
+    setSelectedBalanceAmount,
+    tradeAmount,
+    setTradeAmount,
   };
 
   return (

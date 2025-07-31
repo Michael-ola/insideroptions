@@ -17,4 +17,10 @@ export interface DashboardPropsType {
   setSelectedAccount: (val: string) => void;
   traderData: TraderDataType | null;
   setTraderData: React.Dispatch<React.SetStateAction<TraderDataType | null>>;
+  tradeDuration: number;
+  setTradeDuration: (val: number) => void;
+  selectedBalanceAmount: number;
+  setSelectedBalanceAmount: (val: number) => void;
+  tradeAmount: number;
+  setTradeAmount: (val: number) => void;
 }
