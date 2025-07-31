@@ -21,7 +21,7 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
     "43,200 mins/30days/15%"
   );
   const [iconOrImage, setIconOrImage] = useState<StaticImageData | string>("");
-  const { showTradeStatus, setShowTradeStatus } = useDashboardContext();
+  const { showTradeStatus, setShowTradeStatus, setOpenAutoTrade } = useDashboardContext();
   const handleViewChange = (nextView: string) => setView(nextView);
 
   const startAutoTrade = () => {
@@ -82,6 +82,7 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
             onClose={() => {
               onClose();
               setShowTradeStatus(false);
+              setOpenAutoTrade(false);
             }}
             handleViewChange={handleViewChange}
             setIconOrImage={setIconOrImage}

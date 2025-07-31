@@ -20,7 +20,7 @@ const Page1 = ({
     "As an asset manager, you get bonuses up to your 8th level and VIP black card for private events.",
   ];
   return (
-    <div className="w-full h-full pl-8 py-6 pr-1 space-y-3 overflow-y-auto custom-scrollbar">
+    <div className="w-full h-full px-6 pt-6 pb-8 space-y-3 overflow-y-auto custom-scrollbar">
       <div className="flex flex-col gap-6">
         <p className="space-y-3 p-6 bg-[#79DA7E]/5 border border-[#FFFFFF]/5 rounded-xl text-white text-sm">
           We’ve got the tools, expertise, and knowledge to help you grow your
