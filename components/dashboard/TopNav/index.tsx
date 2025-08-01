@@ -19,7 +19,7 @@ export default function TopNav() {
       style={{ height: "var(--top-nav-height)" }}
       className="relative w-full px-6 py-3 pt-4 flex z-10 justify-between items-center bg-transparent max-sm:mb-auto max-sm:pt-3 max-sm:h-[12vh] max-sm:bg-transparent"
     >
-      <div className="flex items-center gap-1">
+      <div className="flex items-center relative gap-1">
         <Link href="/dashboard">
           <Image
             src="/images/logo.png"
@@ -29,9 +29,15 @@ export default function TopNav() {
             height={35}
           />
         </Link>
-        {openAutoTrade && <h2 className="text-white/60 mt-4 max-sm:hidden">AUTO TRADE AI INTELLIGENCE MODE</h2>}
+        {openAutoTrade && (
+          <PortalWrapper>
+            <div className="text-white/60 fixed top-0 flex items-center left-[80px] px-3 h-[var(--top-nav-height)] z-[80] max-sm:hidden bg-transparent cursor-default">
+              <span>AUTO TRADE AI INTELLIGENCE MODE</span>
+            </div>
+          </PortalWrapper>
+        )}
       </div>
-      <div className="flex gap-2 ml-auto h-[52px] items-center max-sm:mx-auto">
+      <div className="flex gap-2 ml-auto h-[52px] bg-[#0d171b] max-sm:bg-transparent rounded-lg items-center max-sm:mx-auto">
         <div
           onClick={() => setHamburgerClicked(true)}
           className="py-2.5 bg-[#374143] mr-auto border border-[#1A2C28] flex items-center justify-center cursor-pointer rounded-xl px-4 sm:hidden"

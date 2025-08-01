@@ -1,5 +1,5 @@
 import { TraderDataType } from "./TraderDataType";
-import {SeriesType} from "@/lib/models";
+import { SeriesType } from "@/lib/models";
 
 export interface DashboardPropsType {
   openGraphStyleModal: boolean;
@@ -16,6 +16,12 @@ export interface DashboardPropsType {
   setSelectedAccount: (val: string) => void;
   traderData: TraderDataType | null;
   setTraderData: React.Dispatch<React.SetStateAction<TraderDataType | null>>;
+  tradeDuration: number;
+  setTradeDuration: (val: number) => void;
+  selectedBalanceAmount: number;
+  setSelectedBalanceAmount: (val: number) => void;
+  tradeAmount: number;
+  setTradeAmount: (val: number) => void;
   openConfirmation: boolean;
   setOpenConfirmation: (val: boolean) => void;
   openAutoTrade: boolean;

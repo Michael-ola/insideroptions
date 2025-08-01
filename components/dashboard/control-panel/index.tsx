@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useState } from "react";
 import { useDashboardContext } from "@/context/DashboardContext";
+import TradeDurationCard from "./TradeDurationCard";
+import TradeAmountPanel from "./TradeAmountPanel";
 
 const BuySellButtons = ({ className }: { className?: string }) => {
   function handleClick(action: string) {
@@ -10,7 +12,7 @@ const BuySellButtons = ({ className }: { className?: string }) => {
   }
   return (
     <div
-      className={`flex flex-1 max-sm:pb-3 bg-transparent max-sm:w-full max-sm:flex max-sm:justify-center max-sm:flex-0 max-sm:px-3 ${className}`}
+      className={`flex flex-1 max-sm:pb-3 max-sm:z-10 bg-transparent max-sm:w-full max-sm:flex max-sm:justify-center max-sm:flex-0 max-sm:px-3 ${className}`}
     >
       <button
         onClick={() => handleClick("SELL")}
@@ -43,15 +45,7 @@ const BuySellButtons = ({ className }: { className?: string }) => {
 };
 
 export default function ControlPanel() {
-  const [amount, setAmount] = useState(100);
-  const increaseAmount = () => {
-    setAmount((prev) => prev * 2);
-  };
-
-  const decreaseAmount = () => {
-    setAmount((prev) => Math.max(1, Math.floor(prev / 2)));
-  };
-
+  const [openDurationCard, setOpenDurationCard] = useState(false);
   const ICON_BUTTONS = [
     {
       label: "Arrow Left",
@@ -102,7 +96,12 @@ export default function ControlPanel() {
     );
   }
 
-  const { setOpenGraphStyleModal, setShowTraderFeed } = useDashboardContext();
+  const {
+    setOpenGraphStyleModal,
+    setShowTraderFeed,
+    tradeDuration,
+    setTradeDuration,
+  } = useDashboardContext();
 
   function handleClick(action: string) {
     console.log(`${action} clicked`);
@@ -110,39 +109,36 @@ export default function ControlPanel() {
       setOpenGraphStyleModal(true);
     } else if (action === "User") {
       setShowTraderFeed(true);
+    } else if (action === "Increase Duration") {
+      // @ts-expect-error set state
+      setTradeDuration((prev) => {
+        const newDuration = prev + 60;
+        const MAX_DURATION = 86400;
+        return Math.min(newDuration, MAX_DURATION);
+      });
+    } else if (action === "Decrease Duration") {
+      // @ts-expect-error set state
+      setTradeDuration((prev) => (prev - 60 > 0 ? prev - 60 : prev));
     }
+  }
+
+  function formatSecondsToHHMMSS(seconds: number): string {
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+
+    const paddedHrs = hrs.toString().padStart(2, "0");
+    const paddedMins = mins.toString().padStart(2, "0");
+    const paddedSecs = secs.toString().padStart(2, "0");
+
+    return `${paddedHrs}:${paddedMins}:${paddedSecs}`;
   }
 
   return (
     <>
-      <div className="fixed bottom-0 z-5 left-1/2 -translate-x-1/2 flex bg-transparent max-sm:w-full max-sm:flex max-sm:justify-center max-sm:items-center max-sm:rounded-none max-sm:bottom-[110px] max-sm:gap-2 max-sm:border-none rounded-lg overflow-hidden text-white shadow-lg p-3">
+      <div className="fixed bottom-4 z-5 left-1/2 -translate-x-1/2 flex bg-transparent max-sm:w-full max-sm:flex max-sm:justify-center max-sm:items-center max-sm:rounded-none max-sm:bottom-[120px] max-sm:gap-2 max-sm:border-none rounded-lg text-white shadow-lg p-3">
         {/* Trade Amount Panel */}
-        <div className="flex flex-col justify-center items-center max-sm:flex-row-reverse max-sm:gap-2 max-sm:items-stretch max-sm:w-[50%]">
-          <div className="bg-[#0e161d] border border-[#192f2c] w-full flex-1 flex flex-col items-center justify-center rounded-lg py-0">
-            <span className="text-xs text-neutral-400 mb-1/2">
-              Trade Amount
-            </span>
-            <span className="text-md font-semibold">${amount}</span>
-          </div>
-
-          <div className="flex items-center mt-1 max-sm:mt-0 space-x-2 max-sm:flex-col max-sm:space-x-0 max-sm:space-y-2">
-            <button
-              onClick={decreaseAmount}
-              className="w-14 h-5 max-sm:w-9 bg-[#0e161d] border border-[#192f2c] rounded flex items-center justify-center hover:bg-[#151d24] transition"
-            >
-              −
-            </button>
-            <span className="text-xs bg-[#0e161d] border border-[#192f2c] rounded w-13 h-6  flex items-center justify-center max-sm:hidden">
-              100%
-            </span>
-            <button
-              onClick={increaseAmount}
-              className="w-14 h-5 max-sm:w-9 bg-[#0e161d] border border-[#192f2c] rounded flex items-center justify-center hover:bg-[#151d24] transition"
-            >
-              +
-            </button>
-          </div>
-        </div>
+        <TradeAmountPanel />
 
         {/* Center Panel */}
         <div className="flex flex-col justify-between px-3 max-sm:hidden">
@@ -165,7 +161,10 @@ export default function ControlPanel() {
 
         {/* Trade Duration Panel */}
         <div className="flex flex-col justify-between items-center max-sm:flex-row max-sm:gap-2 max-sm:items-stretch max-sm:w-[50%]">
-          <div className="border border-[#192f2c] bg-[#0e161d] flex-1 hover:bg-[#151d24] cursor-pointer rounded-md flex flex-col items-center justify-center w-full py-1 max-sm:w-[60%]">
+          <div
+            onClick={() => setOpenDurationCard(true)}
+            className="border border-[#192f2c] bg-[#0e161d] flex-1 hover:bg-[#151d24] cursor-pointer rounded-md flex flex-col items-center justify-center w-full py-1 max-sm:w-[60%]"
+          >
             <span className="text-xs text-neutral-400 flex items-center justify-center gap-1">
               {" "}
               <Image
@@ -177,7 +176,9 @@ export default function ControlPanel() {
               />
               Trade Duration
             </span>
-            <span className="text-md font-semibold">00:30</span>
+            <span className="text-md font-semibold">
+              {formatSecondsToHHMMSS(tradeDuration)}
+            </span>
           </div>
 
           <div className="flex items-center mt-1 space-x-2 max-sm:flex-col max-sm:space-x-0 max-sm:space-y-2 max-sm:mt-0">
@@ -195,8 +196,13 @@ export default function ControlPanel() {
             </button>
           </div>
         </div>
+        {openDurationCard ? (
+          <TradeDurationCard closeFunction={() => setOpenDurationCard(false)} />
+        ) : (
+          <></>
+        )}
       </div>
-      <BuySellButtons className="sm:hidden max-sm:fixed max-sm:bottom-[60px]" />
+      <BuySellButtons className="sm:hidden max-sm:fixed max-sm:bottom-[72px]" />
     </>
   );
 }
