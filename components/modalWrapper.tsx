@@ -7,8 +7,13 @@ import { depositOptions } from "./cashier/deposit/DepositList";
 import { cashierOptions } from "./cashier/CashierList";
 import { navItems } from "./dashboard/sideNav";
 import { helpOptions } from "./help/HelpList";
+import { useDashboardContext } from "@/context/DashboardContext";
 
-type AutoTrade = "Current Investment" | "Trading Plan" | "Asset List" | "History";
+type AutoTrade =
+  | "Current Investment"
+  | "Trading Plan"
+  | "Asset List"
+  | "History";
 
 const autoTrade: AutoTrade[] = [
   "Current Investment",
@@ -42,6 +47,7 @@ export default function ModalWrapper({
   handleBackNavigationForPartner,
   canBack,
 }: ModalWrapperProps) {
+  const { form, setForm } = useDashboardContext();
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -82,6 +88,10 @@ export default function ModalWrapper({
                     );
                     handleViewChange("USDT, BITCOIN, ETHEREUM");
                   } else if (ishelpLabel) {
+                    if (form) {
+                      setForm(false);
+                      return;
+                    }
                     setIconOrImage("");
                     handleViewChange("Help");
                   } else {

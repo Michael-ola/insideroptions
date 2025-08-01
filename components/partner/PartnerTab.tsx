@@ -3,10 +3,7 @@ import Page2 from "./Page2";
 import Referral from "./Referral";
 import Profit from "./Profit";
 import Faq from "./Faq";
-import Image from "next/image";
-import faq from "@/lib/assets/faq_icon.png";
-import white_dollar from "@/lib/assets/white_dollar_icon.png";
-import referral from "@/lib/assets/referral_icon.png";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 const PartnerTab = ({
   setCanBack,
@@ -18,9 +15,9 @@ const PartnerTab = ({
   newView: string;
 }) => {
   const links = [
-    { imgSrc: referral, label: "Referral link" },
-    { imgSrc: white_dollar, label: "Profit" },
-    { imgSrc: faq, label: "FAQ" },
+    { imgSrc: "humbleicons:link", label: "Referral link" },
+    { imgSrc: "mdi:dollar", label: "Profit" },
+    { imgSrc: "streamline:help-chat-2", label: "FAQ" },
   ];
 
   const renderView = () => {
@@ -56,7 +53,7 @@ const PartnerTab = ({
                   newView === link.label && "text-primary"
                 }`}
               >
-                <Image src={link.imgSrc} alt={link.label} />{" "}
+                <Icon icon={link.imgSrc} width="24" height="24" />
                 <span className="font-medium text-xs whitespace-nowrap">
                   {link.label}
                 </span>
@@ -75,11 +72,11 @@ const PartnerTab = ({
               <div
                 key={idx}
                 onClick={() => handleNewView(link.label)}
-                className={`flex items-center gap-2 cursor-pointer ${
+                className={`flex items-center gap-2 cursor-pointer hover:text-primary ${
                   newView === link.label && "text-primary"
                 }`}
               >
-                <Image src={link.imgSrc} alt={link.label} />{" "}
+                <Icon icon={link.imgSrc} width="24" height="24" />
                 <span className="font-medium text-xs whitespace-nowrap">
                   {link.label}
                 </span>

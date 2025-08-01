@@ -12,8 +12,8 @@ const PartnerModal = ({ onClose }: { onClose: () => void }) => {
   const viewMap: Record<string, string> = {
     "Page 2": "Page 1",
   };
-   const [newView, setNewView] = useState<string>("Page 1");
-    const handleNewView = (nextView: string) => setNewView(nextView);
+  const [newView, setNewView] = useState<string>("Page 1");
+  const handleNewView = (nextView: string) => setNewView(nextView);
 
   const handleViewChange = (nextView: string) => setView(nextView);
 
@@ -26,7 +26,13 @@ const PartnerModal = ({ onClose }: { onClose: () => void }) => {
   const renderView = () => {
     switch (view) {
       case "Partner":
-        return <PartnerTab setCanBack={setCanBack} handleNewView={handleNewView} newView={newView} />;
+        return (
+          <PartnerTab
+            setCanBack={setCanBack}
+            handleNewView={handleNewView}
+            newView={newView}
+          />
+        );
       default:
         return null;
     }
