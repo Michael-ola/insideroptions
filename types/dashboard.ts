@@ -28,4 +28,6 @@ export interface DashboardPropsType {
   setOpenAutoTrade: (val: boolean) => void;
   showTradeStatus: boolean;
   setShowTradeStatus: (val: boolean) => void;
+  form: boolean;
+  setForm: (val: boolean) => void;
 }

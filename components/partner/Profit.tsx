@@ -159,7 +159,7 @@ const Profit = ({
               <div className="grid grid-cols-4 justify-between text-xs text-white/70 px-4 whitespace-nowrap">
                 <span>Ref ID</span>
                 <span>Reg. Date</span>
-                <span>Deposited</span>
+                <span>Traded</span>
                 <span>Status</span>
               </div>
             )}

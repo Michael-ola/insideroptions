@@ -62,13 +62,13 @@ const TradeStatus: React.FC<TradeStatusProps> = ({
   return (
     <div className="w-full h-full px-6 space-y-6 text-white">
       <div className="w-full bg-[#0f1c1b] rounded-xl px-4 py-6 space-y-4">
-        <div className="flex justify-between items-center">
-          <AnimatedCircularProgress size={120} duration={1} reverse={reverse}>
+        <div className="flex justify-between items-center gap-3">
+          <AnimatedCircularProgress size={100} duration={1} reverse={reverse}>
             <div className="flex items-center justify-center text-sm font-medium">
               {minutes}:{seconds.toString().padStart(2, "0")}
             </div>
           </AnimatedCircularProgress>
-          <div className="flex items-center gap-2 bg-[#1d2a28] px-6 py-2 rounded-lg text-xs">
+          <div className="flex items-center gap-2 bg-[#1d2a28] px-4 py-2 rounded-lg text-xs">
             <Image src={euro} alt="euro" className="w-5 h-auto" />
             <div className="flex flex-col gap-1">
               <p className="text-white">{asset}</p>
@@ -104,7 +104,7 @@ const TradeStatus: React.FC<TradeStatusProps> = ({
         </div>
       </div>
 
-      <div className="w-full flex justify-between gap-4">
+      <div className="w-full flex flex-col sm:flex-row justify-between gap-4">
         <button
           onClick={() => onClose()}
           className="w-full border border-primary rounded-xl px-6 py-3 text-primary hover:bg-green-400/10 transition whitespace-nowrap"
