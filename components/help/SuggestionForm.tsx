@@ -116,11 +116,11 @@ const SuggestionForm: ForwardRefRenderFunction<SuggestionFormRef, Props> = (
           value={formData.title}
           onChange={handleChange}
           placeholder="Title"
-          maxLength={256}
+          maxLength={100}
           className="w-full px-4 py-3 bg-transparent border border-white/20 rounded-xl text-white outline-none placeholder:text-white/40 focus:border-0 focus:ring-1 focus-within:ring-primary"
         />
         <p className="mt-2 text-xs text-white/40">
-          Not more than 256 characters
+          Not more than 100 characters
         </p>
       </div>
 
@@ -134,11 +134,12 @@ const SuggestionForm: ForwardRefRenderFunction<SuggestionFormRef, Props> = (
           onChange={handleChange}
           placeholder="Write something"
           minLength={10}
+          maxLength={150}
           rows={2}
           className="w-full px-4 py-3 bg-transparent border border-white/20 rounded-xl text-white outline-none placeholder:text-white/40 focus:border-0 focus:ring-1 focus-within:ring-primary"
         />
         <p className="mt-2 text-xs text-white/40">
-          Must be at least 10 characters long
+          Not more than 150 characters
         </p>
       </div>
       <hr className="text-white/10" />

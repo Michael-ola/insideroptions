@@ -1,36 +1,7 @@
 import React from "react";
-import starter from "@/lib/assets/starter_lever.png";
-import gold from "@/lib/assets/gold_lever.png";
-import premium from "@/lib/assets/premium_lever.png";
+import { plans } from "./CI";
 import Image from "next/image";
 
-
- export const plans = [
-    {
-      name: "Starter",
-      logo: starter,
-      color: "text-[#0273c4]",
-      rate: 15,
-      desc: "Make 0.5% daily profit on trade amount",
-      range: "(Min: $100 - Max: $1,000)",
-    },
-    {
-      name: "Gold",
-      logo: gold,
-      color: "text-[#e08402]",
-      rate: 18,
-      desc: "Make 0.6% daily profit on trade amount",
-      range: "(Min: $50 - Max: $10,000)",
-    },
-    {
-      name: "Premium",
-      logo: premium,
-      color: "text-[#e03f3d]",
-      rate: 22,
-      desc: "Make 0.73% daily profit on trade amount",
-      range: "(Min: $50 - Max: $10,000)",
-    },
-  ];
   
 const TradingPlan = ({
   handleViewChange,

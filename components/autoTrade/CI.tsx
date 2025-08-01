@@ -6,14 +6,45 @@ import { useDashboardContext } from "@/context/DashboardContext";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { Icon } from "@iconify/react";
 import euro from "@/lib/assets/Euro_Icons.png";
-import { plans } from "./TradingPlan";
-import { assets } from "./Assets";
+import starter from "@/lib/assets/starter_lever.png";
+import gold from "@/lib/assets/gold_lever.png";
+import premium from "@/lib/assets/premium_lever.png";
+// import { assets } from "./Assets";
 import TradeStatus from "./TradeStatus";
+import { Asset } from "./AutoTradeModal";
+
+export const plans = [
+  {
+    name: "Starter",
+    logo: starter,
+    color: "text-[#0273c4]",
+    rate: 15,
+    desc: "Make 0.5% daily profit on trade amount",
+    range: "(Min: $100 - Max: $1,000)",
+  },
+  {
+    name: "Gold",
+    logo: gold,
+    color: "text-[#e08402]",
+    rate: 18,
+    desc: "Make 0.6% daily profit on trade amount",
+    range: "(Min: $50 - Max: $10,000)",
+  },
+  {
+    name: "Premium",
+    logo: premium,
+    color: "text-[#e03f3d]",
+    rate: 22,
+    desc: "Make 0.73% daily profit on trade amount",
+    range: "(Min: $50 - Max: $10,000)",
+  },
+];
 
 const CI = ({
   onClose,
   handleViewChange,
   tradingPlan,
+  setTradingPlan,
   selectedAsset,
   setSelectedTradeOption,
   selectedTradeOption,
@@ -21,10 +52,12 @@ const CI = ({
   amount,
   setIsStartAutoTrade,
   showTradeStatus,
+  assets,
 }: {
   onClose: () => void;
   handleViewChange: (val: string) => void;
   tradingPlan: string;
+  setTradingPlan: (val: string) => void;
   selectedAsset: string;
   setSelectedTradeOption: (val: string) => void;
   selectedTradeOption: string;
@@ -32,27 +65,43 @@ const CI = ({
   amount: string | number;
   setIsStartAutoTrade: (val: boolean) => void;
   showTradeStatus: boolean;
+  assets: Asset[] | null;
 }) => {
   const { traderData } = useDashboardContext();
   const [selectedBalance, setSelectedBalance] = useState<string>("demo");
 
   const plan = plans.find((plan) => plan.name === tradingPlan);
-  const asset = assets.find((asset) => asset.name === selectedAsset);
+  const asset = assets && assets.find((asset: Asset) => asset.assetName === selectedAsset);
 
   const realAccount = traderData?.accounts.find(
     (account) => account.accountType === "INDIVIDUAL"
   );
+
   const demoAccount = traderData?.accounts.find(
     (account) => account.accountType === "DEMO"
   );
 
   const timeOptions = [
-    "43,200 mins/30days/15%",
-    "129,600 mins/90days/18%",
-    "259,200 mins/180days/22%",
+    {
+      label: "43,200 mins/30days/15%",
+      value: "43,200 mins/30days/15%",
+      plan: "Starter",
+    },
+    {
+      label: "129,600 mins/90days/18%",
+      value: "129,600 mins/90days/18%",
+      plan: "Gold",
+    },
+    {
+      label: "259,200 mins/180days/22%",
+      value: "259,200 mins/180days/22%",
+      plan: "Premium",
+    },
   ];
 
   const mins = selectedTradeOption.split("/")[0];
+  const perc = selectedTradeOption.split("/")[2].split("%")[0];
+  const day = selectedTradeOption.split("/")[1].split("days")[0];
 
   const handleAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
@@ -60,7 +109,7 @@ const CI = ({
       setAmount(val);
     }
   };
-  const profitValue = "300";
+  const profitValue = (Number(amount) * Number(perc) * Number(day)) / 30 / 100;
   return (
     <div className="w-full h-full px-8 pt-6 overflow-y-auto custom-scrollbar">
       {!showTradeStatus && (
@@ -113,14 +162,15 @@ const CI = ({
                 <button
                   key={idx}
                   onClick={() => {
-                    setSelectedTradeOption(opt);
+                    setSelectedTradeOption(opt.value);
+                    setTradingPlan(opt.plan);
                   }}
                   className={`w-full relative bg-[#EEFFEF]/3 py-2 rounded-lg text-sm text-white text-center hover:bg-[#EEFFEF]/5 ${
-                    selectedTradeOption === opt && "border border-primary"
+                    selectedTradeOption === opt.value && "border border-primary"
                   }`}
                 >
-                  {opt}
-                  {selectedTradeOption === opt && (
+                  {opt.value}
+                  {selectedTradeOption === opt.value && (
                     <Icon
                       icon="tdesign-secured"
                       width="12px"
@@ -144,7 +194,7 @@ const CI = ({
               <div className="w-full flex items-center gap-3">
                 <Image src={euro} alt="euro" className="w-5 h-auto" />
                 <span className="flex flex-col items-center">
-                  {asset?.name}{" "}
+                  {asset?.assetName}{" "}
                   <span className="text-white/60 font-medium">
                     TP + <span className="text-primary">{asset?.profit}%</span>
                   </span>
@@ -166,8 +216,8 @@ const CI = ({
             </div>
             <div className="w-full px-3 py-1">
               <button
-                onClick={() => handleViewChange("Trading Plan")}
-                className={`w-full flex items-center gap-2 bg-[#EEFFEF]/5 rounded-lg ${
+                // onClick={() => handleViewChange("Trading Plan")}
+                className={`w-full flex items-center gap-2 bg-[#EEFFEF]/5 rounded-lg cursor-default ${
                   tradingPlan
                     ? "justify-items-start px-3 py-1"
                     : "justify-center py-3"
@@ -182,7 +232,7 @@ const CI = ({
                     />
                   )}
                   <div className="flex flex-col gap-0.6 items-start">
-                    <span>{tradingPlan || "Select category"}</span>
+                    <span>{tradingPlan}</span>
                     {tradingPlan && plan && (
                       <span className={`${plan.color} text-xs`}>
                         {plan.rate}% interest
@@ -210,7 +260,7 @@ const CI = ({
           </div>
 
           <button
-            disabled={!tradingPlan && !amount && !profitValue && !selectedAsset}
+            disabled={!tradingPlan || !amount || !profitValue || !selectedAsset}
             onClick={() => setIsStartAutoTrade(true)}
             className="w-full bg-primary text-black font-semibold px-6 py-3 rounded-xl hover:bg-gradient-to-tr  from-primary to-[#b4e6b8] transition"
           >
@@ -222,7 +272,7 @@ const CI = ({
         <TradeStatus
           onClose={onClose}
           duration={mins}
-          asset={asset?.name}
+          asset={asset?.assetName}
           tradedBalance={800}
           profitPercent={asset?.profit}
           amount={amount}

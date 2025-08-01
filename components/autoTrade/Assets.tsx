@@ -1,19 +1,33 @@
 "use client";
 
 import { useState } from "react";
-
+import { Asset } from "./AutoTradeModal";
 // import Image from "next/image";
 
 interface AssetRowProps {
-  // icon?: string;
-  name: string;
-  change: string;
+  id: number;
+  assetName: string;
+  symbol: string;
+  assetType: "STOCK" | "CRYPTO" | "FOREX" | string;
+  basePrice: number;
+  description: string;
+  imageUrl: string;
+  createdDate: string;
+  lastModifiedDate: string;
+  change: number;
   profit: number;
+  status: "ACTIVE" | "INACTIVE" | string;
   onClick?: () => void;
 }
 
-const AssetRow: React.FC<AssetRowProps> = ({ name, change, profit, onClick }) => {
-  const isPositive = parseFloat(change) > 0;
+const AssetRow: React.FC<AssetRowProps> = ({
+  // imageUrl,
+  assetName,
+  change,
+  profit,
+  onClick,
+}) => {
+  const isPositive = change > 0;
 
   return (
     <div
@@ -21,17 +35,21 @@ const AssetRow: React.FC<AssetRowProps> = ({ name, change, profit, onClick }) =>
       className="w-full px-8 flex items-center justify-between py-3 border-b border-white/5 last:border-0 cursor-pointer"
     >
       <div className="flex items-center gap-3 w-3/5">
-        {/* <Image src={icon} alt={name} className="w-6 h-6 object-contain" /> */}
-        <span className="text-sm text-white">{name}</span>
+        {/* <Image
+          src={imageUrl}
+          alt={assetName}
+          className="w-6 h-6 object-contain"
+        /> */}
+        <span className="text-sm text-white">{assetName}</span>
       </div>
 
       <div className="w-2/5 text-center flex items-center gap-3">
         <span
-          className={`text-sm text-white font-medium px-2.5 py-2 rounded-lg ${
+          className={`text-sm text-center text-white font-medium px-4 py-2 rounded-lg ${
             isPositive ? "bg-[#44b85d]" : "bg-[#ed443e]"
           }`}
         >
-          {change}
+          {`${isPositive ? "+" : ""}${change.toFixed(3)}%`}
         </span>
         <div className="w-1/4 text-right text-green-400 font-semibold text-sm">
           {profit}%
@@ -41,75 +59,14 @@ const AssetRow: React.FC<AssetRowProps> = ({ name, change, profit, onClick }) =>
   );
 };
 
-export const assets = [
-  {
-    // icon: "/icons/apple.png",
-    name: "Apple",
-    change: "+0.13%",
-    profit: 77,
-  },
-  {
-    // icon: "/icons/ethereum.png",
-    name: "Ethereum",
-    change: "+0.13%",
-    profit: 75,
-  },
-  {
-    // icon: "/icons/gbp.png",
-    name: "GBP/USD",
-    change: "-1.54%",
-    profit: 60,
-  },
-  {
-    // icon: "/icons/google.png",
-    name: "Google",
-    change: "-1.54%",
-    profit: 77,
-  },
-  {
-    // icon: "/icons/gold.png",
-    name: "Gold",
-    change: "-1.54%",
-    profit: 69,
-  },
-  {
-    // icon: "/icons/eur.png",
-    name: "EUR/USD",
-    change: "+0.13%",
-    profit: 77,
-  },
-  {
-    // icon: "/icons/meta.png",
-    name: "Facebook (META)",
-    change: "-1.54%",
-    profit: 65,
-  },
-  {
-    // icon: "/icons/bitcoin.png",
-    name: "Bitcoin",
-    change: "+0.13%",
-    profit: 77,
-  },
-  {
-    // icon: "/icons/meta.png",
-    name: "Facebook (META)",
-    change: "+0.13%",
-    profit: 66,
-  },
-  {
-    // icon: "/icons/aud.png",
-    name: "AUD/CAD",
-    change: "-1.54%",
-    profit: 87,
-  },
-];
-
 const Assets = ({
   handleViewChange,
   setAsset,
+  assets,
 }: {
   handleViewChange: (val: string) => void;
   setAsset: (val: string) => void;
+  assets: Asset[] | null;
 }) => {
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const handleToggle = () => {
@@ -124,14 +81,17 @@ const Assets = ({
   };
 
   const choseHighestProfitAsset = () => {
-    if (assets.length === 0) return null;
+    if (assets?.length === 0) return null;
+    if (assets) {
+      const maxProfit = Math.max(...assets.map((asset) => asset.profit));
 
-    const maxProfit = Math.max(...assets.map((asset) => asset.profit));
+      const topAssets = assets?.filter((asset) => asset.profit === maxProfit);
 
-    const topAssets = assets.filter((asset) => asset.profit === maxProfit);
-
-    const randomIndex = Math.floor(Math.random() * topAssets.length);
-    setAsset(topAssets[randomIndex]?.name);
+      const randomIndex = Math.floor(Math.random() * (topAssets?.length ?? 0));
+      if (topAssets) {
+        setAsset(topAssets[randomIndex]?.assetName);
+      }
+    }
     handleViewChange("Current Investment");
   };
   return (
@@ -178,16 +138,17 @@ const Assets = ({
 
       {/* Asset Rows */}
       <div className="flex-1 overflow-y-auto custom-scrollbar">
-        {assets.map((asset, idx) => (
-          <AssetRow
-            key={idx}
-            onClick={() => {
-              setAsset(asset.name);
-              handleViewChange("Current Investment");
-            }}
-            {...asset}
-          />
-        ))}
+        {assets &&
+          assets.map((asset, idx) => (
+            <AssetRow
+              key={idx}
+              onClick={() => {
+                setAsset(asset.assetName);
+                handleViewChange("Current Investment");
+              }}
+              {...asset}
+            />
+          ))}
       </div>
     </section>
   );
