@@ -73,7 +73,7 @@ export default function ProfileModal({ onClose }: ProfileModalProps) {
   };
 
   return (
-    <div className="modal-offset fixed inset-0 z-50 bg-black/50 flex justify-start">
+    <div className="modal-offset max-sm:h-[calc(100vh-57px)] fixed inset-0 z-50 bg-black/50 flex justify-start">
       <div className="relative w-[25%] min-w-[359px] max-sm:min-w-full z-40 max-w-md max-sm:w-full max-sm:max-w-full backdrop-blur-sm max-sm:backdrop-blur-none max-sm:bg-[#00040D] border-r border-[#1D3F2F] text-white p-6 shadow-xl">
         <div className="flex justify-between items-center mb-4">
           <button onClick={onClose}>

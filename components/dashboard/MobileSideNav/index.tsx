@@ -141,6 +141,7 @@ const SideNav: React.FC<SideNavProps> = ({ isOpen, onClose }) => {
                     key={idx}
                     onClick={() => {
                       setSelectedIndex(idx);
+                      onClose();
                       item.onClick();
                     }}
                     className={`flex items-center gap-4 px-4 py-2 rounded-md font-medium transition

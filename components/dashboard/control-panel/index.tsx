@@ -12,7 +12,7 @@ const BuySellButtons = ({ className }: { className?: string }) => {
   }
   return (
     <div
-      className={`flex flex-1 max-sm:pb-3 bg-transparent max-sm:w-full max-sm:flex max-sm:justify-center max-sm:flex-0 max-sm:px-3 ${className}`}
+      className={`flex flex-1 max-sm:pb-3 max-sm:z-10 bg-transparent max-sm:w-full max-sm:flex max-sm:justify-center max-sm:flex-0 max-sm:px-3 ${className}`}
     >
       <button
         onClick={() => handleClick("SELL")}
@@ -136,7 +136,7 @@ export default function ControlPanel() {
 
   return (
     <>
-      <div className="fixed bottom-0 z-5 left-1/2 -translate-x-1/2 flex bg-transparent max-sm:w-full max-sm:flex max-sm:justify-center max-sm:items-center max-sm:rounded-none max-sm:bottom-[110px] max-sm:gap-2 max-sm:border-none rounded-lg text-white shadow-lg p-3">
+      <div className="fixed bottom-4 z-5 left-1/2 -translate-x-1/2 flex bg-transparent max-sm:w-full max-sm:flex max-sm:justify-center max-sm:items-center max-sm:rounded-none max-sm:bottom-[120px] max-sm:gap-2 max-sm:border-none rounded-lg text-white shadow-lg p-3">
         {/* Trade Amount Panel */}
         <TradeAmountPanel />
 
@@ -202,7 +202,7 @@ export default function ControlPanel() {
           <></>
         )}
       </div>
-      <BuySellButtons className="sm:hidden max-sm:fixed max-sm:bottom-[60px]" />
+      <BuySellButtons className="sm:hidden max-sm:fixed max-sm:bottom-[72px]" />
     </>
   );
 }

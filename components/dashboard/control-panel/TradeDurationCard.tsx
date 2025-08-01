@@ -77,7 +77,7 @@ export default function TradeDurationCard({
     >
       <div
         ref={cardRef}
-        className={`absolute z-50 w-full p-4 rounded-lg bg-[#060f16] max-sm:backdrop-blur-sm max-sm:bg-transparent ${
+        className={`absolute z-50 w-full p-4 rounded-lg bg-[#060f16] max-sm:backdrop-blur-xl max-sm:bg-transparent ${
           selectedTab === "Custom" && "pb-0"
         }`}
       >
