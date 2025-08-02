@@ -9,6 +9,9 @@ import { useDashboardContext } from "@/context/DashboardContext";
 import InnerModalWrapper from "./modalWrapper";
 import Welcome from "./Welcome";
 import DownlineComplains from "./DownlineComplain";
+import DownlineTickets from "./DownlineTickets";
+import TicketConversation from "./TicketConversation";
+import ConfirmModal from "../ConfirmationModal";
 
 export default function AssetManagerModal({
   onClose,
@@ -16,16 +19,27 @@ export default function AssetManagerModal({
   onClose: () => void;
 }) {
   const { switchAssetManagerModal } = useDashboardContext();
+  const [confirmCloseTicket, setConfirmCloseTicket] = useState<boolean>(false);
   const [view, setView] = useState<string>("Asset Manager");
   const [iconOrImage, setIconOrImage] = useState<StaticImageData | string>("");
 
   const handleViewChange = (nextView: string) => setView(nextView);
+  const handleCloseTicket = () => {
+    console.log("Ticket Closed");
+    handleViewChange("Downline Tickets");
+  };
   const renderView = () => {
-    switch (view) {
-      case "Asset Manager":
+    switch (true) {
+      case view === "Asset Manager":
         return <Welcome handleViewChange={handleViewChange} />;
-      case "Logging Downline Complains":
+      case view === "Logging Downline Complains":
         return <DownlineComplains handleViewChange={handleViewChange} />;
+      case view === "Downline Tickets":
+        return <DownlineTickets handleViewChange={handleViewChange} />;
+      case view.startsWith("#"):
+        return (
+          <TicketConversation openConfirm={() => setConfirmCloseTicket(true)} />
+        );
     }
   };
 
@@ -66,6 +80,15 @@ export default function AssetManagerModal({
           </InnerModalWrapper>
         </AnimatePresence>
       </motion.div>
+
+      {confirmCloseTicket && (
+        <ConfirmModal
+          onCancel={() => setConfirmCloseTicket(false)}
+          onConfirm={handleCloseTicket}
+          title="Close Ticket"
+          message="Are you sure you want to close this Ticket?"
+        />
+      )}
     </div>
   );
 }

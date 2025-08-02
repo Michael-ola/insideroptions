@@ -19,7 +19,6 @@ export default function AssetManagerModal({
     switch (view) {
       case "Asset Manager":
         return <Welcome handleViewChange={handleViewChange} />;
-        
     }
   };
   return (

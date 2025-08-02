@@ -91,9 +91,20 @@ const Welcome = ({
             </div>
           </div>
 
-          <button className="bg-primary px-6 py-3 rounded-xl flex items-center gap-3 font-medium text-black hover:bg-gradient-to-tr from-[#99E39E] to-[#b3ffb8] transition-all duration-300">
-            <Search className="w-4 h-4" /> Search my Structure
-          </button>
+          <div className="flex flex-col gap-2">
+            <button
+              onClick={() => handleViewChange("Downline Tickets")}
+              className="relative bg-primary/5 rounded-xl border border-white/5 px-6 py-3 hover:bg-primary/10"
+            >
+              <div className="absolute -top-2 right-[10%] w-4 h-4 rounded-full flex items-center justify-center bg-red-600 text-white text-xs">
+                1
+              </div>
+              View Ticket History
+            </button>
+            <button className="bg-primary px-6 py-3 rounded-xl flex items-center gap-3 font-medium text-black hover:bg-gradient-to-tr from-[#99E39E] to-[#b3ffb8] transition-all duration-300">
+              <Search className="w-4 h-4" /> Search my Structure
+            </button>
+          </div>
         </div>
 
         <div className="w-full h-full flex flex-col gap-y-2.5 pb-10">
@@ -112,11 +123,11 @@ const Welcome = ({
             </button>
           </div>
 
-          <div className="w-full h-[60%] max-h-[20%] flex flex-col bg-[#79DA7E]/10 border border-white/5 rounded-xl">
+          <div className="w-full h-[360px] max-h-[360px] flex flex-col bg-[#79DA7E]/10 border border-white/5 rounded-xl">
             <h3 className="text-center py-2 text-primary border-b border-primary/20">
               Referral details
             </h3>
-            <div className="w-full h-full overflow-x-auto overflow-y-auto custom-scrollbar py-1">
+            <div className="w-full h-full overflow-x-auto overflow-y-auto custom-scrollbar">
               <table className="w-full text-sm">
                 <thead className="text-left text-white/60">
                   <tr>
@@ -172,7 +183,11 @@ const Welcome = ({
                         </td>
                         <td className="py-2 px-4">
                           <button
-                            onClick={handleRedeem}
+                            disabled={ref.status !== "Active"}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleRedeem();
+                            }}
                             className={`${
                               ref.status === "Active"
                                 ? "bg-primary hover:bg-primary/20 text-black"
