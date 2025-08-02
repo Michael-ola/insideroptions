@@ -1,0 +1,111 @@
+export type Referral = {
+  refId: string;
+  regDate: string;
+  tenure: string;
+  trader: string;
+  referredBy: string;
+  deposited: string;
+  refPercentage: string;
+  effectiveDate: string;
+  confirmDate: string;
+  status: "Active" | "Inactive";
+};
+
+export const referralData: Referral[] = [
+  {
+    refId: "323454",
+    regDate: "4th Apr 2025",
+    tenure: "30 days",
+    trader: "Prince Maxwell",
+    referredBy: "You",
+    deposited: "$1000",
+    refPercentage: "5%",
+    effectiveDate: "4th Apr 2025",
+    confirmDate: "19th Apr 2025",
+    status: "Active",
+  },
+  {
+    refId: "323454",
+    regDate: "4th Apr 2025",
+    tenure: "90 days",
+    trader: "Prince Maxwell",
+    referredBy: "You",
+    deposited: "$4000",
+    refPercentage: "5%",
+    effectiveDate: "22nd Mar 2025",
+    confirmDate: "30th Apr 2025",
+    status: "Active",
+  },
+  {
+    refId: "323454",
+    regDate: "4th Apr 2025",
+    tenure: "180 days",
+    trader: "Prince Maxwell",
+    referredBy: "You",
+    deposited: "$3500",
+    refPercentage: "5%",
+    effectiveDate: "18th Jan 2025",
+    confirmDate: "15th Mar 2025",
+    status: "Active",
+  },
+  {
+    refId: "323454",
+    regDate: "4th Apr 2025",
+    tenure: "180 days",
+    trader: "Prince Maxwell",
+    referredBy: "You",
+    deposited: "$3500",
+    refPercentage: "5%",
+    effectiveDate: "18th Jan 2025",
+    confirmDate: "15th Mar 2025",
+    status: "Active",
+  },
+  {
+    refId: "323454",
+    regDate: "4th Apr 2025",
+    tenure: "180 days",
+    trader: "Prince Maxwell",
+    referredBy: "You",
+    deposited: "$3500",
+    refPercentage: "5%",
+    effectiveDate: "18th Jan 2025",
+    confirmDate: "15th Mar 2025",
+    status: "Inactive",
+  },
+  {
+    refId: "323454",
+    regDate: "4th Apr 2025",
+    tenure: "180 days",
+    trader: "Prince Maxwell",
+    referredBy: "You",
+    deposited: "$3500",
+    refPercentage: "5%",
+    effectiveDate: "18th Jan 2025",
+    confirmDate: "15th Mar 2025",
+    status: "Active",
+  },
+  {
+    refId: "323454",
+    regDate: "4th Apr 2025",
+    tenure: "180 days",
+    trader: "Prince Maxwell",
+    referredBy: "You",
+    deposited: "$3500",
+    refPercentage: "5%",
+    effectiveDate: "18th Jan 2025",
+    confirmDate: "15th Mar 2025",
+    status: "Active",
+  },
+  {
+    refId: "323454",
+    regDate: "4th Apr 2025",
+    tenure: "180 days",
+    trader: "Prince Maxwell",
+    referredBy: "You",
+    deposited: "$3500",
+    refPercentage: "5%",
+    effectiveDate: "18th Jan 2025",
+    confirmDate: "15th Mar 2025",
+    status: "Active",
+  },
+];
