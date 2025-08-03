@@ -59,7 +59,6 @@ const PartnerTab = ({
     getBonusDetails(page);
   };
   const getReferralDetails = async (page = 1) => {
-    console.log("Referral");
     try {
       const res = await apiClient.get(`traders/${traderData?.id}?page=${page}`);
       setReferralDetails(res.data);
@@ -68,7 +67,6 @@ const PartnerTab = ({
     }
   };
   const getBonusDetails = async (page = 1) => {
-    console.log("Bonus");
     try {
       const res = await apiClient.get(
         `referral-rewards/${traderData?.id}?page=${page}`
