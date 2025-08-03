@@ -12,6 +12,7 @@ import DownlineComplains from "./DownlineComplain";
 import DownlineTickets from "./DownlineTickets";
 import TicketConversation from "./TicketConversation";
 import ConfirmModal from "../ConfirmationModal";
+import SearchStructure from "./SearchStructure";
 
 export default function AssetManagerModal({
   onClose,
@@ -41,6 +42,13 @@ export default function AssetManagerModal({
         return (
           <TicketConversation openConfirm={() => setConfirmCloseTicket(true)} />
         );
+      case view.startsWith(" "):
+        return (
+          <SearchStructure handleViewChange={handleViewChange} />
+        );
+
+      default:
+        return null;
     }
   };
 

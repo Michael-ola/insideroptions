@@ -15,12 +15,6 @@ export default function AssetManagerModal({
   const [view, setView] = useState<string>("Asset Manager");
 
   const handleViewChange = (nextView: string) => setView(nextView);
-  const renderView = () => {
-    switch (view) {
-      case "Asset Manager":
-        return <Welcome handleViewChange={handleViewChange} />;
-    }
-  };
   return (
     <div className={`${switchAssetManagerModal ? "block" : "hidden"}`}>
       <motion.div layout>
@@ -32,7 +26,7 @@ export default function AssetManagerModal({
             }}
             handleViewChange={handleViewChange}
           >
-            {renderView()}
+            <Welcome handleViewChange={handleViewChange} />
           </ModalWrapper>
         </AnimatePresence>
       </motion.div>

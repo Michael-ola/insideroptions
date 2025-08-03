@@ -36,7 +36,7 @@ const AssetManager = () => {
                   icon="mynaui:copy"
                   width="24"
                   height="24"
-                  className="text-primary"
+                  className="text-primary cursor-pointer"
                 />
               </div>
             </div>

@@ -14,6 +14,7 @@ export default function InnerModalWrapper({
   title,
   onClose,
   children,
+  handleViewChange,
 }: ModalWrapperProps) {
   const { setSwitchAssetManagerModal } = useDashboardContext();
   return (
@@ -27,7 +28,17 @@ export default function InnerModalWrapper({
       <div className="w-[96%] h-full backdrop-blur-sm py-4 relative text-white sm:border-r sm:border-primary/15 flex flex-col gap-2">
         <div className="bg-gradient-to-r from-[#00040d] to-[#13171f] sm:bg-none px-8 py-4 border-y border-y-[#79DA7E]/30 sm:border-0 flex items-center gap-8">
           <button
-            onClick={() => setSwitchAssetManagerModal(false)}
+            onClick={() => {
+              if (title === "Logging Downline Complains" && handleViewChange) {
+                handleViewChange("Asset Manager");
+              } else if (title === "Downline Tickets" && handleViewChange) {
+                handleViewChange("Asset Manager");
+              } else if (title === " " && handleViewChange) {
+                handleViewChange("Asset Manager");
+              } else {
+                setSwitchAssetManagerModal(false);
+              }
+            }}
             className="text-white cursor-pointer"
           >
             <ChevronLeft className="w-6 h-6" />

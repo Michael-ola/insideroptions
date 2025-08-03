@@ -101,7 +101,10 @@ const Welcome = ({
               </div>
               View Ticket History
             </button>
-            <button className="bg-primary px-6 py-3 rounded-xl flex items-center gap-3 font-medium text-black hover:bg-gradient-to-tr from-[#99E39E] to-[#b3ffb8] transition-all duration-300">
+            <button
+              onClick={() => handleViewChange(" ")}
+              className="bg-primary px-6 py-3 rounded-xl flex items-center gap-3 font-medium text-black hover:bg-gradient-to-tr from-[#99E39E] to-[#b3ffb8] transition-all duration-300"
+            >
               <Search className="w-4 h-4" /> Search my Structure
             </button>
           </div>
