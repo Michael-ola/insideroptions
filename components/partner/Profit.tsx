@@ -3,22 +3,25 @@ import { useState } from "react";
 import { ArrowLeft, ArrowRight, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import profitBanner from "@/lib/assets/profit_banner.jpg";
-import mockData from "@/data/partner/mockData.json";
-import mockData2 from "@/data/partner/bonusData.json";
 import { useDashboardContext } from "@/context/DashboardContext";
+import { ReferralDetails } from "./PartnerTab";
+import { ReferralBonus } from "./PartnerTab";
 
 const Profit = ({
   handleNewView,
+  referralDetails,
+  bonusDetails,
+  handlePageChange,
 }: {
   handleNewView: (val: string) => void;
+  referralDetails: ReferralDetails | null;
+  bonusDetails: ReferralBonus | null;
+  handlePageChange: (val: number) => void;
 }) => {
   const { traderData } = useDashboardContext();
   const [tab, setTab] = useState("Referral details");
-  const [page, setPage] = useState(1);
 
   const TABS = ["Referral details", "Redeem Bonus"];
-
-  const ITEMS_PER_PAGE = 6;
 
   const realAccount = traderData?.accounts.find(
     (account) => account.accountType === "INDIVIDUAL"
@@ -38,30 +41,25 @@ const Profit = ({
     </div>
   );
 
-  const pageCount = Math.ceil(mockData.length / ITEMS_PER_PAGE);
-  const paginatedData = mockData.slice(
-    (page - 1) * ITEMS_PER_PAGE,
-    page * ITEMS_PER_PAGE
-  );
-  const paginatedDat2 = mockData2.slice(
-    (page - 1) * ITEMS_PER_PAGE,
-    page * ITEMS_PER_PAGE
-  );
+  const pageCount = referralDetails?.totalPages || 1;
+  const page = referralDetails?.page || 1;
 
   const renderContent = () => {
     if (tab === "Referral details") {
-      return paginatedData.length ? (
-        paginatedData.map((item, idx) => (
+      return referralDetails?.data.length ? (
+        referralDetails?.data.map((item, idx) => (
           <div
             key={idx}
             className="grid grid-cols-4 text-[10px] sm:text-xs font-medium px-4 py-2"
           >
             <span>{item.id}</span>
             <span>{item.date}</span>
-            <span>{item.deposited}</span>
+            <span>{`$${item.deposited}`}</span>
             <span
-              className={`${
-                item.status === "Active" ? "text-green-600" : "text-red-500"
+              className={`capitalize ${
+                item.status.toLowerCase() === "active"
+                  ? "text-green-600"
+                  : "text-red-500"
               }`}
             >
               {item.status}
@@ -74,8 +72,8 @@ const Profit = ({
     }
 
     if (tab === "Redeem Bonus") {
-      return paginatedDat2.length ? (
-        paginatedDat2.map((item, idx) => (
+      return bonusDetails?.data.length ? (
+        bonusDetails?.data.map((item, idx) => (
           <div
             key={idx}
             className="grid grid-cols-4 text-[10px] sm:text-xs font-medium px-4 py-2"
@@ -84,7 +82,7 @@ const Profit = ({
             <span>{item.referred}</span>
             <span>{item.date}</span>
             <span className="flex items-center justify-between">
-              {item.amount}
+              ${item.amount}
               <span
                 className={`text-[10px] sm:text-xs p-1.5 rounded-[4px] ${
                   item.status === "Active"
@@ -127,7 +125,9 @@ const Profit = ({
             </div>
             <div className="text-right">
               <p className="text-sm text-white/70">All time invites</p>
-              <p className="text-xl font-semibold">8</p>
+              <p className="text-xl font-semibold">
+                {traderData?.totalReferrals}
+              </p>
             </div>
           </div>
         </section>
@@ -148,7 +148,6 @@ const Profit = ({
               `}
                   onClick={() => {
                     setTab(t);
-                    setPage(1);
                   }}
                 >
                   {t}
@@ -176,7 +175,7 @@ const Profit = ({
             <div className="w-full mt-auto flex justify-end">
               <div className="w-[90%] flex justify-between items-center py-6 px-4 text-xs">
                 <button
-                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  onClick={() => handlePageChange(page > 1 ? page - 1 : 1)}
                   disabled={page === 1}
                   className="disabled:text-white/30"
                 >
@@ -186,20 +185,22 @@ const Profit = ({
                 <div className="px-3 py-1 flex items-center justify-center rounded-lg bg-[#2b2b2b] text-lg">
                   {page}
                 </div>
-                {page + 1 !== pageCount && page !== pageCount && (
-                  <div className="px-3 py-1 text-lg">{page + 1}</div>
+                {(page ?? 0) + 1 !== pageCount && (page ?? 0) !== pageCount && (
+                  <div className="px-3 py-1 text-lg">{(page ?? 0) + 1}</div>
                 )}
-                {page + 1 !== pageCount &&
-                  page + 2 !== pageCount &&
-                  page !== pageCount && (
+                {(page ?? 0) + 1 !== pageCount &&
+                  (page ?? 0) + 2 !== pageCount &&
+                  (page ?? 0) !== pageCount && (
                     <div className="px-3 py-1 text-lg">...</div>
                   )}
-                {page !== pageCount && (
+                {(page ?? 0) !== pageCount && (
                   <div className="px-3 py-1 text-lg">{pageCount}</div>
                 )}
                 <button
-                  onClick={() => setPage((p) => Math.min(pageCount, p + 1))}
-                  disabled={page === pageCount}
+                  onClick={() =>
+                    handlePageChange(page + 1)
+                  }
+                  disabled={(referralDetails?.page ?? 0) === pageCount}
                   className="disabled:text-white/30"
                 >
                   <ArrowRight className="inline w-4 h-4" />
