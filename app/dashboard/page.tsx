@@ -51,7 +51,7 @@ export default function DashboardPage() {
     };
 
     fetchTrader();
-  }, []);
+  }, [selectedAccount]);
 
   const contextValue: DashboardPropsType = {
     openGraphStyleModal,
