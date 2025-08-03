@@ -30,4 +30,6 @@ export interface DashboardPropsType {
   setShowTradeStatus: (val: boolean) => void;
   form: boolean;
   setForm: (val: boolean) => void;
+  switchAssetManagerModal: boolean;
+  setSwitchAssetManagerModal: (val: boolean) => void;
 }

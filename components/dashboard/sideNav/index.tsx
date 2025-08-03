@@ -20,7 +20,7 @@ export const navItems = [
   { label: "Cashier", icon: CashierIcon },
   { label: "Partner", icon: PartnerIcon },
   { label: "Help", icon: HelpIcon },
-  { label: "Asset manager", icon: AssetManagerIcon },
+  { label: "Asset Manager", icon: AssetManagerIcon },
   { label: "Auto trade", icon: AutoTradeIcon },
 ];
 

@@ -24,6 +24,8 @@ export default function DashboardPage() {
   const [openConfirmation, setOpenConfirmation] = useState<boolean>(false);
   const [openAutoTrade, setOpenAutoTrade] = useState<boolean>(false);
   const [showTradeStatus, setShowTradeStatus] = useState<boolean>(false);
+  const [switchAssetManagerModal, setSwitchAssetManagerModal] =
+    useState<boolean>(false);
   const [form, setForm] = useState<boolean>(false);
   const [selectedSideNavTab, setSelectedSideNavTab] = useState("Trade");
   const [selectedAccount, setSelectedAccount] = useState("DEMO");
@@ -82,6 +84,8 @@ export default function DashboardPage() {
     setShowTradeStatus,
     form,
     setForm,
+    switchAssetManagerModal,
+    setSwitchAssetManagerModal,
   };
 
   return (
