@@ -41,12 +41,12 @@ const Referral = () => {
             <div className="flex items-center justify-between">
               <div className="text-sm">
                 <p className="text-white/20">Referral link</p>
-                <p>{`https://insider-option-web.vercel.app/signup?referral=${traderData?.myReferrerCode}`}</p>
+                <p>{`https://insider-option-web.vercel.app/signup?referral=${traderData?.myReferralCode}`}</p>
               </div>
               <Share2
                 onClick={() => {
                   navigator.clipboard.writeText(
-                    `https://insider-option-web.vercel.app/signup?referral=${traderData?.myReferrerCode}` ||
+                    `https://insider-option-web.vercel.app/signup?referral=${traderData?.myReferralCode}` ||
                       ""
                   );
                   toast.info(`Link copied!`);
@@ -58,11 +58,11 @@ const Referral = () => {
             <div className="flex items-center justify-between">
               <div className="text-sm">
                 <p className="text-white/20">Profile Code</p>
-                <p>{traderData?.myReferrerCode}</p>
+                <p>{traderData?.myReferralCode}</p>
               </div>
               <Image
                 onClick={() => {
-                  navigator.clipboard.writeText(traderData?.myReferrerCode || "");
+                  navigator.clipboard.writeText(traderData?.myReferralCode || "");
                   toast.info(`Code copied!`);
                 }}
                 src={copy}

@@ -4,6 +4,37 @@ import Referral from "./Referral";
 import Profit from "./Profit";
 import Faq from "./Faq";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useEffect, useState } from "react";
+import { apiClient } from "@/lib/api-client";
+import { useDashboardContext } from "@/context/DashboardContext";
+
+type ReferralData = {
+  id: string;
+  date: string;
+  deposited: number;
+  status: string;
+};
+type ReferralBonusData = {
+  id: string;
+  date: string;
+  referred: string;
+  amount: number;
+  status: string;
+};
+export type ReferralDetails = {
+  data: ReferralData[];
+  totalCount: number;
+  page: number;
+  size: number;
+  totalPages: number;
+};
+export type ReferralBonus = {
+  data: ReferralBonusData[];
+  totalCount: number;
+  page: number;
+  size: number;
+  totalPages: number;
+};
 
 const PartnerTab = ({
   setCanBack,
@@ -14,6 +45,39 @@ const PartnerTab = ({
   handleNewView: (val: string) => void;
   newView: string;
 }) => {
+  const { traderData } = useDashboardContext();
+  const [referralDetails, setReferralDetails] =
+    useState<ReferralDetails | null>(null);
+  const [bonusDetails, setBonusDetails] = useState<ReferralBonus | null>(null);
+  useEffect(() => {
+    getReferralDetails();
+    getBonusDetails();
+  }, []);
+
+  const handlePageChange = (page: number) => {
+    getReferralDetails(page);
+    getBonusDetails(page);
+  };
+  const getReferralDetails = async (page = 1) => {
+    console.log("Referral");
+    try {
+      const res = await apiClient.get(`traders/${traderData?.id}?page=${page}`);
+      setReferralDetails(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getBonusDetails = async (page = 1) => {
+    console.log("Bonus");
+    try {
+      const res = await apiClient.get(
+        `referral-rewards/${traderData?.id}?page=${page}`
+      );
+      setBonusDetails(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const links = [
     { imgSrc: "humbleicons:link", label: "Referral link" },
     { imgSrc: "mdi:dollar", label: "Profit" },
@@ -31,7 +95,14 @@ const PartnerTab = ({
       case "Referral link":
         return <Referral />;
       case "Profit":
-        return <Profit handleNewView={handleNewView} />;
+        return (
+          <Profit
+            handleNewView={handleNewView}
+            referralDetails={referralDetails}
+            bonusDetails={bonusDetails}
+            handlePageChange={handlePageChange}
+          />
+        );
       case "FAQ":
         return <Faq />;
 
