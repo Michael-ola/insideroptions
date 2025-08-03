@@ -18,7 +18,8 @@ export default function AssetManagerModal({
 }: {
   onClose: () => void;
 }) {
-  const { switchAssetManagerModal } = useDashboardContext();
+  const { switchAssetManagerModal, setSwitchAssetManagerModal } =
+    useDashboardContext();
   const [confirmCloseTicket, setConfirmCloseTicket] = useState<boolean>(false);
   const [view, setView] = useState<string>("Asset Manager");
   const [iconOrImage, setIconOrImage] = useState<StaticImageData | string>("");
@@ -73,6 +74,7 @@ export default function AssetManagerModal({
             title={view}
             onClose={() => {
               onClose();
+              setSwitchAssetManagerModal(false);
             }}
             handleViewChange={handleViewChange}
           >

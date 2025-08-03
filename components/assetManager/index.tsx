@@ -3,6 +3,7 @@ import React from "react";
 import avatar from "@/lib/assets/aM_avatar.png";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useDashboardContext } from "@/context/DashboardContext";
+import { toast } from "react-toastify";
 
 const AssetManager = () => {
   const { setSwitchAssetManagerModal } = useDashboardContext();
@@ -28,6 +29,10 @@ const AssetManager = () => {
               <div className="flex-1 flex items-center justify-between">
                 <span>0904 546 3234</span>
                 <Icon
+                  onClick={() => {
+                    navigator.clipboard.writeText("0904 546 3234");
+                    toast.info("WhatsApp number copied");
+                  }}
                   icon="mynaui:copy"
                   width="24"
                   height="24"

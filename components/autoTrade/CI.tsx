@@ -19,7 +19,8 @@ export const plans = [
     logo: starter,
     color: "text-[#0273c4]",
     rate: 15,
-    desc: "Make 0.5% daily profit on trade amount",
+    // desc: "Make 0.5% daily profit on trade amount",
+    desc: "15% interest for 30days",
     range: "(Min: $100 - Max: $1,000)",
   },
   {
@@ -27,7 +28,8 @@ export const plans = [
     logo: gold,
     color: "text-[#e08402]",
     rate: 18,
-    desc: "Make 0.6% daily profit on trade amount",
+    // desc: "Make 0.6% daily profit on trade amount",
+    desc: "18% interest every 30days for 90days",
     range: "(Min: $50 - Max: $10,000)",
   },
   {
@@ -35,7 +37,8 @@ export const plans = [
     logo: premium,
     color: "text-[#e03f3d]",
     rate: 22,
-    desc: "Make 0.73% daily profit on trade amount",
+    // desc: "Make 0.73% daily profit on trade amount",
+    desc: "22% interest for every 30days for 180days",
     range: "(Min: $50 - Max: $10,000)",
   },
 ];
@@ -71,7 +74,8 @@ const CI = ({
   const [selectedBalance, setSelectedBalance] = useState<string>("demo");
 
   const plan = plans.find((plan) => plan.name === tradingPlan);
-  const asset = assets && assets.find((asset: Asset) => asset.assetName === selectedAsset);
+  const asset =
+    assets && assets.find((asset: Asset) => asset.assetName === selectedAsset);
 
   const realAccount = traderData?.accounts.find(
     (account) => account.accountType === "INDIVIDUAL"
@@ -216,14 +220,13 @@ const CI = ({
             </div>
             <div className="w-full px-3 py-1">
               <button
-                // onClick={() => handleViewChange("Trading Plan")}
-                className={`w-full flex items-center gap-2 bg-[#EEFFEF]/5 rounded-lg cursor-default ${
+                className={`w-full flex items-center gap-2 px-3 py-2 bg-[#EEFFEF]/5 rounded-lg cursor-default ${
                   tradingPlan
-                    ? "justify-items-start px-3 py-1"
+                    ? "justify-between"
                     : "justify-center py-3"
                 }`}
               >
-                <div className="flex items-center gap-2.5">
+                <div className="w-full flex items-center gap-2.5">
                   {tradingPlan && plan && (
                     <Image
                       src={plan.logo}
@@ -231,7 +234,7 @@ const CI = ({
                       className="w-6 h-6"
                     />
                   )}
-                  <div className="flex flex-col gap-0.6 items-start">
+                  <div className="flex flex-col items-start gap-2">
                     <span>{tradingPlan}</span>
                     {tradingPlan && plan && (
                       <span className={`${plan.color} text-xs`}>
@@ -239,8 +242,12 @@ const CI = ({
                       </span>
                     )}
                   </div>
-                  {!tradingPlan && <ChevronDown />}
                 </div>
+
+                {tradingPlan && plan && (
+                  <span className="text-xs text-white/70">{plan?.desc}</span>
+                )}
+                {!tradingPlan && <ChevronDown />}
               </button>
             </div>
           </div>
