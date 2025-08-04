@@ -33,6 +33,8 @@ export interface DashboardPropsType {
   setCloseConfirmation: (val: boolean) => void;
   openAutoTrade: boolean;
   setOpenAutoTrade: (val: boolean) => void;
+  isAutoTrade: string;
+  setIsAutoTrade: (val: string) => void;
   showTradeStatus: boolean;
   setShowTradeStatus: (val: boolean) => void;
   selectedAssets: selectedAssetType[];

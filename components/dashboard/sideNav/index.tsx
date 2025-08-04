@@ -30,7 +30,6 @@ export const navItems = [
 ];
 
 export default function DashboardSidebar() {
-  
   const {
     selectedSideNavTab,
     setSelectedSideNavTab,
@@ -53,7 +52,7 @@ export default function DashboardSidebar() {
     return item;
   });
   const [intendedNav, setIntendedNav] = useState<string>("");
-  const isAutoTrade = localStorage.getItem("isAutoTrade");
+  const { isAutoTrade } = useDashboardContext();
 
   return (
     <aside

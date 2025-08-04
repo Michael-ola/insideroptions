@@ -12,8 +12,7 @@ import PortalWrapper from "@/components/PortalWrapper";
 import { Icon } from "@iconify/react/dist/iconify.js";
 
 export default function TopNav() {
-  const { selectedAccount } = useDashboardContext();
-   const isAutoTrade = localStorage.getItem("isAutoTrade");
+  const { selectedAccount, selectedSideNavTab } = useDashboardContext();
   const [hamburgerClicked, setHamburgerClicked] = useState(false);
 
   return (
@@ -31,7 +30,7 @@ export default function TopNav() {
             height={35}
           />
         </Link>
-        {isAutoTrade && (
+        {selectedSideNavTab === "Auto trade" && (
           <PortalWrapper>
             <div className="text-white/60 font-semibold fixed top-0 flex items-center gap-3 left-[80px] px-3 h-[var(--top-nav-height)] z-[80] max-sm:hidden bg-transparent cursor-default">
               <Icon icon="hugeicons:bot" width="24" height="24" />
