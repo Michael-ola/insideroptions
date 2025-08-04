@@ -130,6 +130,7 @@ export default function DashboardPage() {
         <AutoTradeButton />
         <MobileButtons />
         <ZoomButton />
+        {isAutoTrade && <AutoTradeButton />}
         <ControlPanel />
       </div>
       <SideNav />
