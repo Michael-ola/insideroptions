@@ -5,6 +5,7 @@ import OrdersHistoryModal from "@/components/dashboard/OrdersHistory";
 import ProfileModal from "@/components/dashboard/ProfileModal";
 import AutoTradeModal from "@/components/autoTrade/AutoTradeModal";
 import { useDashboardContext } from "@/context/DashboardContext";
+import AssetManagerModal from "@/components/assetManager/AssetManagerModal";
 
 const ModalComponent = ({
   nav,
@@ -16,7 +17,7 @@ const ModalComponent = ({
   const closeModalFunction = () => {
     setSelectedSideNavTab("Trade");
   };
-    const { openAutoTrade } = useDashboardContext();
+  const { openAutoTrade } = useDashboardContext();
 
   if (nav === "Orders") {
     return <OrdersHistoryModal onClose={closeModalFunction} />;
@@ -28,6 +29,8 @@ const ModalComponent = ({
     return <PartnerModal onClose={closeModalFunction} />;
   } else if (nav === "Help") {
     return <HelpModal onClose={closeModalFunction} />;
+  } else if (nav === "Asset Manager") {
+    return <AssetManagerModal onClose={closeModalFunction} />;
   } else if (nav === "Auto trade" && openAutoTrade) {
     return <AutoTradeModal onClose={closeModalFunction} />;
   } else {

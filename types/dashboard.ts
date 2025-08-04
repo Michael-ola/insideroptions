@@ -35,4 +35,8 @@ export interface DashboardPropsType {
   setShowTradeStatus: (val: boolean) => void;
   selectedAssets: selectedAssetType[];
   setSelectedAssets: React.Dispatch<React.SetStateAction<selectedAssetType[]>>;
+  form: boolean;
+  setForm: (val: boolean) => void;
+  switchAssetManagerModal: boolean;
+  setSwitchAssetManagerModal: (val: boolean) => void;
 }

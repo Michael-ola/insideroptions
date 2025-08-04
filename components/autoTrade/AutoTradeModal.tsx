@@ -1,6 +1,21 @@
 "use client";
 
-import { useState } from "react";
+export type Asset = {
+  id: number;
+  assetName: string;
+  symbol: string;
+  assetType: "STOCK" | "CRYPTO" | "FOREX" | string;
+  basePrice: number;
+  description: string;
+  imageUrl: string;
+  createdDate: string;
+  lastModifiedDate: string;
+  change: number;
+  profit: number;
+  status: "ACTIVE" | "INACTIVE" | string;
+};
+
+import { useEffect, useState } from "react";
 import ModalWrapper from "../modalWrapper";
 import { AnimatePresence, motion } from "framer-motion";
 import { StaticImageData } from "next/image";
@@ -10,18 +25,44 @@ import Assets from "./Assets";
 import ConfirmModal from "../ConfirmationModal";
 import { useDashboardContext } from "@/context/DashboardContext";
 import AutoTradeHistory from "./AutoTradeHistory";
+import { apiClient } from "@/lib/api-client";
+import Loader from "../Loader";
 
 export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
   const [view, setView] = useState<string>("Current Investment");
   const [isStartAutoTrade, setIsStartAutoTrade] = useState<boolean>(false);
-  const [tradingPlan, setTradingPlan] = useState<string>("");
+  const [isLoading, setIsloading] = useState<boolean>(false);
+  const [tradingPlan, setTradingPlan] = useState<string>("Starter");
   const [amount, setAmount] = useState<string | number>("");
   const [asset, setAsset] = useState<string>("EUR/USD");
+  const [assets, setAssets] = useState<Asset[] | null>(null);
   const [selectedTradeOption, setSelectedTradeOption] = useState<string>(
     "43,200 mins/30days/15%"
   );
   const [iconOrImage, setIconOrImage] = useState<StaticImageData | string>("");
-  const { showTradeStatus, setShowTradeStatus, setOpenAutoTrade } = useDashboardContext();
+  const { showTradeStatus, setShowTradeStatus, setOpenAutoTrade } =
+    useDashboardContext();
+
+  useEffect(() => {
+    getAssetLists();
+  }, []);
+
+  const getAssetLists = async () => {
+    setIsloading(true);
+    try {
+      const res = await apiClient.get("/assets/");
+      const mainAsset = res.data.find(
+        (asset: Asset) => asset.assetName === "EUR/USD"
+      );
+      setAssets(res.data);
+      setAsset(mainAsset.assetName);
+      setIsloading(false);
+    } catch (error) {
+      setIsloading(false);
+      console.log(error);
+    }
+  };
+
   const handleViewChange = (nextView: string) => setView(nextView);
 
   const startAutoTrade = () => {
@@ -37,6 +78,7 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
   const percentage = Number(perc) / Number(day);
 
   const renderView = () => {
+    if (isLoading) return <Loader />;
     switch (view) {
       case "Current Investment":
         return (
@@ -44,6 +86,7 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
             onClose={onClose}
             handleViewChange={handleViewChange}
             tradingPlan={tradingPlan}
+            setTradingPlan={setTradingPlan}
             selectedAsset={asset}
             setSelectedTradeOption={setSelectedTradeOption}
             selectedTradeOption={selectedTradeOption}
@@ -51,6 +94,7 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
             amount={amount}
             setIsStartAutoTrade={setIsStartAutoTrade}
             showTradeStatus={showTradeStatus}
+            assets={assets}
           />
         );
       case "Trading Plan":
@@ -63,7 +107,11 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
         );
       case "Asset List":
         return (
-          <Assets handleViewChange={handleViewChange} setAsset={setAsset} />
+          <Assets
+            handleViewChange={handleViewChange}
+            setAsset={setAsset}
+            assets={assets}
+          />
         );
       case "History":
         return <AutoTradeHistory />;

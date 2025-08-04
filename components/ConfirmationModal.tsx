@@ -32,7 +32,7 @@ const ConfirmModal = ({
     >
       <AnimatePresence>
         <div className="w-full h-full fixed inset-0 bg-black/60 backdrop:blur-xs z-50 flex items-center justify-center px-4">
-          <div className="bg-[#0E1514] text-white rounded-xl border border-primary/20 w-full max-w-md py-8 relative shadow-xl flex flex-col gap-6">
+          <div className="bg-[#0E1514] text-white rounded-xl border border-primary/20 w-full max-w-sm sm:max-w-md py-8 relative shadow-xl flex flex-col gap-6 overflow-y-auto custom-scrollbar">
             <div className="w-full px-8">
               <div className="flex justify-between items-center">
                 <h2 className="w-full text-base sm:text-xl font-semibold text-center">

@@ -1,7 +1,8 @@
-import React, { forwardRef, useState } from "react";
+import React, { forwardRef } from "react";
 import SuggestionForm, { SuggestionFormRef } from "./SuggestionForm";
 import SuggestionCard from "./SuggestionTag";
 import suggestions from "@/data/help/suggestions.json";
+import { useDashboardContext } from "@/context/DashboardContext";
 
 interface Props {
   setIsClear: (val: boolean) => void;
@@ -10,7 +11,7 @@ interface Props {
 
 const Suggestion = forwardRef<SuggestionFormRef, Props>(
   ({ setIsClear, setIsConfirm }, ref) => {
-    const [form, setForm] = useState(false);
+  const { form, setForm } = useDashboardContext();
 
     return (
       <div className="px-8 pt-6 w-full h-full space-y-12 overflow-y-auto custom-scrollbar">
