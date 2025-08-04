@@ -27,6 +27,7 @@ export default function DashboardPage() {
   const [openConfirmation, setOpenConfirmation] = useState<boolean>(false);
   const [closeConfirmation, setCloseConfirmation] = useState<boolean>(false);
   const [openAutoTrade, setOpenAutoTrade] = useState<boolean>(false);
+  const [isAutoTrade, setIsAutoTrade] = useState<string>("");
   const [showTradeStatus, setShowTradeStatus] = useState<boolean>(false);
   const [switchAssetManagerModal, setSwitchAssetManagerModal] =
     useState<boolean>(false);
@@ -79,11 +80,13 @@ export default function DashboardPage() {
   useEffect(() => {
     fetchTrader();
     fetchEURUSD();
-    const isAutoTrade = localStorage.getItem("isAutoTrade");
-    setSelectedSideNavTab(isAutoTrade ? isAutoTrade : "Trade");
+    if (typeof window !== "undefined") {
+      const isAutoTrade = localStorage.getItem("isAutoTrade") ?? "";
+      setIsAutoTrade(isAutoTrade);
+      setSelectedSideNavTab(isAutoTrade || "Trade");
+    }
   }, []);
 
-  useEffect(() => {}, []);
   const contextValue: DashboardPropsType = {
     openGraphStyleModal,
     setOpenGraphStyleModal,
@@ -111,6 +114,8 @@ export default function DashboardPage() {
     setCloseConfirmation,
     openAutoTrade,
     setOpenAutoTrade,
+    isAutoTrade,
+    setIsAutoTrade,
     showTradeStatus,
     setShowTradeStatus,
     selectedAssets,
@@ -128,7 +133,9 @@ export default function DashboardPage() {
         <TopNav />
         <AssetComponent />
         <TradingChart />
-        {selectedSideNavTab === "Auto trade" && !showTradeStatus && !openAutoTrade && <AutoTradeButton />}
+        {selectedSideNavTab === "Auto trade" &&
+          !showTradeStatus &&
+          !openAutoTrade && <AutoTradeButton />}
         <MobileButtons />
         <ZoomButton />
         <ControlPanel />

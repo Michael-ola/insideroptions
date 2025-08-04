@@ -8,7 +8,7 @@ import ProfileModal from "@/components/dashboard/ProfileModal";
 import AutoTradeModal from "@/components/autoTrade/AutoTradeModal";
 import { useDashboardContext } from "@/context/DashboardContext";
 import AssetManagerModal from "@/components/assetManager/AssetManagerModal";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const ModalComponent = ({
   nav,
@@ -20,13 +20,17 @@ const ModalComponent = ({
   const closeModalFunction = () => {
     setSelectedSideNavTab("Trade");
   };
-  const [isAutoTradeLocal, setIsAutoTradeLocal] = useState<string | null>(null);
-  const { openAutoTrade, setOpenAutoTrade, setShowTradeStatus } =
-    useDashboardContext();
+  const {
+    openAutoTrade,
+    setOpenAutoTrade,
+    setShowTradeStatus,
+    isAutoTrade,
+    setIsAutoTrade,
+  } = useDashboardContext();
   useEffect(() => {
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem("isAutoTrade");
-      setIsAutoTradeLocal(stored);
+      setIsAutoTrade(stored ?? "");
     }
   }, []);
 
@@ -42,7 +46,7 @@ const ModalComponent = ({
     return <HelpModal onClose={closeModalFunction} />;
   } else if (nav === "Asset Manager") {
     return <AssetManagerModal onClose={closeModalFunction} />;
-  } else if (nav === "Auto trade" && openAutoTrade && isAutoTradeLocal) {
+  } else if (nav === "Auto trade" && openAutoTrade && isAutoTrade) {
     return (
       <AutoTradeModal
         onClose={() => {
