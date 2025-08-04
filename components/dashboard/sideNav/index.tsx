@@ -50,7 +50,7 @@ export default function DashboardSidebar() {
     }
     return item;
   });
-  const { isAutoTrade } = useDashboardContext();
+  const { isAutoTrade, setIsAutoTrade } = useDashboardContext();
 
   return (
     <aside
@@ -139,6 +139,7 @@ export default function DashboardSidebar() {
               setSelectedSideNavTab("Auto trade");
               setOpenAutoTrade(true);
               localStorage.setItem("isAutoTrade", "Auto trade");
+              setIsAutoTrade("Auto trade");
             }}
             title="Auto trade"
             message="Are you sure you want to switch to Auto trade dashboard?"
@@ -151,6 +152,7 @@ export default function DashboardSidebar() {
             onCancel={() => setCloseConfirmation(false)}
             onConfirm={() => {
               localStorage.removeItem("isAutoTrade");
+              setIsAutoTrade("");
               setSelectedSideNavTab("Trade");
             }}
             title="Exit"
