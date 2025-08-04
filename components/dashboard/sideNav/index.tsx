@@ -22,7 +22,7 @@ export const navItems = [
   { label: "Cashier", icon: CashierIcon },
   { label: "Partner", icon: PartnerIcon },
   { label: "Help", icon: HelpIcon },
-  { label: "Asset manager", icon: AssetManagerIcon },
+  { label: "Asset Manager", icon: AssetManagerIcon },
   {
     label: "Auto trade",
     icon: AutoTradeIcon,
@@ -157,8 +157,8 @@ export default function DashboardSidebar() {
               localStorage.removeItem("isAutoTrade");
               setSelectedSideNavTab(intendedNav);
             }}
-            title="Auto trade"
-            message="Are you sure you want to close the Auto trade dashboard?"
+            title="Exit"
+            message="Are you sure you want to Exit"
           />
         </PortalWrapper>
       )}

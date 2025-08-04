@@ -31,10 +31,8 @@ export default function DashboardPage() {
   const [switchAssetManagerModal, setSwitchAssetManagerModal] =
     useState<boolean>(false);
   const [form, setForm] = useState<boolean>(false);
-  const isAutoTrade = localStorage.getItem("isAutoTrade");
-  const [selectedSideNavTab, setSelectedSideNavTab] = useState(
-    isAutoTrade ? isAutoTrade : "Trade"
-  );
+
+  const [selectedSideNavTab, setSelectedSideNavTab] = useState("Trade");
   const [selectedAccount, setSelectedAccount] = useState("DEMO");
   const [traderData, setTraderData] = useState<TraderDataType | null>(null);
   const [tradeDuration, setTradeDuration] = useState(300);
@@ -81,8 +79,11 @@ export default function DashboardPage() {
   useEffect(() => {
     fetchTrader();
     fetchEURUSD();
+    const isAutoTrade = localStorage.getItem("isAutoTrade");
+    setSelectedSideNavTab(isAutoTrade ? isAutoTrade : "Trade");
   }, []);
 
+  useEffect(() => {}, []);
   const contextValue: DashboardPropsType = {
     openGraphStyleModal,
     setOpenGraphStyleModal,
@@ -127,10 +128,9 @@ export default function DashboardPage() {
         <TopNav />
         <AssetComponent />
         <TradingChart />
-        <AutoTradeButton />
+        {selectedSideNavTab === "Auto trade" && !showTradeStatus && !openAutoTrade && <AutoTradeButton />}
         <MobileButtons />
         <ZoomButton />
-        {isAutoTrade && <AutoTradeButton />}
         <ControlPanel />
       </div>
       <SideNav />
