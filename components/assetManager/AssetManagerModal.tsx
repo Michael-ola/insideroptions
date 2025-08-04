@@ -13,6 +13,7 @@ import DownlineTickets from "./DownlineTickets";
 import TicketConversation from "./TicketConversation";
 import ConfirmModal from "../ConfirmationModal";
 import SearchStructure from "./SearchStructure";
+import PortalWrapper from "../PortalWrapper";
 
 export default function AssetManagerModal({
   onClose,
@@ -43,9 +44,7 @@ export default function AssetManagerModal({
           <TicketConversation openConfirm={() => setConfirmCloseTicket(true)} />
         );
       case view.startsWith(" "):
-        return (
-          <SearchStructure handleViewChange={handleViewChange} />
-        );
+        return <SearchStructure handleViewChange={handleViewChange} />;
 
       default:
         return null;
@@ -92,12 +91,14 @@ export default function AssetManagerModal({
       </motion.div>
 
       {confirmCloseTicket && (
-        <ConfirmModal
-          onCancel={() => setConfirmCloseTicket(false)}
-          onConfirm={handleCloseTicket}
-          title="Close Ticket"
-          message="Are you sure you want to close this Ticket?"
-        />
+        <PortalWrapper>
+          <ConfirmModal
+            onCancel={() => setConfirmCloseTicket(false)}
+            onConfirm={handleCloseTicket}
+            title="Close Ticket"
+            message="Are you sure you want to close this Ticket?"
+          />
+        </PortalWrapper>
       )}
     </div>
   );

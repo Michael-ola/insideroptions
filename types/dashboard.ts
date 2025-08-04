@@ -29,6 +29,8 @@ export interface DashboardPropsType {
   setTradeAmount: (val: number) => void;
   openConfirmation: boolean;
   setOpenConfirmation: (val: boolean) => void;
+  closeConfirmation: boolean;
+  setCloseConfirmation: (val: boolean) => void;
   openAutoTrade: boolean;
   setOpenAutoTrade: (val: boolean) => void;
   showTradeStatus: boolean;
