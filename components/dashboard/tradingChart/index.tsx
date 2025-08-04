@@ -87,7 +87,7 @@ const TradingChart = () => {
   }, [chartInstance, chartStyle, assetId, rightOffset]);
 
   return (
-    <div className="h-[100vh] w-[calc(100vw-var(--side-nav-width))] ml-[var(--side-nav-width)] -mt-[var(--top-nav-height)] max-sm:ml-0 max-sm:w-full max-sm:h-[calc(100vh-57px)] max-sm:z-5 flex items-center justify-center">
+    <div className="h-[100dvh] w-[calc(100vw-var(--side-nav-width))] ml-[var(--side-nav-width)] -mt-[var(--top-nav-height)] max-sm:ml-0 max-sm:w-full max-sm:h-[calc(100dvh-57px)] max-sm:z-5 flex items-center justify-center">
       <div
         className="w-full h-full"
         ref={containerRef}

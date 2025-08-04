@@ -15,6 +15,9 @@ import TradingChart from "@/components/dashboard/tradingChart";
 import getBalanceAmount from "@/lib/getBalanceAmount";
 import AutoTradeButton from "@/components/dashboard/AutoTradeButton/AutoTradeButton";
 import { SeriesType } from "@/lib/models";
+import ZoomButton from "@/components/dashboard/ZoomButton";
+import MobileButtons from "@/components/dashboard/control-panel/MobileButtons";
+import tradingAll from "@/data/trading/all.json";
 
 export default function DashboardPage() {
   const [openGraphStyleModal, setOpenGraphStyleModal] = useState(false);
@@ -30,26 +33,47 @@ export default function DashboardPage() {
   const [tradeDuration, setTradeDuration] = useState(300);
   const [selectedBalanceAmount, setSelectedBalanceAmount] = useState(0);
   const [tradeAmount, setTradeAmount] = useState(1);
+  const [selectedAssets, setSelectedAssets] = useState([
+    {
+      name: "EUR/USD",
+      icon: "/images/eur-usd.png",
+      profit: 0,
+    },
+  ]);
+
+  const fetchTrader = async () => {
+    try {
+      const res = await apiClient.get("/get-trader");
+      const data: TraderDataType = res.data;
+      setTraderData(data);
+      const accountBalance = getBalanceAmount(
+        data.accounts,
+        selectedAccount
+      ).accountBalance;
+      setSelectedBalanceAmount(accountBalance);
+      setTradeAmount(accountBalance);
+      //console.log(data);
+    } catch (err) {
+      console.error("Failed to fetch trader data", err);
+    }
+  };
+
+  const fetchEURUSD = () => {
+    const asset = tradingAll.find((asset) => asset.name === "EUR/USD");
+    if (asset) {
+      setSelectedAssets([
+        {
+          name: asset.name,
+          icon: asset.icon,
+          profit: asset.profit,
+        },
+      ]);
+    }
+  };
 
   useEffect(() => {
-    const fetchTrader = async () => {
-      try {
-        const res = await apiClient.get("/get-trader");
-        const data: TraderDataType = res.data;
-        setTraderData(data);
-        const accountBalance = getBalanceAmount(
-          data.accounts,
-          selectedAccount
-        ).accountBalance;
-        setSelectedBalanceAmount(accountBalance);
-        setTradeAmount(accountBalance);
-        console.log(data);
-      } catch (err) {
-        console.error("Failed to fetch trader data", err);
-      }
-    };
-
     fetchTrader();
+    fetchEURUSD();
   }, []);
 
   const contextValue: DashboardPropsType = {
@@ -79,6 +103,8 @@ export default function DashboardPage() {
     setOpenAutoTrade,
     showTradeStatus,
     setShowTradeStatus,
+    selectedAssets,
+    setSelectedAssets,
   };
 
   return (
@@ -89,6 +115,8 @@ export default function DashboardPage() {
         <AssetComponent />
         <TradingChart />
         <AutoTradeButton />
+        <MobileButtons />
+        <ZoomButton />
         <ControlPanel />
       </div>
       <SideNav />

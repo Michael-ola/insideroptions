@@ -11,6 +11,7 @@ import PartnerIcon from "../icons/partnerIcon";
 import HelpIcon from "../icons/helpIcon";
 import AssetManagerIcon from "../icons/assetManagerIcon";
 import AutoTradeIcon from "../icons/autoTradeIcon";
+import AutoTradeIconActive from "../icons/autoTradeIcon-active";
 import LogoutIcon from "../icons/logoutIcon";
 import ConfirmModal from "@/components/ConfirmationModal";
 
@@ -21,13 +22,30 @@ export const navItems = [
   { label: "Partner", icon: PartnerIcon },
   { label: "Help", icon: HelpIcon },
   { label: "Asset manager", icon: AssetManagerIcon },
-  { label: "Auto trade", icon: AutoTradeIcon },
+  {
+    label: "Auto trade",
+    icon: AutoTradeIcon,
+  },
 ];
 
 export default function DashboardSidebar() {
   const { selectedSideNavTab, setSelectedSideNavTab } = useDashboardContext();
   const { openConfirmation, setOpenConfirmation } = useDashboardContext();
   const { setOpenAutoTrade } = useDashboardContext();
+
+  const dynamicNavItems = navItems.map((item) => {
+    if (item.label === "Auto trade") {
+      return {
+        ...item,
+        icon:
+          selectedSideNavTab === "Auto trade"
+            ? AutoTradeIconActive
+            : AutoTradeIcon,
+      };
+    }
+    return item;
+  });
+
   return (
     <aside
       style={{
@@ -38,7 +56,7 @@ export default function DashboardSidebar() {
       className="fixed top-0 left-0 border-r border-[#071014] z-10 max-sm:!w-full max-sm:!h-[57px] max-sm:static bg-[#01060e] flex flex-col justify-between py-4 pt-[3%] pb-[3%] max-sm:pb-0 max-sm:pt-0 max-sm:!mt-0"
     >
       <div className="flex flex-col  max-sm:flex-row  items-center space-y-1/3 w-full max-sm:space-y-0">
-        {navItems.map((item) => {
+        {dynamicNavItems.map((item) => {
           const isActive = selectedSideNavTab === item.label;
           const Icon = item.icon;
 

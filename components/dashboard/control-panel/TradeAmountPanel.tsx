@@ -60,7 +60,7 @@ const TradeAmountPanel = () => {
           </button>
           {dropdownOpen && (
             <ul className="absolute bottom-full mb-1 w-full z-10 bg-[#0e161d] border border-[#192f2c] rounded text-xs text-white shadow-md">
-              {[25, 75, 100].map((percent) => (
+              {[25, 50, 75, 100].map((percent) => (
                 <li
                   key={percent}
                   onClick={() => {
