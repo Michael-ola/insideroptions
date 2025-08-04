@@ -1,6 +1,6 @@
 import React from "react";
 
-const AutoTradeIcon = ({ className }: { className?: string }) => (
+const AutoTradeIcon = () => (
   <svg
     width="30"
     height="30"
