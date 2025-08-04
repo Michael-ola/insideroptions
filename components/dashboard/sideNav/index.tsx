@@ -14,7 +14,6 @@ import AutoTradeIcon from "../icons/autoTradeIcon";
 import AutoTradeIconActive from "../icons/autoTradeIcon-active";
 import LogoutIcon from "../icons/logoutIcon";
 import ConfirmModal from "@/components/ConfirmationModal";
-import { useState } from "react";
 
 export const navItems = [
   { label: "Trade", icon: TradeIcon },
@@ -51,8 +50,7 @@ export default function DashboardSidebar() {
     }
     return item;
   });
-  const [intendedNav, setIntendedNav] = useState<string>("");
-  const { isAutoTrade } = useDashboardContext();
+  const { isAutoTrade, setIsAutoTrade } = useDashboardContext();
 
   return (
     <aside
@@ -81,8 +79,7 @@ export default function DashboardSidebar() {
                 if (item.label === "Auto trade") {
                   setOpenConfirmation(true);
                   return;
-                } else if (item.label !== "Auto trade" && isAutoTrade) {
-                  setIntendedNav(item.label);
+                } else if (item.label === "Trade" && isAutoTrade) {
                   setCloseConfirmation(true);
                   return;
                 } else {
@@ -142,6 +139,7 @@ export default function DashboardSidebar() {
               setSelectedSideNavTab("Auto trade");
               setOpenAutoTrade(true);
               localStorage.setItem("isAutoTrade", "Auto trade");
+              setIsAutoTrade("Auto trade");
             }}
             title="Auto trade"
             message="Are you sure you want to switch to Auto trade dashboard?"
@@ -154,7 +152,8 @@ export default function DashboardSidebar() {
             onCancel={() => setCloseConfirmation(false)}
             onConfirm={() => {
               localStorage.removeItem("isAutoTrade");
-              setSelectedSideNavTab(intendedNav);
+              setIsAutoTrade("");
+              setSelectedSideNavTab("Trade");
             }}
             title="Exit"
             message="Are you sure you want to Exit"
