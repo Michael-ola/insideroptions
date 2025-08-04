@@ -115,7 +115,7 @@ const CI = ({
   };
   const profitValue = (Number(amount) * Number(perc) * Number(day)) / 30 / 100;
   return (
-    <div className="w-full h-full px-8 pt-6 overflow-y-auto custom-scrollbar">
+    <div className="w-full h-full px-8 pt-6 pb-8 overflow-y-auto custom-scrollbar">
       {!showTradeStatus && (
         <div className="space-y-8">
           <div className="flex gap-6">

@@ -25,12 +25,16 @@ export default function DashboardPage() {
   const [showTraderFeed, setShowTraderFeed] = useState(false);
   const [openCashierModal, setOpenCashierModal] = useState<boolean>(false);
   const [openConfirmation, setOpenConfirmation] = useState<boolean>(false);
+  const [closeConfirmation, setCloseConfirmation] = useState<boolean>(false);
   const [openAutoTrade, setOpenAutoTrade] = useState<boolean>(false);
   const [showTradeStatus, setShowTradeStatus] = useState<boolean>(false);
   const [switchAssetManagerModal, setSwitchAssetManagerModal] =
     useState<boolean>(false);
   const [form, setForm] = useState<boolean>(false);
-  const [selectedSideNavTab, setSelectedSideNavTab] = useState("Trade");
+  const isAutoTrade = localStorage.getItem("isAutoTrade");
+  const [selectedSideNavTab, setSelectedSideNavTab] = useState(
+    isAutoTrade ? isAutoTrade : "Trade"
+  );
   const [selectedAccount, setSelectedAccount] = useState("DEMO");
   const [traderData, setTraderData] = useState<TraderDataType | null>(null);
   const [tradeDuration, setTradeDuration] = useState(300);
@@ -102,6 +106,8 @@ export default function DashboardPage() {
     setTradeAmount,
     openConfirmation,
     setOpenConfirmation,
+    closeConfirmation,
+    setCloseConfirmation,
     openAutoTrade,
     setOpenAutoTrade,
     showTradeStatus,

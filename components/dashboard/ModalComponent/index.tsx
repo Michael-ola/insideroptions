@@ -17,7 +17,8 @@ const ModalComponent = ({
   const closeModalFunction = () => {
     setSelectedSideNavTab("Trade");
   };
-  const { openAutoTrade } = useDashboardContext();
+  const isAutoTrade = localStorage.getItem("isAutoTrade");
+  const { openAutoTrade, setOpenAutoTrade } = useDashboardContext();
 
   if (nav === "Orders") {
     return <OrdersHistoryModal onClose={closeModalFunction} />;
@@ -31,8 +32,8 @@ const ModalComponent = ({
     return <HelpModal onClose={closeModalFunction} />;
   } else if (nav === "Asset Manager") {
     return <AssetManagerModal onClose={closeModalFunction} />;
-  } else if (nav === "Auto trade" && openAutoTrade) {
-    return <AutoTradeModal onClose={closeModalFunction} />;
+  } else if (nav === "Auto trade" && openAutoTrade && isAutoTrade) {
+    return <AutoTradeModal onClose={() => setOpenAutoTrade(false)} />;
   } else {
     return <></>;
   }

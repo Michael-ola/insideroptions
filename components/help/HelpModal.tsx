@@ -11,12 +11,13 @@ import Suggestion from "./Suggestion";
 import ConfirmModal from "../ConfirmationModal";
 import { SuggestionFormRef } from "./SuggestionForm";
 import Regulations from "./Regulations";
+import PortalWrapper from "../PortalWrapper";
 
 export default function HelpModal({ onClose }: { onClose: () => void }) {
   const [view, setView] = useState<string>("Help");
   const [iconOrImage, setIconOrImage] = useState<StaticImageData | string>("");
-   const [isClear, setIsClear] = useState<boolean>(false);
-   const [isConfirm, setIsConfirm] = useState<boolean>(false);
+  const [isClear, setIsClear] = useState<boolean>(false);
+  const [isConfirm, setIsConfirm] = useState<boolean>(false);
 
   const handleViewChange = (nextView: string) => setView(nextView);
 
@@ -28,7 +29,7 @@ export default function HelpModal({ onClose }: { onClose: () => void }) {
 
   const triggerConfirm = () => {
     suggestionFormRef.current?.confirmForm();
-  }
+  };
 
   const renderView = () => {
     switch (view) {
@@ -44,7 +45,13 @@ export default function HelpModal({ onClose }: { onClose: () => void }) {
       case "FAQ":
         return <Faq />;
       case "Suggestions":
-        return <Suggestion ref={suggestionFormRef} setIsClear={setIsClear} setIsConfirm={setIsConfirm} />;
+        return (
+          <Suggestion
+            ref={suggestionFormRef}
+            setIsClear={setIsClear}
+            setIsConfirm={setIsConfirm}
+          />
+        );
       case "Regulations":
         return <Regulations />;
       default:
@@ -71,20 +78,24 @@ export default function HelpModal({ onClose }: { onClose: () => void }) {
       </motion.div>
 
       {isClear && (
-        <ConfirmModal
-          onCancel={() => setIsClear(false)}
-          onConfirm={triggerClear}
-          title="Close Deal"
-          message="Are you sure you want to clear the Suggestion?"
-        />
+        <PortalWrapper>
+          <ConfirmModal
+            onCancel={() => setIsClear(false)}
+            onConfirm={triggerClear}
+            title="Close Deal"
+            message="Are you sure you want to clear the Suggestion?"
+          />
+        </PortalWrapper>
       )}
       {isConfirm && (
-        <ConfirmModal
-          onCancel={() => setIsConfirm(false)}
-          onConfirm={triggerConfirm}
-          title="Confirm submission"
-          message="Are you sure you want to submit the Suggestion?"
-        />
+        <PortalWrapper>
+          <ConfirmModal
+            onCancel={() => setIsConfirm(false)}
+            onConfirm={triggerConfirm}
+            title="Confirm submission"
+            message="Are you sure you want to submit the Suggestion?"
+          />
+        </PortalWrapper>
       )}
     </div>
   );

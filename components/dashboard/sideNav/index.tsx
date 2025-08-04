@@ -14,6 +14,7 @@ import AutoTradeIcon from "../icons/autoTradeIcon";
 import AutoTradeIconActive from "../icons/autoTradeIcon-active";
 import LogoutIcon from "../icons/logoutIcon";
 import ConfirmModal from "@/components/ConfirmationModal";
+import { useState } from "react";
 
 export const navItems = [
   { label: "Trade", icon: TradeIcon },
@@ -29,10 +30,16 @@ export const navItems = [
 ];
 
 export default function DashboardSidebar() {
-  const { selectedSideNavTab, setSelectedSideNavTab } = useDashboardContext();
-  const { openConfirmation, setOpenConfirmation } = useDashboardContext();
-  const { setOpenAutoTrade } = useDashboardContext();
-
+  
+  const {
+    selectedSideNavTab,
+    setSelectedSideNavTab,
+    openConfirmation,
+    setOpenConfirmation,
+    closeConfirmation,
+    setCloseConfirmation,
+    setOpenAutoTrade,
+  } = useDashboardContext();
   const dynamicNavItems = navItems.map((item) => {
     if (item.label === "Auto trade") {
       return {
@@ -45,6 +52,8 @@ export default function DashboardSidebar() {
     }
     return item;
   });
+  const [intendedNav, setIntendedNav] = useState<string>("");
+  const isAutoTrade = localStorage.getItem("isAutoTrade");
 
   return (
     <aside
@@ -73,8 +82,13 @@ export default function DashboardSidebar() {
                 if (item.label === "Auto trade") {
                   setOpenConfirmation(true);
                   return;
+                } else if (item.label !== "Auto trade" && isAutoTrade) {
+                  setIntendedNav(item.label);
+                  setCloseConfirmation(true);
+                  return;
+                } else {
+                  setSelectedSideNavTab(item.label);
                 }
-                setSelectedSideNavTab(item.label);
               }}
               className={clsx(
                 "relative cursor-pointer flex flex-col items-center w-full max-sm:w-1/3 py-3 max-sm:pt-1 max-sm:pb-2 text-[10px] transition-all duration-150",
@@ -128,9 +142,23 @@ export default function DashboardSidebar() {
             onConfirm={() => {
               setSelectedSideNavTab("Auto trade");
               setOpenAutoTrade(true);
+              localStorage.setItem("isAutoTrade", "Auto trade");
             }}
             title="Auto trade"
             message="Are you sure you want to switch to Auto trade dashboard?"
+          />
+        </PortalWrapper>
+      )}
+      {closeConfirmation && (
+        <PortalWrapper>
+          <ConfirmModal
+            onCancel={() => setCloseConfirmation(false)}
+            onConfirm={() => {
+              localStorage.removeItem("isAutoTrade");
+              setSelectedSideNavTab(intendedNav);
+            }}
+            title="Auto trade"
+            message="Are you sure you want to close the Auto trade dashboard?"
           />
         </PortalWrapper>
       )}
