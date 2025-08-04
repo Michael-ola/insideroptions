@@ -6,18 +6,14 @@ import Image from "next/image";
 import { IoClose } from "react-icons/io5";
 import AssetCategorySelect from "@/components/dashboard/assets/AssetCategorySelect";
 import AssetSearch from "@/components/dashboard/assets/AssetSearch";
-
 import tradingAll from "@/data/trading/all.json";
 import tradingCurrencies from "@/data/trading/currencies.json";
 import tradingStocks from "@/data/trading/stocks.json";
 import tradingCrypto from "@/data/trading/crypto.json";
 import tradingCommodities from "@/data/trading/commodities.json";
 import stocksAll from "@/data/stocks/all.json";
+import { useDashboardContext } from "@/context/DashboardContext";
 
-interface AssetModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
 interface Asset {
   name: string;
   icon: string;
@@ -25,13 +21,42 @@ interface Asset {
   profit: number;
 }
 
-export default function AssetModal({ isOpen, onClose }: AssetModalProps) {
+interface selectedAssetType {
+  name: string;
+  icon: string;
+  profit: number;
+}
+
+interface AssetModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  className?: string;
+  add?: boolean;
+  replace?: selectedAssetType;
+}
+
+export default function AssetModal({
+  isOpen,
+  onClose,
+  className,
+  add,
+  replace,
+}: AssetModalProps) {
   const [activeTab, setActiveTab] = useState<"trading" | "stocks">("trading");
   const [category, setCategory] = useState("all");
   const [search, setSearch] = useState("");
-
   const cardRef = useRef<HTMLDivElement | null>(null);
   const listRef = useRef<HTMLUListElement | null>(null);
+
+  const { selectedAssets, setSelectedAssets } = useDashboardContext();
+
+  const addAsset = (asset: selectedAssetType) => {
+    const copySelected = structuredClone(selectedAssets);
+    if (copySelected.length < 3) {
+      copySelected.push(asset);
+      setSelectedAssets(copySelected);
+    }
+  };
 
   useEffect(() => {
     if (!isOpen) return;
@@ -77,6 +102,19 @@ export default function AssetModal({ isOpen, onClose }: AssetModalProps) {
     a.name.toLowerCase().includes(search.toLowerCase())
   );
 
+  const handleAssetClick = (name: string, icon: string, profit: number) => {
+    if (add) {
+      addAsset({ name, icon, profit });
+    } else if (replace) {
+      setSelectedAssets((prev) =>
+        prev.map((asset) =>
+          asset.name === replace.name ? { name, icon, profit } : asset
+        )
+      );
+    }
+    onClose();
+  };
+
   const tradingOptions = [
     { value: "all", label: "All Market" },
     { value: "currencies", label: "Currencies" },
@@ -92,8 +130,8 @@ export default function AssetModal({ isOpen, onClose }: AssetModalProps) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="absolute top-10 max-sm:-top-1 max-sm:w-[90vw] max-sm: max-sm:fixed max-sm:h-[70vh] inset-0 max-sm:-left-[41vw] z-[60] pb-10 flex flex-col w-[293px] md:w-[320px] h-[85vh]
-                 overflow-hidden rounded-2xl text-sm"
+      className={`${className} absolute top-10 max-sm:left-1/2 max-sm:transform max-sm:-translate-x-1/2 max-sm:-top-1 max-sm:w-[90vw] max-sm:fixed max-sm:h-[70vh] inset-0 z-[60] pb-10 flex flex-col w-[293px] md:w-[320px] h-[85vh]
+                 overflow-hidden rounded-2xl text-sm`}
     >
       <div className="absolute inset-0 -z-10">
         {/* Background for larger screens */}
@@ -173,7 +211,8 @@ export default function AssetModal({ isOpen, onClose }: AssetModalProps) {
           return (
             <li
               key={name}
-              className="relative flex items-center gap-3 px-6 py-[14px] hover:bg-white/5 cursor-default"
+              className="relative flex items-center gap-3 px-6 py-[14px] hover:bg-white/5 cursor-pointer"
+              onClick={() => handleAssetClick(name, icon, profit)}
             >
               <div
                 className={`absolute left-[8%] right-[8%] bottom-0 h-px bg-white/3 ${

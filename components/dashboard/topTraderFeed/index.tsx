@@ -24,7 +24,7 @@ export default function TraderActivityCard() {
 
   return (
     <div
-      className={`absolute top-30 z-50 right-12 max-sm:top-auto max-sm:bottom-[23%] max-sm:right-0 max-sm:left-6 w-[180px] max-sm:w-[150px] rounded-xl bg-[#040A14] border border-[#1d232b] p-3 text-white shadow-lg ${
+      className={`absolute top-30 z-50 right-12 max-sm:top-auto max-sm:bottom-[260px] max-sm:right-0 max-sm:left-6 w-[180px] max-sm:w-[150px] rounded-xl bg-[#040A14] border border-[#1d232b] p-3 text-white shadow-lg ${
         showTraderFeed ? "block" : "hidden"
       }`}
     >

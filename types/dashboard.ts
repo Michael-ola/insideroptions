@@ -1,6 +1,11 @@
 import { TraderDataType } from "./TraderDataType";
 import { SeriesType } from "@/lib/models";
 
+interface selectedAssetType {
+  name: string;
+  icon: string;
+  profit: number;
+}
 export interface DashboardPropsType {
   openGraphStyleModal: boolean;
   setOpenGraphStyleModal: (val: boolean) => void;
@@ -28,6 +33,8 @@ export interface DashboardPropsType {
   setOpenAutoTrade: (val: boolean) => void;
   showTradeStatus: boolean;
   setShowTradeStatus: (val: boolean) => void;
+  selectedAssets: selectedAssetType[];
+  setSelectedAssets: React.Dispatch<React.SetStateAction<selectedAssetType[]>>;
   form: boolean;
   setForm: (val: boolean) => void;
   switchAssetManagerModal: boolean;
