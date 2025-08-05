@@ -2,9 +2,8 @@ import { useDashboardContext } from "@/context/DashboardContext";
 import React from "react";
 
 const AutoTradeButton = () => {
-  const { setShowTradeStatus } = useDashboardContext();
-  const { setOpenAutoTrade } = useDashboardContext();
-  const { setSelectedSideNavTab } = useDashboardContext();
+  const { setOpenAutoTrade, setShowTradeStatus, setSelectedSideNavTab } =
+    useDashboardContext();
   return (
     <div
       onClick={() => {

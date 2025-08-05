@@ -27,6 +27,7 @@ import { useDashboardContext } from "@/context/DashboardContext";
 import AutoTradeHistory from "./AutoTradeHistory";
 import { apiClient } from "@/lib/api-client";
 import Loader from "../Loader";
+import PortalWrapper from "../PortalWrapper";
 
 export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
   const [view, setView] = useState<string>("Current Investment");
@@ -75,7 +76,7 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
   const days = selectedTradeOption.split("/")[1];
   const day = selectedTradeOption.split("/")[1].split("days")[0];
   const perc = selectedTradeOption.split("/")[2].split("%")[0];
-  const percentage = Number(perc) / Number(day);
+  const percentage = (Number(perc) / Number(day)).toFixed(2);
 
   const renderView = () => {
     if (isLoading) return <Loader />;
@@ -141,15 +142,17 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
       </motion.div>
 
       {isStartAutoTrade && (
-        <ConfirmModal
-          onCancel={() => setIsStartAutoTrade(false)}
-          onConfirm={startAutoTrade}
-          canCheck
-          title="Auto trade"
-          message={`You are about to trade for ${mins} with Trade Amount $${Number(
-            amount
-          ).toLocaleString()} with ${tradingPlan} Trading Plan at ${percentage}% daily profits for ${days}`}
-        />
+        <PortalWrapper>
+          <ConfirmModal
+            onCancel={() => setIsStartAutoTrade(false)}
+            onConfirm={startAutoTrade}
+            canCheck
+            title="Auto trade"
+            message={`You are about to trade for ${mins} with Trade Amount $${Number(
+              amount
+            ).toLocaleString()} with ${tradingPlan} Trading Plan at ${percentage}% daily profits for ${days}`}
+          />
+        </PortalWrapper>
       )}
     </div>
   );

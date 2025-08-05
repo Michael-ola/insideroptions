@@ -1,3 +1,5 @@
+"use client";
+
 import CashierModal from "@/components/cashier/cashierModal";
 import PartnerModal from "@/components/partner";
 import HelpModal from "@/components/help/HelpModal";
@@ -6,6 +8,7 @@ import ProfileModal from "@/components/dashboard/ProfileModal";
 import AutoTradeModal from "@/components/autoTrade/AutoTradeModal";
 import { useDashboardContext } from "@/context/DashboardContext";
 import AssetManagerModal from "@/components/assetManager/AssetManagerModal";
+import { useEffect } from "react";
 
 const ModalComponent = ({
   nav,
@@ -14,10 +17,27 @@ const ModalComponent = ({
   nav: string;
   setSelectedSideNavTab: (tab: string) => void;
 }) => {
+  const {
+    openAutoTrade,
+    setOpenAutoTrade,
+    setShowTradeStatus,
+    isAutoTrade,
+    setIsAutoTrade,
+  } = useDashboardContext();
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("isAutoTrade");
+      setIsAutoTrade(stored ?? "");
+    }
+  });
+
   const closeModalFunction = () => {
+    if (isAutoTrade) {
+      setSelectedSideNavTab("Auto trade");
+      return;
+    }
     setSelectedSideNavTab("Trade");
   };
-  const { openAutoTrade } = useDashboardContext();
 
   if (nav === "Orders") {
     return <OrdersHistoryModal onClose={closeModalFunction} />;
@@ -31,8 +51,15 @@ const ModalComponent = ({
     return <HelpModal onClose={closeModalFunction} />;
   } else if (nav === "Asset Manager") {
     return <AssetManagerModal onClose={closeModalFunction} />;
-  } else if (nav === "Auto trade" && openAutoTrade) {
-    return <AutoTradeModal onClose={closeModalFunction} />;
+  } else if (nav === "Auto trade" && openAutoTrade && isAutoTrade) {
+    return (
+      <AutoTradeModal
+        onClose={() => {
+          setOpenAutoTrade(false);
+          setShowTradeStatus(false);
+        }}
+      />
+    );
   } else {
     return <></>;
   }

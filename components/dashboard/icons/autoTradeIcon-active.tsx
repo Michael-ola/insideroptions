@@ -1,6 +1,6 @@
 import React from "react";
 
-const AutoTradeIcon = ({ className }: { className?: string }) => (
+const AutoTradeIcon = () => (
   <svg
     width="30"
     height="30"
@@ -11,9 +11,9 @@ const AutoTradeIcon = ({ className }: { className?: string }) => (
     <path
       d="M18.75 7.5H11.25C9.26088 7.5 7.35322 8.29018 5.9467 9.6967C4.54018 11.1032 3.75 13.0109 3.75 15C3.75 16.9891 4.54018 18.8968 5.9467 20.3033C7.35322 21.7098 9.26088 22.5 11.25 22.5H18.75C20.7391 22.5 22.6468 21.7098 24.0533 20.3033C25.4598 18.8968 26.25 16.9891 26.25 15C26.25 13.0109 25.4598 11.1032 24.0533 9.6967C22.6468 8.29018 20.7391 7.5 18.75 7.5Z"
       stroke="#79DA7E"
-      stroke-width="2.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M18.375 19.375C20.7912 19.375 22.75 17.4162 22.75 15C22.75 12.5838 20.7912 10.625 18.375 10.625C15.9588 10.625 14 12.5838 14 15C14 17.4162 15.9588 19.375 18.375 19.375Z"

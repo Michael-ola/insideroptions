@@ -21,7 +21,7 @@ export const navItems = [
   { label: "Cashier", icon: CashierIcon },
   { label: "Partner", icon: PartnerIcon },
   { label: "Help", icon: HelpIcon },
-  { label: "Asset manager", icon: AssetManagerIcon },
+  { label: "Asset Manager", icon: AssetManagerIcon },
   {
     label: "Auto trade",
     icon: AutoTradeIcon,
@@ -29,10 +29,15 @@ export const navItems = [
 ];
 
 export default function DashboardSidebar() {
-  const { selectedSideNavTab, setSelectedSideNavTab } = useDashboardContext();
-  const { openConfirmation, setOpenConfirmation } = useDashboardContext();
-  const { setOpenAutoTrade } = useDashboardContext();
-
+  const {
+    selectedSideNavTab,
+    setSelectedSideNavTab,
+    openConfirmation,
+    setOpenConfirmation,
+    closeConfirmation,
+    setCloseConfirmation,
+    setOpenAutoTrade,
+  } = useDashboardContext();
   const dynamicNavItems = navItems.map((item) => {
     if (item.label === "Auto trade") {
       return {
@@ -45,6 +50,7 @@ export default function DashboardSidebar() {
     }
     return item;
   });
+  const { isAutoTrade, setIsAutoTrade } = useDashboardContext();
 
   return (
     <aside
@@ -70,11 +76,19 @@ export default function DashboardSidebar() {
             <div
               key={item.label}
               onClick={() => {
-                if (item.label === "Auto trade") {
+                if (item.label === "Auto trade" && !isAutoTrade) {
                   setOpenConfirmation(true);
                   return;
+                } else if (item.label === "Trade" && isAutoTrade) {
+                  setCloseConfirmation(true);
+                  return;
+                } else if (item.label === "Auto trade" && isAutoTrade) {
+                  setSelectedSideNavTab("Auto trade");
+                  setOpenAutoTrade(true);
+                  return;
+                } else {
+                  setSelectedSideNavTab(item.label);
                 }
-                setSelectedSideNavTab(item.label);
               }}
               className={clsx(
                 "relative cursor-pointer flex flex-col items-center w-full max-sm:w-1/3 py-3 max-sm:pt-1 max-sm:pb-2 text-[10px] transition-all duration-150",
@@ -128,9 +142,25 @@ export default function DashboardSidebar() {
             onConfirm={() => {
               setSelectedSideNavTab("Auto trade");
               setOpenAutoTrade(true);
+              localStorage.setItem("isAutoTrade", "Auto trade");
+              setIsAutoTrade("Auto trade");
             }}
             title="Auto trade"
             message="Are you sure you want to switch to Auto trade dashboard?"
+          />
+        </PortalWrapper>
+      )}
+      {closeConfirmation && (
+        <PortalWrapper>
+          <ConfirmModal
+            onCancel={() => setCloseConfirmation(false)}
+            onConfirm={() => {
+              localStorage.removeItem("isAutoTrade");
+              setIsAutoTrade("");
+              setSelectedSideNavTab("Trade");
+            }}
+            title="Exit"
+            message="Are you sure you want to exit Auto trade dashboard?"
           />
         </PortalWrapper>
       )}

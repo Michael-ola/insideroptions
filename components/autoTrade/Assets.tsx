@@ -49,7 +49,7 @@ const AssetRow: React.FC<AssetRowProps> = ({
             isPositive ? "bg-[#44b85d]" : "bg-[#ed443e]"
           }`}
         >
-          {`${isPositive ? "+" : ""}${change.toFixed(3)}%`}
+          {`${isPositive ? "+" : ""}${change.toFixed(2)}%`}
         </span>
         <div className="w-1/4 text-right text-green-400 font-semibold text-sm">
           {profit}%
