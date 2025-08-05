@@ -17,25 +17,25 @@ const AssetComponent = () => {
   const { selectedAssets, setSelectedAssets } = useDashboardContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<"add" | "replace">("add");
-  const [selectedForReplace, setSelectedForReplace] = useState<
-    AssetTabType["selectedAsset"] | null
-  >(null);
+  // const [ setSelectedForReplace] = useState<
+  //   AssetTabType["selectedAsset"] | null
+  // >(null);
 
   const openAddModal = () => {
     setModalMode("add");
-    setSelectedForReplace(null);
+    // setSelectedForReplace(null);
     setIsModalOpen(true);
   };
 
-  const openReplaceModal = (asset: AssetTabType["selectedAsset"]) => {
-    setModalMode("replace");
-    setSelectedForReplace(asset);
-    setIsModalOpen(true);
-  };
+  // const openReplaceModal = (asset: AssetTabType["selectedAsset"]) => {
+  //   setModalMode("replace");
+  //   //setSelectedForReplace(asset);
+  //   setIsModalOpen(true);
+  // };
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setSelectedForReplace(null);
+    //setSelectedForReplace(null);
   };
 
   const closeTab = (assetName: string) => {
@@ -45,7 +45,7 @@ const AssetComponent = () => {
   };
 
   return (
-    <div className="absolute flex items-center mx-auto gap-3 top-13 left-1/2 -translate-x-1/2 z-60 max-sm:top-[10%]">
+    <div className="absolute flex items-center mx-auto gap-3 top-13 left-1/2 -translate-x-1/2 z-40 max-sm:top-[10%]">
       {/* Add Button */}
       <button
         onClick={openAddModal}
@@ -69,8 +69,8 @@ const AssetComponent = () => {
         selectedAssets.map((selectedAsset) => (
           <div key={selectedAsset.name} className="relative">
             <div
-              onClick={() => openReplaceModal(selectedAsset)}
-              className="relative flex items-center justify-center gap-1 pl-[9px] pr-7 max-sm:w-[28vw] pt-1 pb-1 border-2 border-[#0e1c1c] rounded-xl bg-[#172226] hover:bg-[#273134] max-sm:bg-[#020712] cursor-pointer"
+              // onClick={() => openReplaceModal(selectedAsset)}
+              className="relative flex items-center justify-center gap-1 pl-[9px] pr-7 max-sm:w-[28vw] pt-1 pb-1 border-2 border-[#0e1c1c] rounded-xl bg-[#172226] hover:bg-[#273134] max-sm:bg-[#020712] cursor-default"
             >
               <Image
                 src={selectedAsset.icon}
@@ -110,11 +110,11 @@ const AssetComponent = () => {
             isOpen={isModalOpen}
             onClose={closeModal}
             add={modalMode === "add" ? true : undefined}
-            replace={
-              modalMode === "replace" && selectedForReplace
-                ? selectedForReplace
-                : undefined
-            }
+            // replace={
+            //   modalMode === "replace" && selectedForReplace
+            //     ? selectedForReplace
+            //     : undefined
+            // }
             className={modalMode === "replace" ? "left-0 top-11" : ""}
           />
         )}
