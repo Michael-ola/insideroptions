@@ -13,6 +13,7 @@ import tradingCrypto from "@/data/trading/crypto.json";
 import tradingCommodities from "@/data/trading/commodities.json";
 import stocksAll from "@/data/stocks/all.json";
 import { useDashboardContext } from "@/context/DashboardContext";
+import { toast } from "react-toastify";
 
 interface Asset {
   name: string;
@@ -51,10 +52,9 @@ export default function AssetModal({
   const { selectedAssets, setSelectedAssets } = useDashboardContext();
 
   const addAsset = (asset: selectedAssetType) => {
-    const copySelected = structuredClone(selectedAssets);
-    if (copySelected.length < 3) {
-      copySelected.push(asset);
-      setSelectedAssets(copySelected);
+    const exists = selectedAssets.some((a) => a.name === asset.name);
+    if (!exists && selectedAssets.length < 3) {
+      setSelectedAssets([...selectedAssets, asset]);
     }
   };
 
@@ -102,16 +102,26 @@ export default function AssetModal({
     a.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  const handleAssetClick = (name: string, icon: string, profit: number) => {
-    if (add) {
-      addAsset({ name, icon, profit });
-    } else if (replace) {
-      setSelectedAssets((prev) =>
-        prev.map((asset) =>
-          asset.name === replace.name ? { name, icon, profit } : asset
-        )
+  const handleAssetClick = (asset: selectedAssetType) => {
+    const { name, icon, profit } = asset;
+
+    if (replace) {
+      const alreadyExists = selectedAssets.some(
+        (a) => a.name === name && a.name !== replace.name
       );
+
+      if (alreadyExists) {
+        toast.error("Asset already selected");
+        return;
+      }
+
+      setSelectedAssets((prev) =>
+        prev.map((a) => (a.name === replace.name ? { name, icon, profit } : a))
+      );
+    } else if (add) {
+      addAsset({ name, icon, profit });
     }
+
     onClose();
   };
 
@@ -134,7 +144,6 @@ export default function AssetModal({
                  overflow-hidden rounded-2xl text-sm`}
     >
       <div className="absolute inset-0 -z-10">
-        {/* Background for larger screens */}
         <div className="hidden sm:block h-full relative">
           <div
             className="absolute inset-0"
@@ -146,7 +155,6 @@ export default function AssetModal({
           <div className="absolute inset-0 backdrop-blur-sm" />
         </div>
 
-        {/* Background for mobile screens */}
         <div className="block sm:hidden h-full w-full relative">
           <div className="absolute inset-0 backdrop-blur-sm" />
           <div className="absolute inset-0 bg-[#050d15] opacity-30" />
@@ -212,7 +220,7 @@ export default function AssetModal({
             <li
               key={name}
               className="relative flex items-center gap-3 px-6 py-[14px] hover:bg-white/5 cursor-pointer"
-              onClick={() => handleAssetClick(name, icon, profit)}
+              onClick={() => handleAssetClick({ name, icon, profit })}
             >
               <div
                 className={`absolute left-[8%] right-[8%] bottom-0 h-px bg-white/3 ${
