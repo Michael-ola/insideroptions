@@ -17,9 +17,6 @@ const ModalComponent = ({
   nav: string;
   setSelectedSideNavTab: (tab: string) => void;
 }) => {
-  const closeModalFunction = () => {
-    setSelectedSideNavTab("Trade");
-  };
   const {
     openAutoTrade,
     setOpenAutoTrade,
@@ -32,7 +29,15 @@ const ModalComponent = ({
       const stored = localStorage.getItem("isAutoTrade");
       setIsAutoTrade(stored ?? "");
     }
-  }, []);
+  });
+
+  const closeModalFunction = () => {
+    if (isAutoTrade) {
+      setSelectedSideNavTab("Auto trade");
+      return;
+    }
+    setSelectedSideNavTab("Trade");
+  };
 
   if (nav === "Orders") {
     return <OrdersHistoryModal onClose={closeModalFunction} />;
