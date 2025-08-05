@@ -62,12 +62,15 @@ export interface Asset {
   status: string;
 }
 
-export interface PricePoint {
-  value: number;
-  time: number; // Unix timestamp in seconds
-}
+export type PricePoint =
+  | { time: number; value: number } // line, area
+  | { time: number; open: number; high: number; low: number; close: number }; // candle
 
 export interface PriceHistory {
+  open: number;
+  high: number;
+  low: number;
+  close: number;
   assetId: number;
   symbol: string;
   price: number;
@@ -79,3 +82,11 @@ export enum SeriesType {
   Candles = 'candles',
   Lines = 'lines',
 }
+
+export type Candle = {
+  time: number;       // UNIX timestamp in seconds (start of candle window)
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+};

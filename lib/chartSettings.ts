@@ -1,21 +1,37 @@
-import { fetchPriceHistoryByAssetId, streamAssetPriceByAssetId } from "@/services/assetService";
+import {
+    fetchPriceHistoryByAssetId,
+    streamAssetPriceByAssetId,
+} from "@/services/assetService";
 import {
     AreaSeries,
     CandlestickSeries,
     ColorType,
     ISeriesApi,
-    LineSeries
+    LineSeries,
 } from "lightweight-charts";
 import { PricePoint, SeriesType } from "./models";
 
+type CachedSeriesData = {
+    history: any[];
+    seriesUpdater?: (point: any) => void;
+};
+
+type PriceCache = Record<
+    number,
+    Partial<Record<SeriesType, CachedSeriesData>>
+>;
+
+const priceCache: PriceCache = {};
+const streamStarted: Record<number, boolean> = {};
+
 export const chartOptions = {
     layout: {
-        background: { color: '#0d181c', type: ColorType.Solid },
-        textColor: '#ffffff',
+        background: { color: "#0d181c", type: ColorType.Solid },
+        textColor: "#ffffff",
     },
     grid: {
-        vertLines: { color: 'transparent' },
-        horzLines: { color: 'transparent' },
+        vertLines: { color: "transparent" },
+        horzLines: { color: "transparent" },
     },
     rightPriceScale: {
         visible: true,
@@ -23,36 +39,37 @@ export const chartOptions = {
         entireTextOnly: true,
     },
     crosshair: {
-        vertLine: {
-            labelVisible: false,
-        },
-        horzLine: {
-            labelVisible: false,
-        },
+        vertLine: { labelVisible: false },
+        horzLine: { labelVisible: false },
     },
     timeScale: {
-        timeVisible: true,
-        secondsVisible: true,
-        fixLeftEdge: true,
-        visible: true,
+        timeVisible: false,
+        secondsVisible: false,
+        fixLeftEdge: false,
+        visible: false,
+         barSpacing: 15,
         borderVisible: false,
         tickMarkFormatter: (time: number) => {
             const date = new Date(time * 1000);
-            return date.toLocaleTimeString('en-NG', {
-                hour12: false,
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                timeZone: 'Africa/Lagos'
-            }) + '.' + date.getMilliseconds().toString().padStart(3, '0');
+            return (
+                date.toLocaleTimeString("en-NG", {
+                    hour12: false,
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    timeZone: "Africa/Lagos",
+                }) +
+                "." +
+                date.getMilliseconds().toString().padStart(3, "0")
+            );
         },
     },
     localization: {
         timeFormatter: (time: number) => {
             const date = new Date(time * 1000);
-            return date.toLocaleTimeString('en-NG', {
+            return date.toLocaleTimeString("en-NG", {
                 hour12: false,
-                timeZone: 'Africa/Lagos'
+                timeZone: "Africa/Lagos",
             });
         },
         priceFormatter: (price: number) => {
@@ -61,30 +78,24 @@ export const chartOptions = {
     },
     watermark: {
         visible: true,
-        text: 'Insider Options',
+        text: "Insider Options",
         fontSize: 24,
-        horzAlign: 'center',
-        vertAlign: 'center',
-        color: '#ffffff',
+        horzAlign: "center",
+        vertAlign: "center",
+        color: "#ffffff",
     },
 };
 
-export const sampleCandleData = [
-    { time: '2023-10-01', open: 100, high: 110, low: 95, close: 105 },
-    { time: '2023-10-02', open: 105, high: 115, low: 100, close: 110 },
-    { time: '2023-10-03', open: 110, high: 112, low: 106, close: 107 },
-];
-
 const candlestickOptions = {
-    upColor: '#94D983',
-    downColor: '#ef5350',
+    upColor: "#94D983",
+    downColor: "#ef5350",
     borderVisible: false,
-    wickUpColor: '#94D983',
-    wickDownColor: '#ef5350',
+    wickUpColor: "#94D983",
+    wickDownColor: "#ef5350",
 };
 
 const lineChartOptions = {
-    color: '#00d435ff',
+    color: "#00d435ff",
     lineWidth: 1,
 };
 
@@ -92,32 +103,35 @@ const areaChartOptions = {
     lineWidth: 1,
 };
 
-// Store cached history and stream states per asset
-const priceCache: Record<number, { history: PricePoint[]; seriesUpdater?: (point: PricePoint) => void }> = {};
-const streamStarted: Record<number, boolean> = {};
-
 export const createSeries = async (
     chartInstance: any,
     type: SeriesType,
-    assetId: number,
-    onStream?: (point: PricePoint) => void
+    assetId: number
 ): Promise<ISeriesApi<any>> => {
     const series = createAndConfigureSeries(chartInstance, type);
+    const history = await getOrFetchHistoricalData(assetId, type);
+    series.setData(prepareSortedData(type, history) as PricePoint[]);
 
-    const history = await getOrFetchHistoricalData(assetId);
-    series.setData(history);
+    const updater = getSeriesUpdater(type, series);
+    if (!priceCache[assetId]) priceCache[assetId] = {};
+    priceCache[assetId][type] = {
+        history,
+        seriesUpdater: updater,
+    };
 
-    setupStreaming(assetId, onStream);
+    setupStreaming(assetId);
 
     return series;
 };
 
-const createAndConfigureSeries = (chartInstance: any, type: SeriesType): ISeriesApi<any> => {
+const createAndConfigureSeries = (
+    chartInstance: any,
+    type: SeriesType
+): ISeriesApi<any> => {
     switch (type) {
         case SeriesType.Candles: {
             const series = chartInstance.addSeries(CandlestickSeries);
             series.applyOptions(candlestickOptions);
-            series.setData(sampleCandleData);
             return series;
         }
         case SeriesType.Area: {
@@ -134,69 +148,158 @@ const createAndConfigureSeries = (chartInstance: any, type: SeriesType): ISeries
     }
 };
 
-const getOrFetchHistoricalData = async (assetId: number): Promise<PricePoint[]> => {
-    if (priceCache[assetId]?.history) {
-        return priceCache[assetId].history;
+const getOrFetchHistoricalData = async (
+    assetId: number,
+    type: SeriesType
+): Promise<any[]> => {
+    if (priceCache[assetId]?.[type]?.history) {
+        return priceCache[assetId][type]!.history;
     }
 
     const response = await fetchPriceHistoryByAssetId(assetId);
 
-    const parsed = response
-        .filter(item => item.price && item.timestamp)
-        .map(item => ({
-            price: item.price,
-            timestamp: item.timestamp,
-            time: Math.floor(new Date(item.timestamp).getTime() / 1000),
-            value: item.price,
-        }))
-        .sort((a, b) => a.time - b.time);
+    const parsedData =
+        type === SeriesType.Candles
+            ? response.map((item) => ({
+                  time: Math.floor(new Date(item.timestamp).getTime() / 1000),
+                  open: item.open ?? item.price,
+                  high: item.high ?? item.price,
+                  low: item.low ?? item.price,
+                  close: item.close ?? item.price,
+              }))
+            : response.map((item) => ({
+                  time: Math.floor(new Date(item.timestamp).getTime() / 1000),
+                  value: item.price,
+              }));
+    const deduped = deduplicateByTime<PricePoint>(parsedData);
 
-    const deduplicated = deduplicateTimestamps(parsed);
+    if (!priceCache[assetId]) priceCache[assetId] = {};
+    priceCache[assetId][type] = { history: deduped };
 
-    priceCache[assetId] = { history: deduplicated };
-
-    return deduplicated;
+    return deduped;
 };
 
-const deduplicateTimestamps = (points: PricePoint[]): PricePoint[] => {
-    const deduplicated: PricePoint[] = [];
-    let lastTime = -1;
-
-    for (const item of points) {
-        let adjustedTime = item.time;
-        if (adjustedTime <= lastTime) {
-            adjustedTime = lastTime + 1;
-        }
-        deduplicated.push({ ...item, time: adjustedTime });
-        lastTime = adjustedTime;
+const getSeriesUpdater = (
+    type: SeriesType,
+    series: ISeriesApi<any>
+): ((point: any) => void) => {
+    if (type === SeriesType.Candles) {
+        return (point) => {
+            const { time, open, high, low, close } = point;
+            if (
+                typeof time === "number" &&
+                typeof open === "number" &&
+                typeof high === "number" &&
+                typeof low === "number" &&
+                typeof close === "number"
+            ) {
+                series.update({ time, open, high, low, close });
+            } else {
+                console.warn("Invalid candle data", point);
+            }
+        };
+    } else {
+        return (point) => {
+            const { time, value = point.close } = point;
+            if (typeof time === "number" && typeof value === "number") {
+                series.update({ time, value });
+            } else {
+                console.warn("Invalid line/area data", point);
+            }
+        };
     }
-
-    return deduplicated;
 };
 
-const setupStreaming = (
-    assetId: number,
-    onStream?: (point: PricePoint) => void
-): void => {
-    priceCache[assetId].seriesUpdater = onStream;
-
+const setupStreaming = (assetId: number): void => {
     if (streamStarted[assetId]) return;
     streamStarted[assetId] = true;
 
     streamAssetPriceByAssetId(assetId, (data) => {
         if (!data?.time || isNaN(data.time)) return;
 
-        const last = priceCache[assetId].history.at(-1);
-        if (last && data.time <= last.time) return;
+        Object.entries(priceCache[assetId] || {}).forEach(([type, cache]) => {
+            const seriesTypeKey = type as SeriesType;
+            const last = cache.history.at(-1);
+            if (last && data.time <= last.time) return;
 
-        const point: PricePoint = {
-            time: data.time,
-            value: data.price,
-        };
+            let newPoint: any;
 
-        priceCache[assetId].seriesUpdater?.(point);
-        priceCache[assetId].history.push(point);
+            if (seriesTypeKey === SeriesType.Candles) {
+                if (!last || data.time > last.time) {
+                    newPoint = {
+                        time: data.time,
+                        open: data.price,
+                        high: data.price,
+                        low: data.price,
+                        close: data.price,
+                    };
+                    cache.history.push(newPoint);
+                } else {
+                    last.close = data.price;
+                    last.high = Math.max(last.high, data.price);
+                    last.low = Math.min(last.low, data.price);
+                    newPoint = last;
+                }
+            } else {
+                newPoint = {
+                    time: data.time,
+                    value: data.price,
+                };
+                cache.history.push(newPoint);
+            }
+
+            cache.seriesUpdater?.(newPoint);
+        });
     });
 };
 
+export function prepareSortedCandleData(data: any[]): PricePoint[] {
+    const uniqueByTime = new Map<number, PricePoint>();
+
+    for (const d of data) {
+        const time = d.time;
+        if (!uniqueByTime.has(time)) {
+            uniqueByTime.set(time, {
+                time,
+                open: d.open,
+                high: d.high,
+                low: d.low,
+                close: d.close,
+            });
+        }
+    }
+
+    return Array.from(uniqueByTime.values()).sort((a, b) => a.time - b.time);
+}
+
+export const prepareSortedLineData = (data: any[]): PricePoint[] => {
+    const uniqueByTime = new Map<number, PricePoint>();
+
+    for (const d of data) {
+        const time = d.time;
+        const value = d.value ?? d.close;
+        if (!uniqueByTime.has(time)) {
+            uniqueByTime.set(time, { time, value });
+        }
+    }
+
+    return Array.from(uniqueByTime.values()).sort((a, b) => a.time - b.time);
+};
+
+export const prepareSortedData = (
+    type: SeriesType,
+    data: any[]
+): PricePoint[] => {
+    return type === SeriesType.Candles
+        ? prepareSortedCandleData(data)
+        : prepareSortedLineData(data);
+};
+
+function deduplicateByTime<T extends { time: number }>(data: T[]): T[] {
+    const map = new Map<number, T>();
+    for (const point of data) {
+        map.set(point.time, point); // keeps latest if duplicate
+    }
+    return Array.from(map.values()).sort((a, b) => a.time - b.time);
+}
 
