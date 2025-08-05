@@ -160,7 +160,7 @@ export default function DashboardSidebar() {
               setSelectedSideNavTab("Trade");
             }}
             title="Exit"
-            message="Are you sure you want to exit Auto Trade?"
+            message="Are you sure you want to exit Auto trade dashboard?"
           />
         </PortalWrapper>
       )}
