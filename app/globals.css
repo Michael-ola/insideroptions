@@ -107,6 +107,7 @@
   .side-nav-full-modal-offset {
     margin-left: var(--side-nav-width);
     width: calc(100vw - var(--side-nav-width));
+    max-width: calc(100vw - var(--side-nav-width));
     /* /* height: calc(100vh - 7.5vh); */
     padding-top: 6.5vh;
     @apply max-sm:ml-0 w-full h-full max-sm:pt-0 max-sm:h-[calc(100vh-57px)];
