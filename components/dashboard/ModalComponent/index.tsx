@@ -34,6 +34,8 @@ const ModalComponent = ({
   const closeModalFunction = () => {
     if (isAutoTrade) {
       setSelectedSideNavTab("Auto trade");
+      setOpenAutoTrade(false);
+      setShowTradeStatus(false);
       return;
     }
     setSelectedSideNavTab("Trade");

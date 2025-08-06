@@ -42,6 +42,7 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
   const [selectedTradeOption, setSelectedTradeOption] = useState<string>(
     "43,200 mins/30days/15%"
   );
+  const [selectedBalance, setSelectedBalance] = useState<string>("demo");
   const [iconOrImage, setIconOrImage] = useState<StaticImageData | string>("");
   const { showTradeStatus, setShowTradeStatus, setOpenAutoTrade, traderData } =
     useDashboardContext();
@@ -74,13 +75,22 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
   const asset =
     assets && assets.find((asset: Asset) => asset.assetName === selectedAsset);
 
+  const realAccount = traderData?.accounts.find(
+    (account) => account.accountType === "INDIVIDUAL"
+  );
+
+  const demoAccount = traderData?.accounts.find(
+    (account) => account.accountType === "DEMO"
+  );
+
   const startAutoTrade = async () => {
     try {
       const form = {
-        accountId: traderData?.id,
+        accountId:
+          selectedBalance === "demo" ? demoAccount?.id : realAccount?.id,
         amount: Number(amount),
         assetId: asset?.id,
-        side: "AUTO", // BUY or SELL
+        side: "AUTO",
         tradingPlan: tradingPlan.toUpperCase(),
         isAutoTrade: true,
       };
@@ -110,6 +120,8 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
             handleViewChange={handleViewChange}
             tradingPlan={tradingPlan}
             setTradingPlan={setTradingPlan}
+            selectedBalance={selectedBalance}
+            setSelectedBalance={setSelectedBalance}
             selectedAsset={selectedAsset}
             setSelectedTradeOption={setSelectedTradeOption}
             selectedTradeOption={selectedTradeOption}
