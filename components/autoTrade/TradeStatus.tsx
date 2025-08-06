@@ -4,7 +4,27 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import euro from "@/lib/assets/Euro_Icons.png";
 import { AnimatedCircularProgress } from "./AnimatedCircle";
+import { getErrorMessage } from "@/lib/authUtils";
+import { toast } from "react-toastify";
+import { apiClient } from "@/lib/api-client";
+import { useDashboardContext } from "@/context/DashboardContext";
+import Loader from "../Loader";
 
+type Transaction = {
+  id: string;
+  duration: string;
+  assetName: string;
+  tradedBalance: number;
+  profitPercent: number;
+  amount: number | string;
+  tradingPlan: string;
+  profitLimit: number;
+};
+type History = {
+  transactions: Transaction[];
+  nextCursorId: number | null;
+  hasMore: boolean;
+};
 interface TradeStatusProps {
   onClose: () => void;
   duration: string;
@@ -14,7 +34,7 @@ interface TradeStatusProps {
   amount: string | number;
   tradingPlan: string;
   profitLimit: number;
-  handleViewChange: (val: string)=> void;
+  handleViewChange: (val: string) => void;
 }
 
 const TradeStatus: React.FC<TradeStatusProps> = ({
@@ -28,7 +48,10 @@ const TradeStatus: React.FC<TradeStatusProps> = ({
   profitLimit,
   handleViewChange,
 }) => {
-  const [reverse, setReverse] = useState(false);
+  const { traderData } = useDashboardContext();
+  const [reverse, setReverse] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [history, setHistory] = useState<History | null>(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -36,10 +59,12 @@ const TradeStatus: React.FC<TradeStatusProps> = ({
     }, 1000);
     return () => clearInterval(interval);
   }, []);
+
   const initialMins = parseInt(duration.split("mins")[0].replace(/,/g, ""), 10);
   const [minutes, setMinutes] = useState(initialMins);
   const [seconds, setSeconds] = useState(60);
   useEffect(() => {
+    fetchAutoTradeHistory();
     const interval = setInterval(() => {
       setSeconds((prevSec) => {
         if (prevSec === 0) {
@@ -59,51 +84,75 @@ const TradeStatus: React.FC<TradeStatusProps> = ({
   }, [minutes]);
 
 
+  const fetchAutoTradeHistory = async () => {
+    try {
+      const res = await apiClient.get(`trades/${traderData?.id}`);
+      setHistory(res.data);
+      setIsLoading(false);
+    } catch (error) {
+      const err = getErrorMessage(error);
+      console.log(error);
+      toast.error(err);
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading) return <Loader />;
+
   return (
     <div className="w-full h-full px-6 space-y-6 text-white">
-      <div className="w-full bg-[#0f1c1b] rounded-xl px-4 py-6 space-y-4">
-        <div className="flex justify-between items-center gap-3">
-          <AnimatedCircularProgress size={100} duration={1} reverse={reverse}>
-            <div className="flex items-center justify-center text-sm font-medium">
-              {minutes}:{seconds.toString().padStart(2, "0")}
+      {history?.transactions.map((tx) => (
+        <div
+          key={tx.id}
+          className="w-full bg-[#0f1c1b] rounded-xl px-4 py-6 space-y-4"
+        >
+          <div className="flex justify-between items-center gap-3">
+            <AnimatedCircularProgress size={100} duration={1} reverse={reverse}>
+              <div className="flex items-center justify-center text-sm font-medium">
+                {minutes}:{seconds.toString().padStart(2, "0")}
+              </div>
+            </AnimatedCircularProgress>
+            <div className="flex items-center gap-2 bg-[#1d2a28] px-4 py-2 rounded-lg text-xs">
+              <Image src={euro} alt="euro" className="w-5 h-auto" />
+              <div className="flex flex-col gap-1">
+                <p className="text-white">{tx?.assetName || asset}</p>
+                <span className="text-white/60 font-medium">
+                  TP •{" "}
+                  <span className="text-primary">
+                    {tx?.profitPercent || profitPercent}%
+                  </span>
+                </span>
+              </div>
             </div>
-          </AnimatedCircularProgress>
-          <div className="flex items-center gap-2 bg-[#1d2a28] px-4 py-2 rounded-lg text-xs">
-            <Image src={euro} alt="euro" className="w-5 h-auto" />
-            <div className="flex flex-col gap-1">
-              <p className="text-white">{asset}</p>
-              <span className="text-white/60 font-medium">
-                TP • <span className="text-primary">{profitPercent}%</span>
+          </div>
+
+          <div className="text-center">
+            <p className="text-sm text-white/60">Traded balance:</p>
+            <p className="text-xl font-bold">
+              ${tx?.tradedBalance.toFixed(2) || tradedBalance.toFixed(2)}
+            </p>
+          </div>
+
+          <div className="space-y-2 text-sm">
+            <div className="flex justify-between text-white/60">
+              <span>Amount</span>
+              <span className="text-white font-semibold">
+                ${tx?.amount || Number(amount).toFixed(2)}
+              </span>
+            </div>
+            <div className="flex justify-between text-white/60">
+              <span>Trading Plan</span>
+              <span className="text-white font-semibold">{tradingPlan}</span>
+            </div>
+            <div className="flex justify-between text-white/60">
+              <span>Profit limit</span>
+              <span className="text-white font-semibold">
+                ${tx?.profitLimit.toFixed(2) || profitLimit.toFixed(2)}
               </span>
             </div>
           </div>
         </div>
-
-        <div className="text-center">
-          <p className="text-sm text-white/60">Traded balance:</p>
-          <p className="text-xl font-bold">${tradedBalance.toFixed(2)}</p>
-        </div>
-
-        <div className="space-y-2 text-sm">
-          <div className="flex justify-between text-white/60">
-            <span>Amount</span>
-            <span className="text-white font-semibold">
-              ${Number(amount).toFixed(2)}
-            </span>
-          </div>
-          <div className="flex justify-between text-white/60">
-            <span>Trading Plan</span>
-            <span className="text-white font-semibold">{tradingPlan}</span>
-          </div>
-          <div className="flex justify-between text-white/60">
-            <span>Profit limit</span>
-            <span className="text-white font-semibold">
-              ${profitLimit.toFixed(2)}
-            </span>
-          </div>
-        </div>
-      </div>
-
+      ))}
       <div className="w-full flex flex-col sm:flex-row justify-between gap-4">
         <button
           onClick={() => onClose()}
@@ -117,7 +166,10 @@ const TradeStatus: React.FC<TradeStatusProps> = ({
       </div>
 
       <div className="text-center">
-        <button onClick={()=> handleViewChange("History")} className="text-primary text-sm mt-8 font-medium hover:text-green-300">
+        <button
+          onClick={() => handleViewChange("History")}
+          className="text-primary text-sm mt-8 font-medium hover:text-green-300"
+        >
           View trade history
         </button>
       </div>

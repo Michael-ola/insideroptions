@@ -2,7 +2,7 @@
 
 import { useDashboardContext } from "@/context/DashboardContext";
 import { ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 
 const DownlineComplains = ({
@@ -10,6 +10,7 @@ const DownlineComplains = ({
 }: {
   handleViewChange: (val: string) => void;
 }) => {
+  const dropdownRef = useRef(null);
   const { setSwitchAssetManagerModal } = useDashboardContext();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [formData, setFormData] = useState({
@@ -43,6 +44,25 @@ const DownlineComplains = ({
     setSwitchAssetManagerModal(true);
     handleViewChange("Asset Manager");
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !(dropdownRef.current as any).contains(event.target)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
   return (
     <div className="w-full max-w-[80%] bg-[#79DA7E]/10 mx-auto h-[90%] px-8 pt-4 space-y-6 rounded-xl mb-8 overflow-y-auto custom-scrollbar">
       <div className="w-full h-full flex flex-col gap-6">
@@ -82,7 +102,7 @@ const DownlineComplains = ({
           <div>
             <label className="text-sm block mb-1">Category</label>
 
-            <div className="w-[30%] relative text-sm text-white">
+            <div className="w-[30%] relative text-sm text-white" ref={dropdownRef}>
               <button
                 type="button"
                 className="w-full bg-[#161a21] rounded-tl-xl rounded-tr-xl border-b border-b-white/10 px-4 py-3 flex justify-between items-center text-left"

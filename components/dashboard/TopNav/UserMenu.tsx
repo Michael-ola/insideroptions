@@ -2,11 +2,12 @@
 
 import Image from "next/image";
 import ProfileModal from "@/components/dashboard/ProfileModal";
-import { useState } from "react";
+// import { useState } from "react";
 import PortalWrapper from "@/components/PortalWrapper";
+import { useDashboardContext } from "@/context/DashboardContext";
 
 export default function UserMenu() {
-  const [openProfileModal, setOpenProfileModal] = useState(false);
+  const { openProfileModal, setOpenProfileModal} = useDashboardContext();
   return (
     <>
       <div

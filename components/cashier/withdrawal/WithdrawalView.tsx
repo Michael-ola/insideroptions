@@ -1,7 +1,7 @@
 "use client";
 
 import { AlertCircle, ChevronRight, ChevronDown, Check } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import bank from "@/lib/assets/bank_transfer.png";
 import crypto from "@/lib/assets/crypto.png";
 import Image, { StaticImageData } from "next/image";
@@ -25,6 +25,7 @@ const WithdrawalView = ({
   setIconOrImage,
   setOpenOtp,
 }: Props) => {
+    const dropdownRef = useRef(null);
   const { traderData } = useDashboardContext();
   const [agreed, setAgreed] = useState<boolean>(false);
 
@@ -56,6 +57,25 @@ const WithdrawalView = ({
   const realAccount = traderData?.accounts.find(
     (account) => account.accountType === "INDIVIDUAL"
   );
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !(dropdownRef.current as any).contains(event.target)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
 
   return (
     <div className="w-full h-full space-y-6 text-white p-4 overflow-y-auto custom-scrollbar">
@@ -164,7 +184,7 @@ const WithdrawalView = ({
       </div>
 
       {method === "Bank Transfer" ? (
-        <div className="relative text-sm text-white">
+        <div className="relative text-sm text-white" ref={dropdownRef}>
           <button
             type="button"
             className="w-full rounded-tl-xl rounded-tr-xl border border-white/10 px-4 py-3 flex justify-between items-center bg-transparent text-left"

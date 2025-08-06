@@ -43,4 +43,6 @@ export interface DashboardPropsType {
   setForm: (val: boolean) => void;
   switchAssetManagerModal: boolean;
   setSwitchAssetManagerModal: (val: boolean) => void;
+  openProfileModal: boolean;
+  setOpenProfileModal: (val: boolean) => void;
 }

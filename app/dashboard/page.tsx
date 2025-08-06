@@ -46,6 +46,7 @@ export default function DashboardPage() {
       profit: 0,
     },
   ]);
+    const [openProfileModal, setOpenProfileModal] = useState<boolean>(false);
 
   const fetchTrader = async () => {
     try {
@@ -124,6 +125,8 @@ export default function DashboardPage() {
     setForm,
     switchAssetManagerModal,
     setSwitchAssetManagerModal,
+    openProfileModal,
+    setOpenProfileModal,
   };
 
   return (
