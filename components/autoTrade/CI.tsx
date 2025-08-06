@@ -9,7 +9,6 @@ import euro from "@/lib/assets/Euro_Icons.png";
 import starter from "@/lib/assets/starter_lever.png";
 import gold from "@/lib/assets/gold_lever.png";
 import premium from "@/lib/assets/premium_lever.png";
-// import { assets } from "./Assets";
 import TradeStatus from "./TradeStatus";
 import { Asset } from "./AutoTradeModal";
 
@@ -114,6 +113,7 @@ const CI = ({
     }
   };
   const profitValue = (Number(amount) * Number(perc) * Number(day)) / 30 / 100;
+
   return (
     <div className="w-full h-full px-8 pt-6 pb-8 overflow-y-auto custom-scrollbar">
       {!showTradeStatus && (
@@ -221,9 +221,7 @@ const CI = ({
             <div className="w-full px-3 py-1">
               <button
                 className={`w-full flex items-center gap-2 px-3 py-2 bg-[#EEFFEF]/5 rounded-lg cursor-default ${
-                  tradingPlan
-                    ? "justify-between"
-                    : "justify-center py-3"
+                  tradingPlan ? "justify-between" : "justify-center py-3"
                 }`}
               >
                 <div className="w-full flex items-center gap-2.5">
@@ -269,7 +267,11 @@ const CI = ({
           <button
             disabled={!tradingPlan || !amount || !profitValue || !selectedAsset}
             onClick={() => setIsStartAutoTrade(true)}
-            className="w-full bg-primary text-black font-semibold px-6 py-3 rounded-xl hover:bg-gradient-to-tr  from-primary to-[#b4e6b8] transition"
+            className={`w-full text-center font-semibold px-6 py-3 rounded-xl flex items-center justify-center gap-3 ${
+              !tradingPlan || !amount || !profitValue || !selectedAsset
+                ? "bg-[#171f24] cursor-not-allowed"
+                : "bg-primary text-black cursor-pointer hover:bg-gradient-to-tr  from-primary to-[#b4e6b8] transition"
+            }`}
           >
             Start Auto Trade
           </button>
