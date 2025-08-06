@@ -8,7 +8,7 @@ import { RiLoader4Line } from "@remixicon/react";
 import { useDashboardContext } from "@/context/DashboardContext";
 
 const BankTransfer = () => {
-  const { traderData } = useDashboardContext();
+  const { traderData, setOpenProfileModal } = useDashboardContext();
   const [confirmed, setConfirmed] = useState<boolean>(false);
   const [amount, setAmount] = useState<string | number>("");
   const [confirmPayment, setConfirmPayment] = useState<boolean>(false);
@@ -67,6 +67,10 @@ const BankTransfer = () => {
       console.error("An error occurred while processing the payment.");
     }
   };
+
+  const handleViewToProfile = () => {
+    setOpenProfileModal(true);
+  }
   return (
     <div>
       {!confirmPayment && (
@@ -94,7 +98,7 @@ const BankTransfer = () => {
                 className="w-full bg-transparent border border-gray-700 px-4 py-3 outline-none rounded-xl text-sm text-gray-500"
               />
             </div>
-            <p className="text-end text-gray-400 text-xs">
+            <p onClick={handleViewToProfile} className="text-end text-gray-400 text-xs cursor-pointer">
               Not correct? <span className="text-green-400">change name</span>
             </p>
           </div>

@@ -1,7 +1,9 @@
+"use client";
+
 import { referralData } from "@/data/assetManager/Referral";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { ChevronDown, Filter, Search } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import TraderDetailsModal from "./TradingHistory";
 
@@ -10,6 +12,7 @@ const Welcome = ({
 }: {
   handleViewChange: (val: string) => void;
 }) => {
+  const dropdownRef = useRef(null);
   const [selectedGeneration, setSelectedGeneration] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [openTraderModal, setOpenTraderModal] = useState<boolean>(false);
@@ -27,6 +30,25 @@ const Welcome = ({
   const handleRedeem = () => {
     toast.success("Congratulations $50 addded to Referral Balance");
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !(dropdownRef.current as any).contains(event.target)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
 
   return (
     <div className="w-full h-full px-8 pt-4">
@@ -62,7 +84,7 @@ const Welcome = ({
         <div className="flex justify-between items-center">
           <div className="w-[70%]">
             <span className="text-sm font-medium">Select generation from</span>
-            <div className="w-[50%] relative text-sm text-white">
+            <div className="w-[50%] relative text-sm text-white" ref={dropdownRef}>
               <button
                 type="button"
                 className="w-full bg-[#161a21] rounded-tl-xl rounded-tr-xl border-b border-b-white/10 px-4 py-3 flex justify-between items-center text-left"
