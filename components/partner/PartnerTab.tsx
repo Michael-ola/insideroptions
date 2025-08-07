@@ -20,6 +20,7 @@ type ReferralBonusData = {
   referred: string;
   rewardedAmount: number;
   isRewarded: "Y" | "N" | string;
+  rewardedDate: Date;
 };
 export type ReferralDetails = {
   data: ReferralData[];
