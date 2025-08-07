@@ -31,6 +31,7 @@ export interface TraderDataType {
   state: string | null;
   country: string;
   totalReferrals: number | string | null;
+  myReferralCode: string | null;
   postalCode: string | null;
   dateOfBirth: string | null;
   emailVerified: "Y" | "N";
