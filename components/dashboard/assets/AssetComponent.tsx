@@ -66,7 +66,7 @@ const AssetComponent = () => {
 
       {/* Asset Tabs */}
       {selectedAssets.length > 0 &&
-        selectedAssets.map((selectedAsset) => (
+        selectedAssets.map((selectedAsset, index) => (
           <div key={selectedAsset.name} className="relative">
             <div
               // onClick={() => openReplaceModal(selectedAsset)}
@@ -91,15 +91,17 @@ const AssetComponent = () => {
                   </span>
                 </p>
               </div>
-              <div className="absolute right-1 top-0">
-                <IoClose
-                  onClick={(e) => {
-                    e.stopPropagation(); // prevent triggering modal
-                    closeTab(selectedAsset.name);
-                  }}
-                  className="text-neutral-400 hover:text-white transition cursor-pointer"
-                />
-              </div>
+              {index > 0 && (
+                <div className="absolute right-1 top-0">
+                  <IoClose
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      closeTab(selectedAsset.name);
+                    }}
+                    className="text-neutral-400 hover:text-white transition cursor-pointer"
+                  />
+                </div>
+              )}
             </div>
           </div>
         ))}

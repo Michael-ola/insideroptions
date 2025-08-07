@@ -49,9 +49,9 @@ const SideNav: React.FC<SideNavProps> = ({ isOpen, onClose }) => {
       onClick: () => setSelectedSideNavTab("Partner"),
     },
     {
-      label: "Asset manager",
+      label: "Asset Manager",
       icon: AssetManagerIcon,
-      onClick: () => setSelectedSideNavTab("AssetManager"),
+      onClick: () => setSelectedSideNavTab("Asset Manager"),
     },
     {
       label: "Help",

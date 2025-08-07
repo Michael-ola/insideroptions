@@ -18,6 +18,7 @@ import { SeriesType } from "@/lib/models";
 import ZoomButton from "@/components/dashboard/ZoomButton";
 import MobileButtons from "@/components/dashboard/control-panel/MobileButtons";
 import tradingAll from "@/data/trading/all.json";
+import Loader from "@/components/Loader"; // 👈 Import the loader
 
 export default function DashboardPage() {
   const [openGraphStyleModal, setOpenGraphStyleModal] = useState(false);
@@ -48,6 +49,8 @@ export default function DashboardPage() {
   ]);
     const [openProfileModal, setOpenProfileModal] = useState<boolean>(false);
 
+  const [isLoading, setIsLoading] = useState(true); // ✅ 1. Track loading state
+
   const fetchTrader = async () => {
     try {
       const res = await apiClient.get("/get-trader");
@@ -59,7 +62,6 @@ export default function DashboardPage() {
       ).accountBalance;
       setSelectedBalanceAmount(accountBalance);
       setTradeAmount(accountBalance);
-      //console.log(data);
     } catch (err) {
       console.error("Failed to fetch trader data", err);
     }
@@ -79,13 +81,16 @@ export default function DashboardPage() {
   };
 
   useEffect(() => {
-    fetchTrader();
-    fetchEURUSD();
-    if (typeof window !== "undefined") {
-      const isAutoTrade = localStorage.getItem("isAutoTrade") ?? "";
-      setIsAutoTrade(isAutoTrade);
-      setSelectedSideNavTab(isAutoTrade || "Trade");
-    }
+    const init = async () => {
+      await Promise.all([fetchTrader(), fetchEURUSD()]); // ✅ wait for both
+      if (typeof window !== "undefined") {
+        const isAutoTrade = localStorage.getItem("isAutoTrade") ?? "";
+        setIsAutoTrade(isAutoTrade);
+        setSelectedSideNavTab(isAutoTrade || "Trade");
+      }
+      setIsLoading(false); // ✅ done loading
+    };
+    init();
   }, []);
 
   const contextValue: DashboardPropsType = {
@@ -145,6 +150,8 @@ export default function DashboardPage() {
       </div>
       <SideNav />
       <GraphStyleModal />
+
+      {isLoading && <Loader dashboard />}
     </DashboardContext.Provider>
   );
 }

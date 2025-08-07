@@ -21,7 +21,7 @@ const Button: React.FC<MyButtonProps> = ({
     <Link href={link}>
       <button
         {...rest}
-        className={`flex items-center justify-center cursor-pointer gap-4 bg-[#99E39E] text-black w-[148px] h-[44px] rounded-[12px] transition-all duration-300 hover:bg-gradient-to-r hover:from-[#99E39E] hover:to-[#b3ffb8] ${className}`}
+        className={`flex items-center justify-center cursor-pointer gap-4 bg-[#79DA7E] text-black w-[148px] h-[44px] rounded-[12px] transition-all duration-300 hover:bg-gradient-to-r hover:from-[#79DA7E] hover:to-[#b3ffb8] ${className}`}
       >
         {children}
         {(caret || image) && (
