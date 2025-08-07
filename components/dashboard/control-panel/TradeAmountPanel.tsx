@@ -36,8 +36,8 @@ const TradeAmountPanel = () => {
         <div className="flex items-center space-x-1">
           <span className="text-md font-semibold">$</span>
           <input
-            className="text-md font-semibold bg-transparent outline-none w-16 text-center"
-            value={tradeAmount}
+            className="text-md font-semibold bg-transparent outline-none w-20 text-center"
+            value={tradeAmount.toFixed(2)}
             onChange={handleInputChange}
           />
         </div>

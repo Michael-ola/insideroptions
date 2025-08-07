@@ -61,10 +61,10 @@ export default function BalanceCard({
 
   const amount =
     accountType?.toLowerCase() === "real"
-      ? realBalanceToShow
+      ? realBalanceToShow.toFixed(2)
       : accountType?.toLowerCase() === "demo"
-      ? demoBalanceToShow
-      : profitBalance;
+      ? demoBalanceToShow.toFixed(2)
+      : profitBalance.toFixed(2);
 
   const displayLabel = label || (accountType && `${accountType} Balance`);
 
