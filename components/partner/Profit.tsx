@@ -54,7 +54,7 @@ const Profit = ({
           >
             <span>{item.id}</span>
             <span>{item.date}</span>
-            <span>{`$${item.deposited}`}</span>
+            <span>{`$${item.traded}`}</span>
             <span
               className={`capitalize ${
                 item.status.toLowerCase() === "active"

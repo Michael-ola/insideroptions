@@ -11,7 +11,7 @@ import { useDashboardContext } from "@/context/DashboardContext";
 type ReferralData = {
   id: string;
   date: string;
-  deposited: number;
+  traded: number;
   status: string;
 };
 type ReferralBonusData = {

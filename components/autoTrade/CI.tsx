@@ -291,7 +291,7 @@ const CI = ({
                 </div>
 
                 {tradingPlan && plan && (
-                  <div className="flex flex-col gap-2 text-[8px]">
+                  <div className="flex flex-col gap-2 text-xs">
                     <span className="text-white/70">{plan?.desc}</span>
                     <span className="text-white/70">{plan?.range}</span>
                   </div>
