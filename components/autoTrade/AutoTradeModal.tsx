@@ -28,48 +28,80 @@ import AutoTradeHistory from "./AutoTradeHistory";
 import { apiClient } from "@/lib/api-client";
 import Loader from "../Loader";
 import PortalWrapper from "../PortalWrapper";
+import { toast } from "react-toastify";
+import { getErrorMessage } from "@/lib/authUtils";
 
 export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
   const [view, setView] = useState<string>("Current Investment");
   const [isStartAutoTrade, setIsStartAutoTrade] = useState<boolean>(false);
-  const [isLoading, setIsloading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [tradingPlan, setTradingPlan] = useState<string>("Starter");
   const [amount, setAmount] = useState<string | number>("");
-  const [asset, setAsset] = useState<string>("EUR/USD");
+  const [selectedAsset, setSelectedAsset] = useState<string>("EUR/USD");
   const [assets, setAssets] = useState<Asset[] | null>(null);
   const [selectedTradeOption, setSelectedTradeOption] = useState<string>(
     "43,200 mins/30days/15%"
   );
+  const [selectedBalance, setSelectedBalance] = useState<string>("demo");
   const [iconOrImage, setIconOrImage] = useState<StaticImageData | string>("");
-  const { showTradeStatus, setShowTradeStatus, setOpenAutoTrade } =
+  const { showTradeStatus, setShowTradeStatus, setOpenAutoTrade, traderData } =
     useDashboardContext();
 
   useEffect(() => {
+    if (showTradeStatus) {
+      return;
+    }
     getAssetLists();
   }, []);
 
   const getAssetLists = async () => {
-    setIsloading(true);
+    setIsLoading(true);
     try {
       const res = await apiClient.get("/assets/");
       const mainAsset = res.data.find(
         (asset: Asset) => asset.assetName === "EUR/USD"
       );
       setAssets(res.data);
-      setAsset(mainAsset.assetName);
-      setIsloading(false);
+      setSelectedAsset(mainAsset.assetName);
+      setIsLoading(false);
     } catch (error) {
-      setIsloading(false);
+      setIsLoading(false);
       console.log(error);
     }
   };
 
   const handleViewChange = (nextView: string) => setView(nextView);
 
-  const startAutoTrade = () => {
-    console.log("auto trade api wire");
-    // onClose();
-    setShowTradeStatus(true);
+  const asset =
+    assets && assets.find((asset: Asset) => asset.assetName === selectedAsset);
+
+  const realAccount = traderData?.accounts.find(
+    (account) => account.accountType === "INDIVIDUAL"
+  );
+
+  const demoAccount = traderData?.accounts.find(
+    (account) => account.accountType === "DEMO"
+  );
+
+  const startAutoTrade = async () => {
+    try {
+      const form = {
+        accountId:
+          selectedBalance === "demo" ? demoAccount?.id : realAccount?.id,
+        amount: Number(amount),
+        assetId: asset?.id,
+        side: "AUTO",
+        tradingPlan: tradingPlan.toUpperCase(),
+        isAutoTrade: true,
+      };
+      await apiClient.post(`trades`, form);
+      setShowTradeStatus(false);
+      setOpenAutoTrade(false);
+    } catch (error) {
+      console.log(error);
+      const err = getErrorMessage(error);
+      toast.error(err);
+    }
   };
 
   const mins = selectedTradeOption.split("/")[0];
@@ -88,13 +120,15 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
             handleViewChange={handleViewChange}
             tradingPlan={tradingPlan}
             setTradingPlan={setTradingPlan}
-            selectedAsset={asset}
+            selectedBalance={selectedBalance}
+            setSelectedBalance={setSelectedBalance}
+            selectedAsset={selectedAsset}
             setSelectedTradeOption={setSelectedTradeOption}
             selectedTradeOption={selectedTradeOption}
             setAmount={setAmount}
             amount={amount}
-            setIsStartAutoTrade={setIsStartAutoTrade}
             showTradeStatus={showTradeStatus}
+            setIsStartAutoTrade={setIsStartAutoTrade}
             assets={assets}
           />
         );
@@ -110,7 +144,7 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
         return (
           <Assets
             handleViewChange={handleViewChange}
-            setAsset={setAsset}
+            setAsset={setSelectedAsset}
             assets={assets}
           />
         );

@@ -47,6 +47,7 @@ export default function DashboardPage() {
       profit: 0,
     },
   ]);
+    const [openProfileModal, setOpenProfileModal] = useState<boolean>(false);
 
   const [isLoading, setIsLoading] = useState(true); // ✅ 1. Track loading state
 
@@ -129,6 +130,8 @@ export default function DashboardPage() {
     setForm,
     switchAssetManagerModal,
     setSwitchAssetManagerModal,
+    openProfileModal,
+    setOpenProfileModal,
   };
 
   return (

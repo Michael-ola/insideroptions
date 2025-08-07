@@ -76,11 +76,15 @@ export default function DashboardSidebar() {
             <div
               key={item.label}
               onClick={() => {
-                if (item.label === "Auto trade") {
+                if (item.label === "Auto trade" && !isAutoTrade) {
                   setOpenConfirmation(true);
                   return;
                 } else if (item.label === "Trade" && isAutoTrade) {
                   setCloseConfirmation(true);
+                  return;
+                } else if (item.label === "Auto trade" && isAutoTrade) {
+                  setSelectedSideNavTab("Auto trade");
+                  setOpenAutoTrade(true);
                   return;
                 } else {
                   setSelectedSideNavTab(item.label);
@@ -156,7 +160,7 @@ export default function DashboardSidebar() {
               setSelectedSideNavTab("Trade");
             }}
             title="Exit"
-            message="Are you sure you want to Exit"
+            message="Are you sure you want to exit Auto trade dashboard?"
           />
         </PortalWrapper>
       )}

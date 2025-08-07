@@ -58,18 +58,24 @@ const CryptoView = ({
   setSelectedCrypto,
   setCryptoData,
 }: Props) => {
-    const { traderData } = useDashboardContext();
+  const { traderData } = useDashboardContext();
   const [confirmed, setConfirmed] = useState<boolean>(false);
 
   const [isConfirming, setIsConfirming] = useState(false);
 
-  const cryptoConfig: Record<string, { type: string; onToken: string, label:string }> = {
+  const cryptoConfig: Record<
+    string,
+    { type: string; onToken: string; label: string }
+  > = {
     "USDT (ERC20)": { type: "teth4", onToken: "ofcusdt", label: "ERC20" },
     "USDT (TRC20)": { type: "ttrx4", onToken: "ofcusdt", label: "TRC20" },
     "BITCOIN (BTC)": { type: "tbtc4", onToken: "ofcbtc", label: "BTC" },
     "ETHEREUM (ETH)": { type: "teth4", onToken: "ofceth", label: "ETH" },
   };
 
+  const realAccount = traderData?.accounts.find(
+    (account) => account.accountType === "INDIVIDUAL"
+  );
   const generatePayload = () => {
     if (typeof selectedCrypto !== "string") {
       throw new Error("Unsupported crypto selection");
@@ -89,7 +95,7 @@ const CryptoView = ({
         maxFeePerGas: 0,
         maxPriorityFeePerGas: 0,
       },
-      accountId: traderData?.id,
+      accountId: realAccount?.id,
     };
   };
 
@@ -180,8 +186,8 @@ const CryptoView = ({
             />
           </div>
           <span className="text-gray-400">
-            I, {traderData?.firstName} {traderData?.lastName}, hereby confirm that I
-            have read and understood Deposit & Withdrawal Terms for
+            I, {traderData?.firstName} {traderData?.lastName}, hereby confirm
+            that I have read and understood Deposit & Withdrawal Terms for
             Cryptocurrencies
           </span>
         </div>

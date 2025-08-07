@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import { useDashboardContext } from "@/context/DashboardContext";
 import { ChevronDown, ChevronRight } from "lucide-react";
@@ -9,9 +8,9 @@ import euro from "@/lib/assets/Euro_Icons.png";
 import starter from "@/lib/assets/starter_lever.png";
 import gold from "@/lib/assets/gold_lever.png";
 import premium from "@/lib/assets/premium_lever.png";
-// import { assets } from "./Assets";
 import TradeStatus from "./TradeStatus";
 import { Asset } from "./AutoTradeModal";
+import { toast } from "react-toastify";
 
 export const plans = [
   {
@@ -56,6 +55,8 @@ const CI = ({
   setIsStartAutoTrade,
   showTradeStatus,
   assets,
+  selectedBalance,
+  setSelectedBalance,
 }: {
   onClose: () => void;
   handleViewChange: (val: string) => void;
@@ -69,9 +70,10 @@ const CI = ({
   setIsStartAutoTrade: (val: boolean) => void;
   showTradeStatus: boolean;
   assets: Asset[] | null;
+  selectedBalance: string;
+  setSelectedBalance: (val: string) => void;
 }) => {
   const { traderData } = useDashboardContext();
-  const [selectedBalance, setSelectedBalance] = useState<string>("demo");
 
   const plan = plans.find((plan) => plan.name === tradingPlan);
   const asset =
@@ -84,6 +86,46 @@ const CI = ({
   const demoAccount = traderData?.accounts.find(
     (account) => account.accountType === "DEMO"
   );
+
+  const validationCheck = () => {
+    if (
+      selectedBalance === "demo" &&
+      demoAccount &&
+      demoAccount?.accountBalance <= 50
+    ) {
+      return toast.error("Insufficient Demo Balance");
+    }
+    if (
+      selectedBalance === "real" &&
+      realAccount &&
+      realAccount?.accountBalance <= 50
+    ) {
+      return toast.error("Insufficient Real Balance");
+    }
+    if (
+      selectedBalance === "real" &&
+      tradingPlan.toLowerCase() === "starter" &&
+      (Number(amount) < 300 || Number(amount) > 1000)
+    ) {
+      return toast.error(`You need Min $300 - $1,000 for Starter Plan`);
+    }
+    if (
+      selectedBalance === "real" &&
+      tradingPlan.toLowerCase() === "gold" &&
+      (Number(amount) < 50 || Number(amount) > 10000)
+    ) {
+      return toast.error(`You need Min $50 - $10,000 for Gold Plan`);
+    }
+    if (
+      selectedBalance === "real" &&
+      tradingPlan.toLowerCase() === "premium" &&
+      (Number(amount) < 50 || Number(amount) > 10000)
+    ) {
+      return toast.error(`You need Min $50 - $10,000 for Platinum Plan`);
+    }
+
+    return true;
+  };
 
   const timeOptions = [
     {
@@ -114,6 +156,12 @@ const CI = ({
     }
   };
   const profitValue = (Number(amount) * Number(perc) * Number(day)) / 30 / 100;
+  const handleAutoTrade = () => {
+    const val = validationCheck();
+    if (val === true) {
+      setIsStartAutoTrade(true);
+    }
+  };
   return (
     <div className="w-full h-full px-8 pt-6 pb-8 overflow-y-auto custom-scrollbar">
       {!showTradeStatus && (
@@ -221,9 +269,7 @@ const CI = ({
             <div className="w-full px-3 py-1">
               <button
                 className={`w-full flex items-center gap-2 px-3 py-2 bg-[#EEFFEF]/5 rounded-lg cursor-default ${
-                  tradingPlan
-                    ? "justify-between"
-                    : "justify-center py-3"
+                  tradingPlan ? "justify-between" : "justify-center py-3"
                 }`}
               >
                 <div className="w-full flex items-center gap-2.5">
@@ -245,7 +291,10 @@ const CI = ({
                 </div>
 
                 {tradingPlan && plan && (
-                  <span className="text-xs text-white/70">{plan?.desc}</span>
+                  <div className="flex flex-col gap-2 text-xs">
+                    <span className="text-white/70">{plan?.desc}</span>
+                    <span className="text-white/70">{plan?.range}</span>
+                  </div>
                 )}
                 {!tradingPlan && <ChevronDown />}
               </button>
@@ -268,8 +317,12 @@ const CI = ({
 
           <button
             disabled={!tradingPlan || !amount || !profitValue || !selectedAsset}
-            onClick={() => setIsStartAutoTrade(true)}
-            className="w-full bg-primary text-black font-semibold px-6 py-3 rounded-xl hover:bg-gradient-to-tr  from-primary to-[#b4e6b8] transition"
+            onClick={handleAutoTrade}
+            className={`w-full text-center font-semibold px-6 py-3 rounded-xl flex items-center justify-center gap-3 ${
+              !tradingPlan || !amount || !profitValue || !selectedAsset
+                ? "bg-[#171f24] cursor-not-allowed"
+                : "bg-primary text-black cursor-pointer hover:bg-gradient-to-tr  from-primary to-[#b4e6b8] transition"
+            }`}
           >
             Start Auto Trade
           </button>

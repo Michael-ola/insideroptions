@@ -3,98 +3,78 @@ import { createChart, ISeriesApi, LogicalRange } from "lightweight-charts";
 import { chartOptions, createSeries } from "@/lib/chartSettings";
 import { useDashboardContext } from "@/context/DashboardContext";
 
-const TradingChart = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [chartInstance, setChartInstance] = useState<ReturnType<
-    typeof createChart
-  > | null>(null);
-  const { chartStyle } = useDashboardContext();
-  const seriesRef = useRef<ISeriesApi<any> | null>(null);
-  const assetId = 1;
+const TradingChart: React.FC = () => {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const chartRef = useRef<ReturnType<typeof createChart> | null>(null);
+    const seriesRef = useRef<ISeriesApi<any> | null>(null);
+    const { chartStyle } = useDashboardContext();
+    const assetId = 1;
 
-  const [rightOffset, setRightOffset] = useState(0);
+    const [rightOffset, setRightOffset] = useState(0);
 
-  useEffect(() => {
-    if (!containerRef.current) return;
+    // Initialize chart only once
+    useEffect(() => {
+        if (!containerRef.current) return;
 
-    const chart = createChart(containerRef.current, chartOptions);
-    setChartInstance(chart);
+        const chart = createChart(containerRef.current, chartOptions);
+        chartRef.current = chart;
 
-    const observer = new ResizeObserver(() => {
-      chart.resize(
-        containerRef.current!.clientWidth,
-        containerRef.current!.clientHeight
-      );
-    });
-    observer.observe(containerRef.current);
+        const observer = new ResizeObserver(() => {
+            chart.resize(containerRef.current!.clientWidth, containerRef.current!.clientHeight);
+        });
+        observer.observe(containerRef.current);
 
-    return () => {
-      chart.remove();
-      observer.disconnect();
-    };
-  }, []);
+        // Add series only once
+        createSeries(chart, chartStyle, assetId).then((series) => {
+            seriesRef.current = series;
+            chart.timeScale().scrollToRealTime();
+        });
 
-  // Listen for visible logical range changes (user scrolls/drags)
-  useEffect(() => {
-    if (!chartInstance) return;
+        return () => {
+            if (seriesRef.current) {
+                chart.removeSeries(seriesRef.current);
+                seriesRef.current = null;
+            }
+            chart.remove();
+            chartRef.current = null;
+            observer.disconnect();
+        };
+    }, [chartStyle, assetId]);
 
-    const onVisibleRangeChanged = (range: LogicalRange | null) => {
-      if (!range) return;
-      // Get latest bar index from series data length:
-      const seriesData = seriesRef.current?.data() ?? [];
-      const lastBarIndex: number =
-        seriesData.length > 0 ? seriesData[seriesData.length - 1].time : 0;
-      const scrollPosition =
-        chartInstance.timeScale().scrollPosition() ?? lastBarIndex;
-      setRightOffset(Math.abs(Math.round(scrollPosition)));
-    };
-    chartInstance
-      .timeScale()
-      .subscribeVisibleLogicalRangeChange(onVisibleRangeChanged);
+    // Listen to scroll changes and update rightOffset
+    useEffect(() => {
+        if (!chartRef.current) return;
 
-    return () => {
-      chartInstance
-        .timeScale()
-        .unsubscribeVisibleLogicalRangeChange(onVisibleRangeChanged);
-    };
-  }, [chartInstance]);
+        const chart = chartRef.current;
 
-  // When rightOffset changes, update the chart timeScale options dynamically
-  useEffect(() => {
-    if (!chartInstance) return;
+        const onVisibleRangeChanged = (range: LogicalRange | null) => {
+            if (!range || !seriesRef.current) return;
 
-    chartInstance.timeScale().applyOptions({
-      rightOffset,
-    });
-  }, [chartInstance, rightOffset]);
+            const seriesData = seriesRef.current.data() ?? [];
+            const lastBarIndex = seriesData.length > 0 ? seriesData[seriesData.length - 1].time : 0;
+            const scrollPosition = chart.timeScale().scrollPosition() ?? lastBarIndex;
+            setRightOffset(Math.abs(Math.round(scrollPosition)));
+        };
 
-  useEffect(() => {
-    if (!chartInstance) return;
+        chart.timeScale().subscribeVisibleLogicalRangeChange(onVisibleRangeChanged);
 
-    if (seriesRef.current) {
-      chartInstance.removeSeries(seriesRef.current);
-    }
+        return () => {
+            chart.timeScale().unsubscribeVisibleLogicalRangeChange(onVisibleRangeChanged);
+        };
+    }, []);
 
-    createSeries(chartInstance, chartStyle, assetId, (point) => {
-      seriesRef.current?.update(point);
-      // Optional: auto scroll only if rightOffset == 0
-      if (rightOffset === 0) {
-        chartInstance.timeScale().scrollToRealTime();
-      }
-    }).then((series) => {
-      seriesRef.current = series;
-    });
-  }, [chartInstance, chartStyle, assetId, rightOffset]);
+    // Dynamically apply rightOffset when user scrolls
+    useEffect(() => {
+        if (!chartRef.current) return;
 
-  return (
-    <div className="h-[100dvh] w-[calc(100vw-var(--side-nav-width))] ml-[var(--side-nav-width)] -mt-[var(--top-nav-height)] max-sm:ml-0 max-sm:w-full max-sm:h-[calc(100dvh-57px)] max-sm:z-5 flex items-center justify-center">
-      <div
-        className="w-full h-full"
-        ref={containerRef}
-        style={{ width: "100%", height: "100%" }}
-      />
-    </div>
-  );
+        chartRef.current.timeScale().applyOptions({ rightOffset });
+    }, [rightOffset]);
+
+    return (
+        <div className="h-[100dvh] w-[calc(100vw-var(--side-nav-width))] ml-[var(--side-nav-width)] -mt-[var(--top-nav-height)] max-sm:ml-0 max-sm:w-full max-sm:h-[calc(100dvh-57px)] max-sm:z-5 flex items-center justify-center">
+            <div className="w-full h-full" ref={containerRef} />
+        </div>
+    );
 };
 
 export default TradingChart;

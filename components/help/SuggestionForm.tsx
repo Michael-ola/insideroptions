@@ -3,7 +3,9 @@
 import React, {
   forwardRef,
   ForwardRefRenderFunction,
+  useEffect,
   useImperativeHandle,
+  useRef,
   useState,
 } from "react";
 import { Check, ChevronDown, Upload } from "lucide-react";
@@ -24,6 +26,7 @@ const SuggestionForm: ForwardRefRenderFunction<SuggestionFormRef, Props> = (
   { setIsClear, setIsConfirm },
   ref
 ) => {
+  const dropdownRef = useRef(null);
   const [formData, setFormData] = useState({
     category: "",
     title: "",
@@ -41,6 +44,25 @@ const SuggestionForm: ForwardRefRenderFunction<SuggestionFormRef, Props> = (
     "Partner program",
     "Other suggestions",
   ];
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !(dropdownRef.current as any).contains(event.target)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -79,7 +101,7 @@ const SuggestionForm: ForwardRefRenderFunction<SuggestionFormRef, Props> = (
       </div>
 
       {/* Select Category */}
-      <div className="relative text-sm text-white">
+      <div className="relative text-sm text-white" ref={dropdownRef}>
         <button
           type="button"
           className="w-full bg-[#161a21] rounded-tl-xl rounded-tr-xl border-b border-b-white/10 px-4 py-3 flex justify-between items-center text-left"

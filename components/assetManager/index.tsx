@@ -4,9 +4,22 @@ import avatar from "@/lib/assets/aM_avatar.png";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useDashboardContext } from "@/context/DashboardContext";
 import { toast } from "react-toastify";
+import copyToClipboardFallback from "@/lib/copyToClipboard";
 
 const AssetManager = () => {
   const { setSwitchAssetManagerModal } = useDashboardContext();
+  const copyToClipboard = (text: string) => {
+    if (
+      navigator.clipboard &&
+      typeof navigator.clipboard.writeText === "function"
+    ) {
+      navigator.clipboard
+        .writeText(text)
+        .catch(() => copyToClipboardFallback(text));
+    } else {
+      copyToClipboardFallback(text);
+    }
+  };
   return (
     <div className="w-full h-full px-8 pt-6 space-y-9 overflow-y-auto custom-scrollbar">
       <section className="px-8 flex items-center gap-6">
@@ -30,7 +43,7 @@ const AssetManager = () => {
                 <span>0904 546 3234</span>
                 <Icon
                   onClick={() => {
-                    navigator.clipboard.writeText("0904 546 3234");
+                    copyToClipboard("0904 546 3234");
                     toast.info("WhatsApp number copied");
                   }}
                   icon="mynaui:copy"
