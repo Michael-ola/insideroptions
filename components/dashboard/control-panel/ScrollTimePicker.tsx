@@ -26,69 +26,56 @@ export default function TimePicker({
     return [...options, ...options, ...options, ...options];
   };
 
-  const hours = generateOptions(24, true); // 0-24
+  const hours = generateOptions(24, true);
   const minutes = generateOptions(60);
   const seconds = generateOptions(60);
 
-  const getScrollPosition = (value: number, count: number) => {
-    return (
-      (value + count * 2) * itemHeight -
-      Math.floor(visibleCount / 2) * itemHeight
-    );
-  };
+  const getScrollPosition = (value: number, count: number) =>
+    (value + count * 2) * itemHeight -
+    Math.floor(visibleCount / 2) * itemHeight;
 
   const scrollTimeouts = useRef<{ [key: string]: NodeJS.Timeout }>({});
 
   const handleScroll =
     (type: "hours" | "minutes" | "seconds") => (e: React.UIEvent) => {
-      const element = e.target as HTMLDivElement;
-      const scrollTop = element.scrollTop;
+      const el = e.target as HTMLDivElement;
       const count = type === "hours" ? 25 : 60;
       const middleOffset = Math.floor(visibleCount / 2) * itemHeight;
 
       clearTimeout(scrollTimeouts.current[type]);
-
       scrollTimeouts.current[type] = setTimeout(() => {
-        const virtualPos = scrollTop + middleOffset;
-        const index = Math.round(virtualPos / itemHeight) % count;
+        const virtualPos = el.scrollTop + middleOffset;
+        let idx = Math.round(virtualPos / itemHeight) % count;
 
-        if (type === "hours" && index === 24) {
-          setTime({ hours: 24, minutes: 0, seconds: 0 });
-          if (wheelsRef.current) {
-            const wheels = wheelsRef.current.querySelectorAll(
-              'div[class*="overflow-y-auto"]'
-            );
-            wheels[0].scrollTop = getScrollPosition(24, 25);
-            wheels[1].scrollTop = getScrollPosition(0, 60);
-            wheels[2].scrollTop = getScrollPosition(0, 60);
-          }
-          return;
-        }
-
+        if (type === "hours" && idx > 8) idx = 8;
         if (
           type === "seconds" &&
           time.hours === 0 &&
           time.minutes === 0 &&
-          index < 5
+          idx < 5
         ) {
-          setTime((prev) => ({ ...prev, seconds: 5 }));
-          element.scrollTop = getScrollPosition(5, 60);
-          return;
+          idx = 5;
         }
 
-        if (type === "hours") {
-          setTime((prev) => ({ ...prev, hours: index }));
-        } else {
-          setTime((prev) => ({ ...prev, [type]: index }));
-        }
+        setTime((prev) =>
+          type === "hours" ? { ...prev, hours: idx } : { ...prev, [type]: idx }
+        );
 
-        element.scrollTop = getScrollPosition(index, count);
+        if (wheelsRef.current) {
+          const wheels = wheelsRef.current.querySelectorAll<HTMLDivElement>(
+            'div[class*="overflow-y-auto"]'
+          );
+          const pos = getScrollPosition(idx, count);
+          if (type === "hours") wheels[0].scrollTop = pos;
+          if (type === "minutes") wheels[1].scrollTop = pos;
+          if (type === "seconds") wheels[2].scrollTop = pos;
+        }
       }, 100);
     };
 
   useEffect(() => {
     if (wheelsRef.current) {
-      const wheels = wheelsRef.current.querySelectorAll(
+      const wheels = wheelsRef.current.querySelectorAll<HTMLDivElement>(
         'div[class*="overflow-y-auto"]'
       );
       wheels[0].scrollTop = getScrollPosition(time.hours, 25);
@@ -105,16 +92,14 @@ export default function TimePicker({
       wheelsRef.current
     ) {
       setTime((prev) => ({ ...prev, seconds: 5 }));
-      const secondsWheel = wheelsRef.current.querySelectorAll(
+      const secondsWheel = wheelsRef.current.querySelectorAll<HTMLDivElement>(
         'div[class*="overflow-y-auto"]'
       )[2];
-      setTimeout(() => {
-        (secondsWheel as HTMLDivElement).scrollTop = getScrollPosition(5, 60);
-      }, 0);
+      setTimeout(() => (secondsWheel.scrollTop = getScrollPosition(5, 60)), 0);
     }
   }, [time.hours, time.minutes, time.seconds]);
 
-  const padZero = (num: number) => num.toString().padStart(2, "0");
+  const pad = (n: number) => n.toString().padStart(2, "0");
 
   return (
     <div className="px-0 rounded-lg shadow-md w-full mx-auto cursor-default">
@@ -128,71 +113,82 @@ export default function TimePicker({
         ref={wheelsRef}
         className="flex justify-between items-center h-48 overflow-hidden relative"
       >
-        {/* Hours (0-24) */}
+        {/* Hours */}
         <div
           className="w-16 h-full z-10 overflow-y-auto snap-y snap-mandatory no-scrollbar"
           onScroll={handleScroll("hours")}
         >
-          {hours.map((hour, index) => (
-            <div
-              key={`hour-${index}`}
-              className={`h-10 flex items-center justify-center text-lg ${
-                hour === time.hours
-                  ? "font-bold text-black dark:text-white"
-                  : "text-gray-500"
-              }`}
-            >
-              {padZero(hour)}
-            </div>
-          ))}
+          {hours.map((h, i) => {
+            const isDisabled = h > 8;
+            const isSelected = h === time.hours;
+            return (
+              <div
+                key={`hour-${i}`}
+                className={`h-10 flex items-center justify-center text-lg ${
+                  isSelected
+                    ? "font-bold text-white"
+                    : isDisabled
+                    ? "text-gray-700"
+                    : "text-gray-500"
+                }`}
+              >
+                {pad(h)}
+              </div>
+            );
+          })}
         </div>
 
-        <span className="text-xl z-10 text-gray-800 dark:text-gray-200">:</span>
+        <span className="text-xl z-10 text-gray-800">:</span>
 
         {/* Minutes */}
         <div
           className={`w-16 h-full z-10 overflow-y-auto snap-y snap-mandatory no-scrollbar ${
-            time.hours === 24 ? "opacity-50 pointer-events-none" : ""
+            time.hours > 8 ? "opacity-50 pointer-events-none" : ""
           }`}
           onScroll={handleScroll("minutes")}
         >
-          {minutes.map((minute, index) => (
-            <div
-              key={`minute-${index}`}
-              className={`h-10 flex items-center justify-center text-lg ${
-                minute === time.minutes
-                  ? "font-bold text-black dark:text-white"
-                  : "text-gray-500"
-              }`}
-            >
-              {padZero(minute)}
-            </div>
-          ))}
+          {minutes.map((m, i) => {
+            const isSelected = m === time.minutes;
+            return (
+              <div
+                key={`min-${i}`}
+                className={`h-10 flex items-center justify-center text-lg ${
+                  isSelected ? "font-bold text-white" : "text-gray-500"
+                }`}
+              >
+                {pad(m)}
+              </div>
+            );
+          })}
         </div>
 
-        <span className="text-xl text-gray-800 z-10 dark:text-gray-200">:</span>
+        <span className="text-xl text-gray-800 z-10">:</span>
 
         {/* Seconds */}
         <div
           className={`w-16 h-full z-10 overflow-y-auto snap-y snap-mandatory no-scrollbar ${
-            time.hours === 24 ? "opacity-50 pointer-events-none" : ""
+            time.hours > 8 ? "opacity-50 pointer-events-none" : ""
           }`}
           onScroll={handleScroll("seconds")}
         >
-          {seconds.map((second, index) => (
-            <div
-              key={`second-${index}`}
-              className={`h-10 flex items-center justify-center text-lg ${
-                second === time.seconds
-                  ? "font-bold text-black dark:text-white"
-                  : time.hours === 0 && time.minutes === 0 && second < 5
-                  ? "text-gray-300 dark:text-zinc-600"
-                  : "text-gray-500"
-              }`}
-            >
-              {padZero(second)}
-            </div>
-          ))}
+          {seconds.map((s, i) => {
+            const isDisabled = time.hours === 0 && time.minutes === 0 && s < 5;
+            const isSelected = s === time.seconds;
+            return (
+              <div
+                key={`sec-${i}`}
+                className={`h-10 flex items-center justify-center text-lg ${
+                  isSelected
+                    ? "font-bold text-white"
+                    : isDisabled
+                    ? "text-gray-700"
+                    : "text-gray-500"
+                }`}
+              >
+                {pad(s)}
+              </div>
+            );
+          })}
         </div>
 
         {/* Highlight overlay */}

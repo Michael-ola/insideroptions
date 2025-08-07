@@ -9,14 +9,18 @@ import { useDashboardContext } from "@/context/DashboardContext";
 interface ConfirmClearModalProps {
   title?: string;
   message?: string;
+  messageTitle?: string;
+  icon?: string;
   canCheck?: boolean;
-  onCancel: () => void;
+  onCancel?: () => void;
   onConfirm: () => void;
 }
 
 const ConfirmModal = ({
   title,
   message,
+  messageTitle,
+  icon,
   canCheck,
   onCancel,
   onConfirm,
@@ -39,7 +43,7 @@ const ConfirmModal = ({
                   {title}
                 </h2>
                 <button
-                  onClick={onCancel}
+                  onClick={onCancel ? onCancel : onConfirm}
                   className="text-white hover:text-gray-400"
                 >
                   <X size={20} />
@@ -50,11 +54,16 @@ const ConfirmModal = ({
             <div className="px-8 pt-6 space-y-8">
               <div className="flex flex-col items-center justify-center gap-5 bg-[#1d2120] py-18 border border-white/5 rounded-xl">
                 <Icon
-                  icon="gridicons:notice-outline"
+                  icon={icon || "gridicons:notice-outline"}
                   width="120"
                   height="120"
                   className="text-yellow-500"
                 />
+                {messageTitle && (
+                  <p className="px-8 text-center text-md md:text-lg font-semibold text-white whitespace-pre-line">
+                    {messageTitle}
+                  </p>
+                )}
                 <p className="px-8 text-center text-sm md:text-lg font-medium text-white whitespace-pre-line">
                   {message}
                 </p>
@@ -87,21 +96,23 @@ const ConfirmModal = ({
               </div>
 
               <div className="w-full flex flex-col-reverse md:flex-row items-center justify-between gap-3 pb-8">
-                <button
-                  onClick={onCancel}
-                  className="w-full flex-1 md:border md:border-primary text-primary py-3 px-6 rounded-xl hover:bg-green-500/10 transition"
-                >
-                  Cancel
-                </button>
+                {onCancel && (
+                  <button
+                    onClick={onCancel}
+                    className="w-full flex-1 md:border md:border-primary text-primary py-3 px-6 rounded-xl hover:bg-green-500/10 transition"
+                  >
+                    Cancel
+                  </button>
+                )}
                 <button
                   disabled={canCheck ? !agreed : undefined}
                   onClick={() => {
                     onConfirm();
-                    onCancel();
+                    onCancel?.();
                   }}
                   className="w-full flex-1 bg-primary text-black font-semibold py-3 px-6 rounded-xl hover:bg-gradient-to-tr  from-primary to-[#b4e6b8] transition"
                 >
-                  Confirm
+                  {onCancel ? "Confirm" : "Done"}
                 </button>
               </div>
             </div>

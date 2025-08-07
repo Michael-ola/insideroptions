@@ -55,9 +55,9 @@ export default function BalanceCard({
     demoBalanceToShow = accountType.toLowerCase() === "demo" ? demoBalance : 0;
   }
 
-  api.profitBalance = profitBalance.toString();
-  api.accounts[0].amount = realBalance.toString();
-  api.accounts[3].amount = demoBalance.toString();
+  api.profitBalance = profitBalance.toFixed(2).toString();
+  api.accounts[0].amount = realBalance.toFixed(2).toString();
+  api.accounts[3].amount = demoBalance.toFixed(2).toString();
 
   const amount =
     accountType?.toLowerCase() === "real"

@@ -8,17 +8,23 @@ import { useDashboardContext } from "@/context/DashboardContext";
 import TRADERS from "@/data/topTraderFeed/traders.json";
 
 export default function TraderActivityCard() {
-  const [traders, setTraders] = useState(TRADERS.slice(0, 5));
+  const [traders, setTraders] = useState(() =>
+    TRADERS.slice(0, 5).map((trader, i) => ({ ...trader, id: i }))
+  );
   const [index, setIndex] = useState(5);
+  const [uniqueId, setUniqueId] = useState(5);
   const { showTraderFeed, setShowTraderFeed } = useDashboardContext();
+
   useEffect(() => {
     const interval = setInterval(() => {
       const next = TRADERS[index % TRADERS.length];
-      setTraders((prev) => [...prev, next]);
+      setTraders((prev) => [...prev, { ...next, id: uniqueId }]);
       setIndex((i) => i + 1);
+      setUniqueId((id) => id + 1);
     }, 3000);
+
     return () => clearInterval(interval);
-  }, [index]);
+  }, [index, uniqueId]);
 
   const visible = traders.slice(-5);
 
@@ -29,7 +35,6 @@ export default function TraderActivityCard() {
       }`}
     >
       <div className="flex justify-between items-center mb-2">
-        {/* <h4 className="text-sm font-semibold">Recent Trades</h4> */}
         <X
           onClick={() => setShowTraderFeed(false)}
           className="w-4 h-4 text-white/70 cursor-pointer ml-auto"
@@ -41,7 +46,7 @@ export default function TraderActivityCard() {
           <AnimatePresence initial={false}>
             {visible.map((trader) => (
               <motion.div
-                key={`${trader.name}-${trader.amount}-${trader.type}`}
+                key={trader.id}
                 layout
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
