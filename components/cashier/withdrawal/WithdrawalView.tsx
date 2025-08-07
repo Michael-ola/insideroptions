@@ -25,7 +25,8 @@ const WithdrawalView = ({
   setIconOrImage,
   setOpenOtp,
 }: Props) => {
-    const dropdownRef = useRef(null);
+  const dropdownRef = useRef(null);
+  const bankTfRef = useRef(null);
   const { traderData } = useDashboardContext();
   const [agreed, setAgreed] = useState<boolean>(false);
 
@@ -62,20 +63,23 @@ const WithdrawalView = ({
     const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
-        !(dropdownRef.current as any).contains(event.target)
+        !(dropdownRef.current as any).contains(event.target) &&
+        bankTfRef.current &&
+        !(bankTfRef.current as any).contains(event.target)
       ) {
         setIsOpen(false);
+        setShowDropdown(false);
       }
     };
 
-    if (isOpen) {
+    if (isOpen || showDropdown) {
       document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isOpen]);
+  }, [isOpen, showDropdown]);
 
   return (
     <div className="w-full h-full space-y-6 text-white p-4 overflow-y-auto custom-scrollbar">
@@ -130,7 +134,7 @@ const WithdrawalView = ({
         </button>
       </div>
 
-      <div className="relative">
+      <div className="relative" ref={bankTfRef}>
         <button
           onClick={() => setShowDropdown((prev) => !prev)}
           className="w-full bg-[#B3B3B3]/3 p-3 rounded-tl-xl rounded-tr-xl border border-white/10 flex items-center justify-between"
@@ -250,7 +254,15 @@ const WithdrawalView = ({
         <input
           type="text"
           className="w-full bg-transparent border border-white/20 px-4 py-3 rounded-xl placeholder:text-white/40 text-sm outline-none focus:border-0 focus:ring-1 focus-within:ring-primary"
-          onChange={(e) => setAccountOrAddress(e.target.value)}
+          onChange={(e) => {
+            const val = e.target.value;
+            if (method === "Bank Transfer") {
+              if (val === "" || /^\d*\.?\d$/.test(val))
+                setAccountOrAddress(val);
+              return;
+            }
+            setAccountOrAddress(e.target.value);
+          }}
           value={accountOrAddress}
           placeholder={
             method === "Bank Transfer"

@@ -41,7 +41,7 @@ const SwapView = () => {
   const getFromAmount = () => {
     return (
       (percent / 100) *
-      (source === "profit" ? profitBalance : referralBalance)
+      (source === "profit" ? profitBalance : source === "real" ? realBalance : referralBalance)
     ).toFixed(2);
   };
 
