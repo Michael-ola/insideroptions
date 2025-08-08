@@ -9,19 +9,19 @@ const TradingChart: React.FC = () => {
     const seriesRef = useRef<ISeriesApi<any> | null>(null);
     const { chartStyle, assetId } = useDashboardContext();
 
-  // Instead of state, use a ref to hold current rightOffset to avoid re-render flicker
-  const rightOffsetRef = useRef(0);
+    // Instead of state, use a ref to hold current rightOffset to avoid re-render flicker
+    const rightOffsetRef = useRef(0);
 
-  useEffect(() => {
-    if (!containerRef.current) return;
+    useEffect(() => {
+        if (!containerRef.current) return;
 
-    const chart = createChart(containerRef.current, chartOptions);
-    chartRef.current = chart;
+        const chart = createChart(containerRef.current, chartOptions);
+        chartRef.current = chart;
 
-    const observer = new ResizeObserver(() => {
-      chart.resize(containerRef.current!.clientWidth, containerRef.current!.clientHeight);
-    });
-    observer.observe(containerRef.current);
+        const observer = new ResizeObserver(() => {
+            chart.resize(containerRef.current!.clientWidth, containerRef.current!.clientHeight);
+        });
+        observer.observe(containerRef.current);
 
         // Add series only once
         createSeries(chart, chartStyle, assetId ?? 1).then((series) => {
@@ -29,51 +29,51 @@ const TradingChart: React.FC = () => {
             chart.timeScale().scrollToRealTime();
         });
 
-    return () => {
-      if (seriesRef.current) {
-        chart.removeSeries(seriesRef.current);
-        seriesRef.current = null;
-      }
-      chart.remove();
-      chartRef.current = null;
-      observer.disconnect();
-    };
-  }, [chartStyle, assetId]);
+        return () => {
+            if (seriesRef.current) {
+                chart.removeSeries(seriesRef.current);
+                seriesRef.current = null;
+            }
+            chart.remove();
+            chartRef.current = null;
+            observer.disconnect();
+        };
+    }, [chartStyle, assetId]);
 
-  useEffect(() => {
-    if (!chartRef.current) return;
+    useEffect(() => {
+        if (!chartRef.current) return;
 
-    const chart = chartRef.current;
+        const chart = chartRef.current;
 
-    const onVisibleRangeChanged = (range: LogicalRange | null) => {
-      if (!range || !seriesRef.current) return;
+        const onVisibleRangeChanged = (range: LogicalRange | null) => {
+            if (!range || !seriesRef.current) return;
 
-      const seriesData = seriesRef.current.data() ?? [];
-      const lastBarTime = seriesData.length > 0 ? seriesData[seriesData.length - 1].time : 0;
-      const scrollPosition = chart.timeScale().scrollPosition() ?? lastBarTime;
+            const seriesData = seriesRef.current.data() ?? [];
+            const lastBarTime = seriesData.length > 0 ? seriesData[seriesData.length - 1].time : 0;
+            const scrollPosition = chart.timeScale().scrollPosition() ?? lastBarTime;
 
-      const newRightOffset = Math.abs(Math.round(scrollPosition));
-      // Only update if changed meaningfully to avoid unnecessary updates
-      if (rightOffsetRef.current !== newRightOffset) {
-        rightOffsetRef.current = newRightOffset;
-        chart.timeScale().applyOptions({ rightOffset: newRightOffset });
-      }
-    };
+            const newRightOffset = Math.abs(Math.round(scrollPosition));
+            // Only update if changed meaningfully to avoid unnecessary updates
+            if (rightOffsetRef.current !== newRightOffset) {
+                rightOffsetRef.current = newRightOffset;
+                chart.timeScale().applyOptions({ rightOffset: newRightOffset });
+            }
+        };
 
-    chart.timeScale().subscribeVisibleLogicalRangeChange(onVisibleRangeChanged);
+        chart.timeScale().subscribeVisibleLogicalRangeChange(onVisibleRangeChanged);
 
-    return () => {
-      chart.timeScale().unsubscribeVisibleLogicalRangeChange(onVisibleRangeChanged);
-    };
-  }, []);
+        return () => {
+            chart.timeScale().unsubscribeVisibleLogicalRangeChange(onVisibleRangeChanged);
+        };
+    }, []);
 
-  return (
-    <div
-      className="h-[100dvh] w-[calc(100vw-var(--side-nav-width))] ml-[var(--side-nav-width)] -mt-[var(--top-nav-height)] max-sm:ml-0 max-sm:w-full max-sm:h-[calc(100dvh-57px)] max-sm:z-5 flex items-center justify-center"
-    >
-      <div className="w-full h-full" ref={containerRef} />
-    </div>
-  );
+    return (
+        <div
+            className="h-[100dvh] w-[calc(100vw-var(--side-nav-width))] ml-[var(--side-nav-width)] -mt-[var(--top-nav-height)] max-sm:ml-0 max-sm:w-full max-sm:h-[calc(100dvh-57px)] max-sm:z-5 flex items-center justify-center"
+        >
+            <div className="w-full h-full" ref={containerRef} />
+        </div>
+    );
 };
 
 export default TradingChart;
