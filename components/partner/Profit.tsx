@@ -6,6 +6,7 @@ import profitBanner from "@/lib/assets/profit_banner.jpg";
 import { useDashboardContext } from "@/context/DashboardContext";
 import { ReferralDetails } from "./PartnerTab";
 import { ReferralBonus } from "./PartnerTab";
+import { format } from "date-fns";
 
 const Profit = ({
   handleNewView,
@@ -52,9 +53,11 @@ const Profit = ({
             key={idx}
             className="grid grid-cols-4 text-[10px] sm:text-xs font-medium px-4 py-2"
           >
-            <span>{item.id}</span>
-            <span>{item.date}</span>
-            <span>{`$${item.traded}`}</span>
+            <span>{item.refId}</span>
+            <span>
+              {format(new Date(item.registrationDate), "dd MMM, yyyy")}
+            </span>
+            <span>${item.traded}</span>
             <span
               className={`capitalize ${
                 item.status.toLowerCase() === "active"
@@ -78,20 +81,21 @@ const Profit = ({
             key={idx}
             className="grid grid-cols-4 text-[10px] sm:text-xs font-medium px-4 py-2"
           >
-            <span>{item.id}</span>
+            <span>{item.refId}</span>
             <span>{item.referred}</span>
-            <span>{item.date}</span>
+            <span>{format(new Date(item.confirmedDate), "dd MMM, yyyy")}</span>
             <span className="flex items-center justify-between">
-              ${item.amount}
-              <span
+              ${item.rewardedAmount}
+              <button
+                disabled={item.isRewarded === "Y"}
                 className={`text-[10px] sm:text-xs p-1.5 rounded-[4px] ${
-                  item.status === "Active"
+                  item.isRewarded === "N"
                     ? "bg-primary text-[#0f1f1c]"
                     : "bg-[#273634] text-gray-400"
                 }`}
               >
                 Redeem
-              </span>
+              </button>
             </span>
           </div>
         ))
@@ -197,9 +201,7 @@ const Profit = ({
                   <div className="px-3 py-1 text-lg">{pageCount}</div>
                 )}
                 <button
-                  onClick={() =>
-                    handlePageChange(page + 1)
-                  }
+                  onClick={() => handlePageChange(page + 1)}
                   disabled={(referralDetails?.page ?? 0) === pageCount}
                   className="disabled:text-white/30"
                 >

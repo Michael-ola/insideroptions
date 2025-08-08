@@ -44,8 +44,13 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
   );
   const [selectedBalance, setSelectedBalance] = useState<string>("demo");
   const [iconOrImage, setIconOrImage] = useState<StaticImageData | string>("");
-  const { showTradeStatus, setShowTradeStatus, setOpenAutoTrade, traderData } =
-    useDashboardContext();
+  const {
+    showTradeStatus,
+    setShowTradeStatus,
+    setOpenAutoTrade,
+    traderData,
+    setAssetId,
+  } = useDashboardContext();
 
   useEffect(() => {
     if (showTradeStatus) {
@@ -90,12 +95,13 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
           selectedBalance === "demo" ? demoAccount?.id : realAccount?.id,
         amount: Number(amount),
         assetId: asset?.id,
-        side: "AUTO",
+        side: null,
         tradingPlan: tradingPlan.toUpperCase(),
         isAutoTrade: true,
       };
       await apiClient.post(`trades`, form);
       setShowTradeStatus(false);
+      setAssetId(asset?.id);
       setOpenAutoTrade(false);
     } catch (error) {
       console.log(error);

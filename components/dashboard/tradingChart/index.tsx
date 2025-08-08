@@ -4,11 +4,10 @@ import { chartOptions, createSeries } from "@/lib/chartSettings";
 import { useDashboardContext } from "@/context/DashboardContext";
 
 const TradingChart: React.FC = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const chartRef = useRef<ReturnType<typeof createChart> | null>(null);
-  const seriesRef = useRef<ISeriesApi<any> | null>(null);
-  const { chartStyle } = useDashboardContext();
-  const assetId = 1;
+    const containerRef = useRef<HTMLDivElement>(null);
+    const chartRef = useRef<ReturnType<typeof createChart> | null>(null);
+    const seriesRef = useRef<ISeriesApi<any> | null>(null);
+    const { chartStyle, assetId } = useDashboardContext();
 
   // Instead of state, use a ref to hold current rightOffset to avoid re-render flicker
   const rightOffsetRef = useRef(0);
@@ -24,10 +23,11 @@ const TradingChart: React.FC = () => {
     });
     observer.observe(containerRef.current);
 
-    createSeries(chart, chartStyle, assetId).then((series) => {
-      seriesRef.current = series;
-      chart.timeScale().scrollToRealTime();
-    });
+        // Add series only once
+        createSeries(chart, chartStyle, assetId ?? 1).then((series) => {
+            seriesRef.current = series;
+            chart.timeScale().scrollToRealTime();
+        });
 
     return () => {
       if (seriesRef.current) {

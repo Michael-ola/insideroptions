@@ -14,6 +14,7 @@ import AutoTradeIcon from "../icons/autoTradeIcon";
 import AutoTradeIconActive from "../icons/autoTradeIcon-active";
 import LogoutIcon from "../icons/logoutIcon";
 import ConfirmModal from "@/components/ConfirmationModal";
+import { apiClient } from "@/lib/api-client";
 
 export const navItems = [
   { label: "Trade", icon: TradeIcon },
@@ -51,6 +52,17 @@ export default function DashboardSidebar() {
     return item;
   });
   const { isAutoTrade, setIsAutoTrade } = useDashboardContext();
+
+  const handleLogout = async () => {
+    try {
+      await apiClient.post(`auth/logout`);
+      localStorage.removeItem("token");
+      localStorage.removeItem("isAutoTrade");
+      window.location.href = "/login";
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <aside
@@ -125,7 +137,7 @@ export default function DashboardSidebar() {
       {/* Logout */}
       <div className="flex flex-col items-center mt-2 max-sm:hidden">
         <button className="flex flex-col items-center text-xs text-red-500 hover:text-red-600 transition-all py-2">
-          <LogoutIcon className="w-5 h-5 mb-1" />
+          <LogoutIcon onClick={handleLogout} className="w-5 h-5 mb-1" />
           Log out
         </button>
       </div>

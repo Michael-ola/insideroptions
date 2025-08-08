@@ -100,6 +100,7 @@ const NINCardUpload = ({ setModal }: { setModal: (val: string) => void }) => {
         <PortalWrapper>
           <ConfirmModal
             onConfirm={confirmClicked}
+            confirmText="Done"
             icon="flowbite:hourglass-outline"
             title=""
             messageTitle="Review in Progress"

@@ -9,17 +9,18 @@ import { apiClient } from "@/lib/api-client";
 import { useDashboardContext } from "@/context/DashboardContext";
 
 type ReferralData = {
-  id: string;
-  date: string;
+  refId: string;
+  registrationDate: Date;
   traded: number;
   status: string;
 };
 type ReferralBonusData = {
-  id: string;
-  date: string;
+  refId: string;
+  confirmedDate: Date;
   referred: string;
-  amount: number;
-  status: string;
+  rewardedAmount: number;
+  isRewarded: "Y" | "N" | string;
+  rewardedDate: Date;
 };
 export type ReferralDetails = {
   data: ReferralData[];
