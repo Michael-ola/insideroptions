@@ -40,10 +40,10 @@ export const chartOptions = {
     horzLine: { labelVisible: false },
   },
   timeScale: {
-    timeVisible: true,
-    secondsVisible: true,
+    timeVisible: false,
+    secondsVisible: false,
     fixLeftEdge: false,
-    visible: true,
+    visible: false,
     barSpacing: 15,
     borderVisible: false,
     tickMarkFormatter: (time: number) => {
