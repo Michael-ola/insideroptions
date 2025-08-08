@@ -90,7 +90,7 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
           selectedBalance === "demo" ? demoAccount?.id : realAccount?.id,
         amount: Number(amount),
         assetId: asset?.id,
-        side: "AUTO",
+        side: null,
         tradingPlan: tradingPlan.toUpperCase(),
         isAutoTrade: true,
       };
