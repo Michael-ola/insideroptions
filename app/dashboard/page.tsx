@@ -18,7 +18,7 @@ import { SeriesType } from "@/lib/models";
 import ZoomButton from "@/components/dashboard/ZoomButton";
 import MobileButtons from "@/components/dashboard/control-panel/MobileButtons";
 import tradingAll from "@/data/trading/all.json";
-import Loader from "@/components/Loader"; // 👈 Import the loader
+import Loader from "@/components/Loader";
 import PortalWrapper from "@/components/PortalWrapper";
 import ConfirmModal from "@/components/ConfirmationModal";
 
@@ -31,6 +31,7 @@ export default function DashboardPage() {
   const [closeConfirmation, setCloseConfirmation] = useState<boolean>(false);
   const [openAutoTrade, setOpenAutoTrade] = useState<boolean>(false);
   const [isAutoTrade, setIsAutoTrade] = useState<string>("");
+  const [assetId, setAssetId] = useState<number | undefined>(1);
   const [showTradeStatus, setShowTradeStatus] = useState<boolean>(false);
   const [switchAssetManagerModal, setSwitchAssetManagerModal] =
     useState<boolean>(false);
@@ -138,6 +139,8 @@ export default function DashboardPage() {
     setSwitchAssetManagerModal,
     openProfileModal,
     setOpenProfileModal,
+    assetId,
+    setAssetId,
   };
 
   return (
