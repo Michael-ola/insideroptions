@@ -6,6 +6,7 @@ interface selectedAssetType {
   icon: string;
   profit: number;
 }
+
 export interface DashboardPropsType {
   openGraphStyleModal: boolean;
   setOpenGraphStyleModal: (val: boolean) => void;
@@ -45,4 +46,6 @@ export interface DashboardPropsType {
   setSwitchAssetManagerModal: (val: boolean) => void;
   openProfileModal: boolean;
   setOpenProfileModal: (val: boolean) => void;
+  assetId: number | undefined;
+  setAssetId: (val: number | undefined) => void;
 }

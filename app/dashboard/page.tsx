@@ -18,7 +18,7 @@ import { SeriesType } from "@/lib/models";
 import ZoomButton from "@/components/dashboard/ZoomButton";
 import MobileButtons from "@/components/dashboard/control-panel/MobileButtons";
 import tradingAll from "@/data/trading/all.json";
-import Loader from "@/components/Loader"; // 👈 Import the loader
+import Loader from "@/components/Loader";
 import PortalWrapper from "@/components/PortalWrapper";
 import ConfirmModal from "@/components/ConfirmationModal";
 
@@ -31,6 +31,7 @@ export default function DashboardPage() {
   const [closeConfirmation, setCloseConfirmation] = useState<boolean>(false);
   const [openAutoTrade, setOpenAutoTrade] = useState<boolean>(false);
   const [isAutoTrade, setIsAutoTrade] = useState<string>("");
+  const [assetId, setAssetId] = useState<number | undefined>(1);
   const [showTradeStatus, setShowTradeStatus] = useState<boolean>(false);
   const [switchAssetManagerModal, setSwitchAssetManagerModal] =
     useState<boolean>(false);
@@ -138,8 +139,11 @@ export default function DashboardPage() {
     setSwitchAssetManagerModal,
     openProfileModal,
     setOpenProfileModal,
+    assetId,
+    setAssetId,
   };
 
+  const [ openNotifier, setOpenNotifier ] = useState(false);
   return (
     <DashboardContext.Provider value={contextValue}>
       <div className="relative max-h-[100dvh] overflow-clip bg-[#01060e] text-white max-sm:flex max-sm:flex-col max-sm:items-center max-sm:justify-end">
@@ -158,13 +162,13 @@ export default function DashboardPage() {
       <GraphStyleModal />
 
       {isLoading && <Loader dashboard />}
-      {openConfirmation && (
+      {openNotifier && (
         <PortalWrapper>
           <ConfirmModal
-            onCancel={() => setOpenConfirmation(false)}
+            onCancel={() => setOpenNotifier(false)}
             onConfirm={() => {
               localStorage.setItem("notifier", "notified");
-              setOpenConfirmation(false);
+              setOpenNotifier(false);
             }}
             confirmText="Allow"
             icon="basil:notification-on-outline"
