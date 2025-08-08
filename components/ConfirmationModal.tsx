@@ -11,9 +11,11 @@ interface ConfirmClearModalProps {
   message?: string;
   messageTitle?: string;
   icon?: string;
+  iconColor?: string;
   canCheck?: boolean;
   onCancel?: () => void;
   onConfirm: () => void;
+  confirmText?: string;
 }
 
 const ConfirmModal = ({
@@ -21,9 +23,11 @@ const ConfirmModal = ({
   message,
   messageTitle,
   icon,
+  iconColor,
   canCheck,
   onCancel,
   onConfirm,
+  confirmText,
 }: ConfirmClearModalProps) => {
   const { traderData } = useDashboardContext();
   const [agreed, setAgreed] = useState<boolean>(false);
@@ -57,7 +61,7 @@ const ConfirmModal = ({
                   icon={icon || "gridicons:notice-outline"}
                   width="120"
                   height="120"
-                  className="text-yellow-500"
+                  className={`${iconColor || "text-yellow-500"}`}
                 />
                 {messageTitle && (
                   <p className="px-8 text-center text-md md:text-lg font-semibold text-white whitespace-pre-line">
@@ -112,7 +116,7 @@ const ConfirmModal = ({
                   }}
                   className="w-full flex-1 bg-primary text-black font-semibold py-3 px-6 rounded-xl hover:bg-gradient-to-tr  from-primary to-[#b4e6b8] transition"
                 >
-                  {onCancel ? "Confirm" : "Done"}
+                  {confirmText || "Confirm"}
                 </button>
               </div>
             </div>

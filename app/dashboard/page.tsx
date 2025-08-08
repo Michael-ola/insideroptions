@@ -19,6 +19,8 @@ import ZoomButton from "@/components/dashboard/ZoomButton";
 import MobileButtons from "@/components/dashboard/control-panel/MobileButtons";
 import tradingAll from "@/data/trading/all.json";
 import Loader from "@/components/Loader"; // 👈 Import the loader
+import PortalWrapper from "@/components/PortalWrapper";
+import ConfirmModal from "@/components/ConfirmationModal";
 
 export default function DashboardPage() {
   const [openGraphStyleModal, setOpenGraphStyleModal] = useState(false);
@@ -47,9 +49,9 @@ export default function DashboardPage() {
       profit: 0,
     },
   ]);
-    const [openProfileModal, setOpenProfileModal] = useState<boolean>(false);
+  const [openProfileModal, setOpenProfileModal] = useState<boolean>(false);
 
-  const [isLoading, setIsLoading] = useState(true); // ✅ 1. Track loading state
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchTrader = async () => {
     try {
@@ -82,13 +84,17 @@ export default function DashboardPage() {
 
   useEffect(() => {
     const init = async () => {
-      await Promise.all([fetchTrader(), fetchEURUSD()]); // ✅ wait for both
+      await Promise.all([fetchTrader(), fetchEURUSD()]);
       if (typeof window !== "undefined") {
         const isAutoTrade = localStorage.getItem("isAutoTrade") ?? "";
+        const notifier = localStorage.getItem("notifier") ?? "";
         setIsAutoTrade(isAutoTrade);
         setSelectedSideNavTab(isAutoTrade || "Trade");
+        if (!notifier) {
+          setOpenConfirmation(true);
+        }
       }
-      setIsLoading(false); // ✅ done loading
+      setIsLoading(false);
     };
     init();
   }, []);
@@ -152,6 +158,22 @@ export default function DashboardPage() {
       <GraphStyleModal />
 
       {isLoading && <Loader dashboard />}
+      {openConfirmation && (
+        <PortalWrapper>
+          <ConfirmModal
+            onCancel={() => setOpenConfirmation(false)}
+            onConfirm={() => {
+              localStorage.setItem("notifier", "notified");
+              setOpenConfirmation(false);
+            }}
+            confirmText="Allow"
+            icon="basil:notification-on-outline"
+            iconColor="text-primary"
+            title="Notification"
+            message="Please enable notifications to be the first to know about news, updates, and exclusive offers."
+          />
+        </PortalWrapper>
+      )}
     </DashboardContext.Provider>
   );
 }
