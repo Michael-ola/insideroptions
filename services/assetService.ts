@@ -1,6 +1,6 @@
 import { Asset } from "@/lib/models";
 import { apiClient } from "../lib/api-client";
-import type { PriceHistory } from "@/lib/models";
+import type { Price, PriceHistory } from "@/lib/models";
 
 export const fetchAssets = async () => {
   return apiClient.get<Asset[]>("/assets")
@@ -28,7 +28,7 @@ export const streamAssetPriceByAssetId = async (
 ): Promise<() => void> => {
   if (typeof window === "undefined") {
     console.error("SSE is not available server-side.");
-    return () => { };
+    return () => {};
   }
 
   let token = localStorage.getItem("token");
@@ -41,11 +41,14 @@ export const streamAssetPriceByAssetId = async (
     let raw = event.data;
     if (raw.startsWith("data:")) raw = raw.slice(5);
     try {
-      const data: PriceHistory = JSON.parse(raw);
-      const unixTime = Math.floor(new Date(data.timestamp).getTime() / 1000);
+      raw = raw.trim();
+      if (!raw) return; // Skip empty messages
+      const data: Price = JSON.parse(raw);
+      const timestampMs = new Date(data.timestamp).getTime(); // milliseconds since epoch
+      const unixTime = timestampMs / 1000; // seconds with decimals, no flooring
       onPriceUpdate({ price: data.price, time: unixTime });
     } catch (err) {
-      console.error("Failed to parse SSE message:", err);
+      console.error("Failed to parse SSE message:", JSON.stringify(raw), err);
     }
   };
 
@@ -62,10 +65,8 @@ export const streamAssetPriceByAssetId = async (
     console.error("SSE connection error", eventSource?.readyState);
     eventSource?.close();
 
-    // Only attempt reconnect if not exceeded max attempts
     if (reconnectAttempts < maxReconnectAttempts) {
       reconnectAttempts++;
-      // Attempt token refresh only if connecting
       if (eventSource?.readyState === EventSource.CONNECTING) {
         console.log("SSE closed. Attempting token refresh...");
         try {
@@ -78,7 +79,6 @@ export const streamAssetPriceByAssetId = async (
             const { accessToken: newToken } = await res.json();
             localStorage.setItem("token", newToken);
             token = newToken;
-            // Add a small delay before reconnecting
             reconnectTimeout = setTimeout(() => {
               initiateSSEStream(newToken);
             }, 1000);
@@ -95,7 +95,6 @@ export const streamAssetPriceByAssetId = async (
   };
 
   const initiateSSEStream = (accessToken: string) => {
-    // Clean up any previous EventSource and timeout
     if (eventSource) {
       eventSource.close();
       eventSource = null;
@@ -108,7 +107,7 @@ export const streamAssetPriceByAssetId = async (
     eventSource = new EventSource(url);
 
     eventSource.onopen = () => {
-      reconnectAttempts = 0; // Reset on successful open
+      reconnectAttempts = 0;
       console.log("SSE connection opened");
     };
 
@@ -117,14 +116,12 @@ export const streamAssetPriceByAssetId = async (
     eventSource.onerror = handleError;
   };
 
-  // 👇 Start the stream if token is available
   if (token) {
     initiateSSEStream(token);
   } else {
     console.error("No access token. Cannot open SSE.");
   }
 
-  // 🧹 Cleanup method
   return () => {
     if (eventSource) {
       eventSource.close();
@@ -136,3 +133,4 @@ export const streamAssetPriceByAssetId = async (
     }
   };
 };
+

@@ -90,3 +90,8 @@ export type Candle = {
   low: number;
   close: number;
 };
+
+export type Price = {
+  price: number;
+  timestamp: string;
+};
