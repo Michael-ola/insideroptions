@@ -143,6 +143,7 @@ export default function DashboardPage() {
     setAssetId,
   };
 
+  const [ openNotifier, setOpenNotifier ] = useState(false);
   return (
     <DashboardContext.Provider value={contextValue}>
       <div className="relative max-h-[100dvh] overflow-clip bg-[#01060e] text-white max-sm:flex max-sm:flex-col max-sm:items-center max-sm:justify-end">
@@ -161,13 +162,13 @@ export default function DashboardPage() {
       <GraphStyleModal />
 
       {isLoading && <Loader dashboard />}
-      {openConfirmation && (
+      {openNotifier && (
         <PortalWrapper>
           <ConfirmModal
-            onCancel={() => setOpenConfirmation(false)}
+            onCancel={() => setOpenNotifier(false)}
             onConfirm={() => {
               localStorage.setItem("notifier", "notified");
-              setOpenConfirmation(false);
+              setOpenNotifier(false);
             }}
             confirmText="Allow"
             icon="basil:notification-on-outline"
