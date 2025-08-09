@@ -95,3 +95,22 @@ export type Price = {
   price: number;
   timestamp: string;
 };
+
+export interface Trade {
+  id: number;
+  accountId: number;
+  assetId: number;
+  tradeType: "BUY" | "SELL";
+  entryPrice: number;
+  exitPrice: number | null;
+  tradingPlan: string;
+  tradeDate: string; // ISO date string
+  lastModifiedDate: string; // ISO date string
+  durationDays: number | null;
+  tradeAmount: number;
+  tradeProfit: number | null;
+  isAutomated: "Y" | "N";
+  initiatedDate: string; // ISO date string
+  expiryDate: string; // ISO date string
+  status: "OPEN" | "CLOSED" | string;
+}
