@@ -92,7 +92,7 @@ export default function DashboardPage() {
         setIsAutoTrade(isAutoTrade);
         setSelectedSideNavTab(isAutoTrade || "Trade");
         if (!notifier) {
-          setOpenConfirmation(true);
+          setOpenNotifier(true);
         }
       }
       setIsLoading(false);
