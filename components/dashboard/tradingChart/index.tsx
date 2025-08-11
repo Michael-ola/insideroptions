@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { createChart, ISeriesApi, LogicalRange } from "lightweight-charts";
+import { createChart, ISeriesApi } from "lightweight-charts";
 import { chartOptions, createSeries } from "@/lib/chartSettings";
 import { useDashboardContext } from "@/context/DashboardContext";
 
@@ -8,9 +8,7 @@ const TradingChart: React.FC = () => {
     const chartRef = useRef<ReturnType<typeof createChart> | null>(null);
     const seriesRef = useRef<ISeriesApi<any> | null>(null);
     const { chartStyle, assetId } = useDashboardContext();
-
-    // Instead of state, use a ref to hold current rightOffset to avoid re-render flicker
-    const rightOffsetRef = useRef(0);
+    // const [latestCoord, setLatestCoord] = React.useState<{ x: number; y: number } | null>(null);
 
     useEffect(() => {
         if (!containerRef.current) return;
@@ -40,33 +38,6 @@ const TradingChart: React.FC = () => {
         };
     }, [chartStyle, assetId]);
 
-    useEffect(() => {
-        if (!chartRef.current) return;
-
-        const chart = chartRef.current;
-
-        const onVisibleRangeChanged = (range: LogicalRange | null) => {
-            if (!range || !seriesRef.current) return;
-
-            const seriesData = seriesRef.current.data() ?? [];
-            const lastBarTime = seriesData.length > 0 ? seriesData[seriesData.length - 1].time : 0;
-            const scrollPosition = chart.timeScale().scrollPosition() ?? lastBarTime;
-
-            const newRightOffset = Math.abs(Math.round(scrollPosition));
-            // Only update if changed meaningfully to avoid unnecessary updates
-            if (rightOffsetRef.current !== newRightOffset) {
-                rightOffsetRef.current = newRightOffset;
-                chart.timeScale().applyOptions({ rightOffset: newRightOffset });
-            }
-        };
-
-        chart.timeScale().subscribeVisibleLogicalRangeChange(onVisibleRangeChanged);
-
-        return () => {
-            chart.timeScale().unsubscribeVisibleLogicalRangeChange(onVisibleRangeChanged);
-        };
-    }, []);
-
     return (
         <div
             className="h-[100dvh] w-[calc(100vw-var(--side-nav-width))] ml-[var(--side-nav-width)] -mt-[var(--top-nav-height)] max-sm:ml-0 max-sm:w-full max-sm:h-[calc(100dvh-57px)] max-sm:z-5 flex items-center justify-center"
@@ -77,4 +48,3 @@ const TradingChart: React.FC = () => {
 };
 
 export default TradingChart;
-
