@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import avatar from "@/lib/assets/aM_avatar.png";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useDashboardContext } from "@/context/DashboardContext";
@@ -7,6 +7,16 @@ import { toast } from "react-toastify";
 import copyToClipboardFallback from "@/lib/copyToClipboard";
 
 const AssetManager = () => {
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const { setSwitchAssetManagerModal } = useDashboardContext();
   const copyToClipboard = (text: string) => {
     if (
@@ -88,11 +98,24 @@ const AssetManager = () => {
       </section>
       <div className="pb-8 pt-12">
         <button
-          onClick={() => setSwitchAssetManagerModal(true)}
-          className="w-full px-6 py-3 rounded-xl bg-primary cursor-pointer text-black text-sm hover:bg-gradient-to-r hover:from-[#99E39E] hover:to-[#b3ffb8] transition-all duration-300"
+          disabled={isMobile}
+          onClick={() => {
+            if (isMobile) {
+              return;
+            }
+            setSwitchAssetManagerModal(true);
+          }}
+          className={`w-full px-6 py-3 rounded-xl ${
+            isMobile
+              ? "bg-[#171f24] cursor-not-allowed text-white/60"
+              : "bg-primary cursor-pointer hover:bg-gradient-to-r hover:from-[#99E39E] hover:to-[#b3ffb8] text-black transition-all duration-300"
+          } text-sm`}
         >
           Asset Manager Center
         </button>
+        <p className="mt-2 text-center lg:hidden text-white/60 text-sm">
+          AMC available on desktop view only!
+        </p>
       </div>
     </div>
   );

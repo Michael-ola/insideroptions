@@ -27,29 +27,40 @@ apiClient.interceptors.response.use(
     console.log("Interceptor caught error", error);
     return error.response?.status === 401 &&
       !originalRequest._retry &&
-      window !== undefined
+      typeof window !== undefined
       ? handle401Error(originalRequest)
       : Promise.reject(error);
   }
 );
 
+let refreshPromise: Promise<any> | null = null;
 const handle401Error = async (
   originalRequest: InternalAxiosRequestConfig & { _retry?: boolean }
 ) => {
   originalRequest._retry = true;
-  return apiClient
-    .post(`/auth/refresh-token`)
-    .then((res) => {
-      const newToken = res.data.accessToken;
+  if (!refreshPromise) {
+    refreshPromise = apiClient.post(`/auth/refresh-token`).finally(() => {
+      refreshPromise = null;
+    });
+  }
+
+  try {
+    const res = await refreshPromise;
+    const newToken = res.data.accessToken;
+    if (typeof window !== "undefined") {
       localStorage.setItem("token", newToken);
-      originalRequest.headers.set("Authorization", `Bearer ${newToken}`);
-      return apiClient(originalRequest);
-    })
-    .catch((refreshError) => {
+    }
+    if (originalRequest.headers) {
+      originalRequest.headers["Authorization"] = `Bearer ${newToken}`;
+    }
+    return apiClient(originalRequest);
+  } catch (err) {
+    if (typeof window !== "undefined") {
       localStorage.removeItem("token");
       window.location.href = "/login";
-      return Promise.reject(refreshError);
-    });
+    }
+    return Promise.reject(err);
+  }
 };
 
 const attachAuthToken = (

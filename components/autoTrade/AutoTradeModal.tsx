@@ -35,6 +35,7 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
   const [view, setView] = useState<string>("Current Investment");
   const [isStartAutoTrade, setIsStartAutoTrade] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [tradingPlan, setTradingPlan] = useState<string>("Starter");
   const [amount, setAmount] = useState<string | number>("");
   const [selectedAsset, setSelectedAsset] = useState<string>("EUR/USD");
@@ -90,6 +91,7 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
 
   const startAutoTrade = async () => {
     try {
+      setIsSubmitting(true);
       const form = {
         accountId:
           selectedBalance === "demo" ? demoAccount?.id : realAccount?.id,
@@ -100,13 +102,15 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
         isAutoTrade: true,
       };
       await apiClient.post(`trades`, form);
-      setShowTradeStatus(false);
       setAssetId(asset?.id);
+      setIsSubmitting(false);
+      setShowTradeStatus(false);
       setOpenAutoTrade(false);
     } catch (error) {
       console.log(error);
       const err = getErrorMessage(error);
       toast.error(err);
+      setIsSubmitting(false);
     }
   };
 
@@ -187,6 +191,7 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
             onCancel={() => setIsStartAutoTrade(false)}
             onConfirm={startAutoTrade}
             canCheck
+            isLoading={isSubmitting}
             title="Auto trade"
             message={`You are about to trade for ${mins} with Trade Amount $${Number(
               amount
