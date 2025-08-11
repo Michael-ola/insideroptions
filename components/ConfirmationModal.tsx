@@ -5,6 +5,7 @@ import { Check, X } from "lucide-react";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { AnimatePresence, motion } from "framer-motion";
 import { useDashboardContext } from "@/context/DashboardContext";
+import { RiLoader4Line } from "@remixicon/react";
 
 interface ConfirmClearModalProps {
   title?: string;
@@ -16,6 +17,7 @@ interface ConfirmClearModalProps {
   onCancel?: () => void;
   onConfirm: () => void;
   confirmText?: string;
+  isLoading?: boolean;
 }
 
 const ConfirmModal = ({
@@ -28,6 +30,7 @@ const ConfirmModal = ({
   onCancel,
   onConfirm,
   confirmText,
+  isLoading,
 }: ConfirmClearModalProps) => {
   const { traderData } = useDashboardContext();
   const [agreed, setAgreed] = useState<boolean>(false);
@@ -109,13 +112,21 @@ const ConfirmModal = ({
                   </button>
                 )}
                 <button
-                  disabled={canCheck ? !agreed : undefined}
+                  disabled={canCheck && (!agreed || isLoading)}
                   onClick={() => {
+                    if (canCheck && (!agreed || isLoading)) return;
                     onConfirm();
                     onCancel?.();
                   }}
-                  className="w-full flex-1 bg-primary text-black font-semibold py-3 px-6 rounded-xl hover:bg-gradient-to-tr  from-primary to-[#b4e6b8] transition"
+                  className={`w-full flex-1 text-black font-semibold py-3 px-6 rounded-xl ${
+                    canCheck && (!agreed || isLoading)
+                      ? "bg-[#171f24] cursor-not-allowed text-white/60"
+                      : "bg-primary cursor-pointer hover:bg-gradient-to-tr  from-primary to-[#b4e6b8] transition"
+                  } `}
                 >
+                  {isLoading && (
+                    <RiLoader4Line className="size-5 mr-2 animate-spin" />
+                  )}{" "}
                   {confirmText || "Confirm"}
                 </button>
               </div>
