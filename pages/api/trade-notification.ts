@@ -8,10 +8,10 @@ const MAX_BACKOFF_MS = 30000;
 const CONNECTION_TIMEOUT_MS = 8000;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-    const { token, id: assetId } = req.query;
+    const { token, id: accountId } = req.query;
 
-    if (!isValidParams(token, assetId)) {
-        return res.status(400).json({ error: "Missing or invalid token or asset ID" });
+    if (!isValidParams(token, accountId)) {
+        return res.status(400).json({ error: "Missing or invalid token or account ID" });
     }
 
     if (req.method === "OPTIONS") {
@@ -36,7 +36,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
         const upstream = await retryConnectToBackendStream(
             String(token),
-            String(assetId),
+            String(accountId),
             () => clientClosed,
         );
 
@@ -56,20 +56,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         await forwardStream(reader, decoder, res, () => clientClosed);
 
-        clearInterval(pingInterval);
-        res.end();
-
     } catch (err) {
         console.error("💥 Fatal error in proxy handler:", err);
         if (!res.headersSent) res.status(500).json({ error: "Proxy stream failure" });
     }
 };
 
-const isValidParams = (
-    token: string | string[] | undefined,
-    assetId: string | string[] | undefined
-): boolean => {
-    return typeof token === "string" && typeof assetId === "string";
+const isValidParams = (token: string | string[] | undefined, tradeId: string | string[] | undefined): boolean => {
+    return typeof token === "string" && typeof tradeId === "string";
 };
 
 export const config = {
@@ -87,14 +81,11 @@ const setupSSEHeaders = (res: NextApiResponse) => {
     res.setHeader("Transfer-Encoding", "chunked");
     res.setHeader("Content-Encoding", "identity");
     res.setHeader("Access-Control-Allow-Origin", frontendBaseUrl);
-    res.setHeader(
-        "Access-Control-Allow-Headers",
-        "Content-Type, Accept, Authorization, X-Requested-With, Origin"
-    );
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, Authorization, X-Requested-With, Origin");
     res.setHeader("Access-Control-Allow-Credentials", "true");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
     res.flushHeaders();
-    res.write(":\n\n"); // Kickstart SSE connection with a comment line
+    res.write(":\n\n"); // Kickstart
 };
 
 const setupKeepAlivePing = (res: NextApiResponse, isClosed: () => boolean): NodeJS.Timeout => {
@@ -109,32 +100,14 @@ const forwardStream = async (
     res: NextApiResponse,
     isClosed: () => boolean
 ) => {
-    let buffer = "";
-
     try {
         while (!isClosed()) {
             const { done, value } = await reader.read();
             if (done || isClosed()) break;
 
-            buffer += decoder.decode(value, { stream: true });
-
-            // Split on SSE event delimiter (two newlines)
-            const parts = buffer.split("\n\n");
-
-            // Keep last partial event in buffer
-            buffer = parts.pop() || "";
-
-            for (const event of parts) {
-                if (event.trim()) {
-                    // Ensure each event ends with double newline per SSE spec
-                    res.write(event + "\n\n");
-                }
-            }
-        }
-
-        // Flush remaining buffer if any
-        if (buffer.trim()) {
-            res.write(buffer + "\n\n");
+            const chunk = decoder.decode(value, { stream: true }).trim();
+            if (!chunk) continue;
+            res.write(Buffer.from(value));
         }
     } catch (err) {
         console.error("❌ Error forwarding SSE:", err);
@@ -143,7 +116,7 @@ const forwardStream = async (
 
 const retryConnectToBackendStream = async (
     token: string,
-    assetId: string,
+    accountId: string,
     isClosed: () => boolean
 ): Promise<Response | null> => {
     let retries = 0;
@@ -163,7 +136,7 @@ const retryConnectToBackendStream = async (
                 signal: controller.signal,
             };
 
-            const response = await fetch(`${apiBaseUrl}/api/v1/prices/${assetId}/stream`, requestProps);
+            const response = await fetch(`${apiBaseUrl}/api/v1/trades/${accountId}/stream`, requestProps);
 
             clearTimeout(timeout);
 
@@ -173,6 +146,7 @@ const retryConnectToBackendStream = async (
             }
 
             console.warn(`⚠️ Backend responded with ${response.status}. Retrying...`);
+
         } catch (error) {
             console.error(`⛔ Connection attempt ${retries + 1} failed:`, error);
         }
@@ -181,11 +155,10 @@ const retryConnectToBackendStream = async (
         if (isClosed()) break;
 
         console.log(`🔁 Retrying in ${Math.min(delay, MAX_BACKOFF_MS)}ms...`);
-        await new Promise((r) => setTimeout(r, delay));
-        delay = Math.min(delay * 2, MAX_BACKOFF_MS);
+        await new Promise(res => setTimeout(res, delay));
+        delay = Math.min(delay * 2, MAX_BACKOFF_MS); // Exponential backoff
     }
 
     return null;
 };
-
 export default handler;
