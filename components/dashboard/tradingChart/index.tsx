@@ -8,7 +8,8 @@ const TradingChart: React.FC = () => {
     const chartRef = useRef<ReturnType<typeof createChart> | null>(null);
     const seriesRef = useRef<ISeriesApi<any> | null>(null);
     const { chartStyle, assetId } = useDashboardContext();
-    
+    // const [latestCoord, setLatestCoord] = React.useState<{ x: number; y: number } | null>(null);
+
     useEffect(() => {
         if (!containerRef.current) return;
 
