@@ -9,49 +9,37 @@ import { toast } from "react-toastify";
 import { apiClient } from "@/lib/api-client";
 import { useDashboardContext } from "@/context/DashboardContext";
 import Loader from "../Loader";
+import { Asset } from "./AutoTradeModal";
 
-type Transaction = {
-  id: string;
-  duration: string;
-  assetName: string;
-  tradedBalance: number;
-  profitPercent: number;
-  amount: number | string;
-  tradingPlan: string;
-  profitLimit: number;
-};
 type History = {
-  transactions: Transaction[];
-  nextCursorId: number | null;
-  hasMore: boolean;
+  id: string;
+  entryPrice: number;
+  assetId: number;
+  duration: string;
+  tradedBalance: number;
+  tradeAmount: number;
+  tradingPlan: string;
+  tradeProfit: number | null;
+  initiatedDate: Date;
+  expiryDate: Date;
+  durationDays: number | null;
+  profitValue: number | null;
 };
+
 interface TradeStatusProps {
   onClose: () => void;
-  duration: string;
-  asset: string | undefined;
-  profitPercent: number | undefined;
-  tradedBalance: number;
-  amount: string | number;
-  tradingPlan: string;
-  profitLimit: number;
   handleViewChange: (val: string) => void;
 }
 
 const TradeStatus: React.FC<TradeStatusProps> = ({
   onClose,
-  duration,
-  asset,
-  profitPercent,
-  tradedBalance,
-  amount,
-  tradingPlan,
-  profitLimit,
   handleViewChange,
 }) => {
   const { traderData } = useDashboardContext();
   const [reverse, setReverse] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [history, setHistory] = useState<History | null>(null);
+  const [history, setHistory] = useState<History[]>([]);
+  const [assets, setAssets] = useState<Asset[] | null>(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -60,35 +48,51 @@ const TradeStatus: React.FC<TradeStatusProps> = ({
     return () => clearInterval(interval);
   }, []);
 
-  const initialMins = parseInt(duration.split("mins")[0].replace(/,/g, ""), 10);
-  const [minutes, setMinutes] = useState(initialMins);
-  const [seconds, setSeconds] = useState(60);
+  const [countdowns, setCountdowns] = useState<{
+    [id: string]: { mins: number; secs: number };
+  }>({});
+
   useEffect(() => {
+    getAssetLists();
     fetchAutoTradeHistory();
-    const interval = setInterval(() => {
-      setSeconds((prevSec) => {
-        if (prevSec === 0) {
-          if (minutes > 0) {
-            setMinutes((prevMins) => prevMins - 1);
-            return 59;
-          } else {
-            clearInterval(interval);
-            return 0;
-          }
-        }
-        return prevSec - 1;
-      });
-    }, 1000);
+  }, []);
 
-    return () => clearInterval(interval);
-  }, [minutes]);
+  const getAssetLists = async () => {
+    try {
+      const res = await apiClient.get("/assets/");
+      setAssets(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  const realAccount = traderData?.accounts.find(
+    (account) => account.accountType === "INDIVIDUAL"
+  );
 
   const fetchAutoTradeHistory = async () => {
     try {
-      const res = await apiClient.get(`trades/${traderData?.id}`);
+      const res = await apiClient.get(`trades/auto-trades/${realAccount?.id}`);
       setHistory(res.data);
+      const timers = res.data.map((tx: History) => {
+        const expiry = new Date(tx.expiryDate);
+        return setInterval(() => {
+          const now = new Date();
+          const diffMs = expiry.getTime() - now.getTime();
+          const totalSeconds = Math.max(Math.floor(diffMs / 1000), 0);
+
+          const mins = Math.floor(totalSeconds / 60);
+          const secs = totalSeconds % 60;
+
+          setCountdowns((prev) => ({
+            ...prev,
+            [tx.id]: { mins, secs },
+          }));
+        }, 1000);
+      });
+
       setIsLoading(false);
+      return () => timers.forEach((t: number) => clearInterval(t));
     } catch (error) {
       const err = getErrorMessage(error);
       console.log(error);
@@ -97,11 +101,21 @@ const TradeStatus: React.FC<TradeStatusProps> = ({
     }
   };
 
+  const getAssetName = (assetId: number) => {
+    const asset = assets?.find((asset: Asset) => asset.id === assetId);
+    return asset ? asset.assetName : "Unknown Asset";
+  };
+
+  const getAssetProfitPercent = (assetId: number) => {
+    const asset = assets?.find((asset: Asset) => asset.id === assetId);
+    return asset ? asset.profit : "Unknown Asset";
+  };
+
   if (isLoading) return <Loader />;
 
   return (
     <div className="w-full h-full px-6 space-y-6 text-white">
-      {history?.transactions.map((tx) => (
+      {history?.map((tx) => (
         <div
           key={tx.id}
           className="w-full bg-[#0f1c1b] rounded-xl px-4 py-6 space-y-4"
@@ -109,17 +123,18 @@ const TradeStatus: React.FC<TradeStatusProps> = ({
           <div className="flex justify-between items-center gap-3">
             <AnimatedCircularProgress size={100} duration={1} reverse={reverse}>
               <div className="flex items-center justify-center text-sm font-medium">
-                {minutes}:{seconds.toString().padStart(2, "0")}
+                {countdowns[tx.id]?.mins ?? 0}:
+                {(countdowns[tx.id]?.secs ?? 0).toString().padStart(2, "0")}
               </div>
             </AnimatedCircularProgress>
             <div className="flex items-center gap-2 bg-[#1d2a28] px-4 py-2 rounded-lg text-xs">
               <Image src={euro} alt="euro" className="w-5 h-auto" />
               <div className="flex flex-col gap-1">
-                <p className="text-white">{tx?.assetName || asset}</p>
+                <p className="text-white">{getAssetName(tx?.assetId)}</p>
                 <span className="text-white/60 font-medium">
                   TP •{" "}
                   <span className="text-primary">
-                    {tx?.profitPercent || profitPercent}%
+                    {getAssetProfitPercent(tx?.assetId)}%
                   </span>
                 </span>
               </div>
@@ -128,26 +143,26 @@ const TradeStatus: React.FC<TradeStatusProps> = ({
 
           <div className="text-center">
             <p className="text-sm text-white/60">Traded balance:</p>
-            <p className="text-xl font-bold">
-              ${tx?.tradedBalance.toFixed(2) || tradedBalance.toFixed(2)}
-            </p>
+            <p className="text-xl font-bold">${tx?.tradeProfit || "0.00"}</p>
           </div>
 
           <div className="space-y-2 text-sm">
             <div className="flex justify-between text-white/60">
               <span>Amount</span>
               <span className="text-white font-semibold">
-                ${tx?.amount || Number(amount).toFixed(2)}
+                ${tx?.tradeAmount.toFixed(2)}
               </span>
             </div>
             <div className="flex justify-between text-white/60">
               <span>Trading Plan</span>
-              <span className="text-white font-semibold">{tradingPlan}</span>
+              <span className="text-white font-semibold">
+                {tx?.tradingPlan}
+              </span>
             </div>
             <div className="flex justify-between text-white/60">
               <span>Profit limit</span>
               <span className="text-white font-semibold">
-                ${tx?.profitLimit.toFixed(2) || profitLimit.toFixed(2)}
+                ${tx?.profitValue || "0.00"}
               </span>
             </div>
           </div>

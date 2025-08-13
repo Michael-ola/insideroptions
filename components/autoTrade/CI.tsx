@@ -57,6 +57,8 @@ const CI = ({
   assets,
   selectedBalance,
   setSelectedBalance,
+  setProfitValue,
+  profitValue,
 }: {
   onClose: () => void;
   handleViewChange: (val: string) => void;
@@ -72,6 +74,8 @@ const CI = ({
   assets: Asset[] | null;
   selectedBalance: string;
   setSelectedBalance: (val: string) => void;
+  setProfitValue: (val: number | null) => void;
+  profitValue: number | null;
 }) => {
   const { traderData } = useDashboardContext();
 
@@ -145,7 +149,7 @@ const CI = ({
     },
   ];
 
-  const mins = selectedTradeOption.split("/")[0];
+  // const mins = selectedTradeOption.split("/")[0];
   const perc = selectedTradeOption.split("/")[2].split("%")[0];
   const day = selectedTradeOption.split("/")[1].split("days")[0];
 
@@ -155,7 +159,8 @@ const CI = ({
       setAmount(val);
     }
   };
-  const profitValue = (Number(amount) * Number(perc) * Number(day)) / 30 / 100;
+  const profit = (Number(amount) * Number(perc) * Number(day)) / 30 / 100;
+  setProfitValue(profit);
   const handleAutoTrade = () => {
     const val = validationCheck();
     if (val === true) {
@@ -331,13 +336,6 @@ const CI = ({
       {showTradeStatus && (
         <TradeStatus
           onClose={onClose}
-          duration={mins}
-          asset={asset?.assetName}
-          tradedBalance={800}
-          profitPercent={asset?.profit}
-          amount={amount}
-          tradingPlan={tradingPlan}
-          profitLimit={Number(profitValue)}
           handleViewChange={handleViewChange}
         />
       )}

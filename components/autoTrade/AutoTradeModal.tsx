@@ -52,6 +52,7 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
     traderData,
     setAssetId,
   } = useDashboardContext();
+  const [profitValue, setProfitValue] = useState<number | null>(null);
 
   useEffect(() => {
     if (showTradeStatus) {
@@ -100,6 +101,7 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
         side: "AUTO",
         tradingPlan: tradingPlan.toUpperCase(),
         isAutoTrade: true,
+        profitValue,
       };
       await apiClient.post(`trades`, form);
       setAssetId(asset?.id);
@@ -140,6 +142,8 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
             showTradeStatus={showTradeStatus}
             setIsStartAutoTrade={setIsStartAutoTrade}
             assets={assets}
+            setProfitValue={setProfitValue}
+            profitValue={profitValue}
           />
         );
       case "Trading Plan":
