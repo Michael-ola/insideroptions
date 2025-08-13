@@ -167,7 +167,7 @@ export default function DashboardPage() {
         {selectedSideNavTab === "Auto trade" &&
           !showTradeStatus &&
           !openAutoTrade &&
-          activeAutoTrade.length !== 0 && <AutoTradeButton />}
+          activeAutoTrade.length > 0 && <AutoTradeButton />}
         <MobileButtons />
         <ZoomButton />
         <ControlPanel />
