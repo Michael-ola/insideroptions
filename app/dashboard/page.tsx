@@ -21,6 +21,7 @@ import tradingAll from "@/data/trading/all.json";
 import Loader from "@/components/Loader";
 import PortalWrapper from "@/components/PortalWrapper";
 import ConfirmModal from "@/components/ConfirmationModal";
+//import DashboardNotification from "@/components/Notification/DashboardNotification";
 
 export default function DashboardPage() {
   const [openGraphStyleModal, setOpenGraphStyleModal] = useState(false);
@@ -143,12 +144,20 @@ export default function DashboardPage() {
     setAssetId,
   };
 
-  const [ openNotifier, setOpenNotifier ] = useState(false);
+  const [openNotifier, setOpenNotifier] = useState(false);
   return (
     <DashboardContext.Provider value={contextValue}>
       <div className="relative max-h-[100dvh] overflow-clip bg-[#01060e] text-white max-sm:flex max-sm:flex-col max-sm:items-center max-sm:justify-end">
         <TopTraderFeedCard />
         <TopNav />
+        {/* <PortalWrapper> //Notification SSE based modal for when ready
+          <DashboardNotification
+            pair="EUR/USD"
+            pairIcon="/images/Mastercard.png"
+            amount={60.0}
+            earning={100.2}
+          />
+        </PortalWrapper> */}
         <AssetComponent />
         <TradingChart />
         {selectedSideNavTab === "Auto trade" &&

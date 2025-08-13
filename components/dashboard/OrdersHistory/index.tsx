@@ -1,12 +1,14 @@
 import { X, ChevronUp, ChevronDown } from "lucide-react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import OrdersIcon from "../icons/OrdersIcon";
 import { motion } from "framer-motion";
-
+import PortalWrapper from "@/components/PortalWrapper";
 import ordersData from "@/data/orders/ordersData.json";
-
+import OrdersHistoryModal from "./OrdersHistoryModal";
 export default function OrdersModal({ onClose }: { onClose: () => void }) {
+  const [openModal, setOpenModal] = useState(false);
+
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
@@ -50,7 +52,8 @@ export default function OrdersModal({ onClose }: { onClose: () => void }) {
                 {section.items.map((order, i) => (
                   <div
                     key={i}
-                    className="border-b border-white/10 py-2 flex items-center justify-between"
+                    className="border-b border-white/10 py-2 flex items-center justify-between cursor-pointer"
+                    onClick={() => setOpenModal(true)}
                   >
                     {/* Left: Caret + Info */}
                     <div className="flex items-center gap-2">
@@ -72,7 +75,6 @@ export default function OrdersModal({ onClose }: { onClose: () => void }) {
                       </div>
                     </div>
 
-                    {/* Right: Amount + Stake */}
                     <div className="text-right">
                       <div className="text-md">+${order.amount.toFixed(2)}</div>
                       <div className="text-white/40 text-sm">
@@ -119,6 +121,12 @@ export default function OrdersModal({ onClose }: { onClose: () => void }) {
           )}
         </div>
       </div>
+      <PortalWrapper>
+        <OrdersHistoryModal
+          isOpen={openModal}
+          onClose={() => setOpenModal(false)}
+        />
+      </PortalWrapper>
     </motion.div>
   );
 }
