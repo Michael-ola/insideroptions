@@ -23,6 +23,27 @@ type PriceCache = Record<
 const priceCache: PriceCache = {};
 const streamStarted: Record<number, boolean> = {};
 
+// ========================= NEW: realtime listeners =========================
+export type RealtimePayload = { time: number; price: number; type: SeriesType };
+type RealtimeListener = (p: RealtimePayload) => void;
+
+const realtimeListeners: Record<number, Set<RealtimeListener>> = {};
+
+export function onRealtimePrice(assetId: number, cb: RealtimeListener): () => void {
+    (realtimeListeners[assetId] ||= new Set()).add(cb);
+    return () => realtimeListeners[assetId]?.delete(cb);
+}
+
+function notifyRealtime(assetId: number, type: SeriesType, point: any) {
+    const price = type === SeriesType.Candles
+        ? point.close
+        : (point.value ?? point.close);
+    if (typeof price === "number" && typeof point.time === "number") {
+        realtimeListeners[assetId]?.forEach(cb => cb({ time: point.time, price, type }));
+    }
+}
+// ==========================================================================
+
 export const chartOptions = {
     layout: {
         background: { color: "#0d181c", type: ColorType.Solid },
@@ -58,8 +79,8 @@ export const chartOptions = {
         barSpacing: 2,
         borderVisible: false,
         shiftVisibleRangeOnNewBar: true,
-        duration: 5000, // Animation duration in ms
-        easing: "EaseInOutQuad", // Easing function for animation
+        duration: 5000,
+        easing: "EaseInOutQuad",
         tickMarkFormatter: (time: number) => {
             const date = new Date(time * 1000);
             return (
@@ -125,7 +146,8 @@ export const createSeries = async (
 ): Promise<ISeriesApi<any>> => {
     const series = createAndConfigureSeries(chartInstance, type);
     const history = await getOrFetchHistoricalData(assetId, type);
-    series.setData(prepareSortedData(type, history) as PricePoint[]);
+    const prepared = prepareSortedData(type, history) as PricePoint[];
+    series.setData(prepared);
 
     const updater = getSeriesUpdater(type, series);
     if (!priceCache[assetId]) priceCache[assetId] = {};
@@ -133,6 +155,15 @@ export const createSeries = async (
         history,
         seriesUpdater: updater,
     };
+
+    // NEW: notify initial last point so tooltip can appear immediately
+    const last = prepared.at(-1);
+    if (last) {
+        const lastPoint = type === SeriesType.Candles
+            ? last
+            : { time: last.time, value: (last as any).value ?? (last as any).close };
+        notifyRealtime(assetId, type, lastPoint);
+    }
 
     setupStreaming(assetId);
 
@@ -150,12 +181,7 @@ const createAndConfigureSeries = (
             return series;
         }
         case SeriesType.Area: {
-            const series = chartInstance.addSeries(AreaSeries, {
-                priceScaleId: 'overlay1',
-                color: '#00d435ff',
-                lineWidth: 1,
-                lineStyle: LineStyle.Dashed,
-            });
+            const series = chartInstance.addSeries(AreaSeries);
             series.applyOptions(areaChartOptions);
             return series;
         }
@@ -181,14 +207,14 @@ const getOrFetchHistoricalData = async (
     const parsedData =
         type === SeriesType.Candles
             ? response.map((item: any) => ({
-                time: new Date(item.timestamp).getTime() / 1000, // no flooring
+                time: new Date(item.timestamp).getTime() / 1000,
                 open: item.open ?? item.price,
                 high: item.high ?? item.price,
                 low: item.low ?? item.price,
                 close: item.close ?? item.price,
             }))
             : response.map((item: any) => ({
-                time: new Date(item.timestamp).getTime() / 1000, // no flooring
+                time: new Date(item.timestamp).getTime() / 1000,
                 value: item.price,
             }));
     const deduped = deduplicateByTime<PricePoint>(parsedData);
@@ -244,7 +270,7 @@ const setupStreaming = (assetId: number): void => {
             let newPoint: any;
 
             if (seriesTypeKey === SeriesType.Candles) {
-                if (!last || data.time > last.time) {
+                if (!last || data.time > (last as any).time) {
                     newPoint = {
                         time: data.time,
                         open: data.price,
@@ -254,23 +280,27 @@ const setupStreaming = (assetId: number): void => {
                     };
                     cache.history.push(newPoint);
                     cache.seriesUpdater?.(newPoint);
-                } else if (data.time === last.time) {
-                    last.close = data.price;
-                    last.high = Math.max(last.high, data.price);
-                    last.low = Math.min(last.low, data.price);
+                    notifyRealtime(assetId, seriesTypeKey, newPoint); // NEW
+                } else if (data.time === (last as any).time) {
+                    (last as any).close = data.price;
+                    (last as any).high = Math.max((last as any).high, data.price);
+                    (last as any).low = Math.min((last as any).low, data.price);
                     cache.seriesUpdater?.(last);
+                    notifyRealtime(assetId, seriesTypeKey, last); // NEW
                 }
             } else {
-                if (!last || data.time > last.time) {
+                if (!last || data.time > (last as any).time) {
                     newPoint = {
                         time: data.time,
                         value: data.price,
                     };
                     cache.history.push(newPoint);
                     cache.seriesUpdater?.(newPoint);
-                } else if (data.time === last.time) {
-                    last.value = data.price;
+                    notifyRealtime(assetId, seriesTypeKey, newPoint); // NEW
+                } else if (data.time === (last as any).time) {
+                    (last as any).value = data.price;
                     cache.seriesUpdater?.(last);
+                    notifyRealtime(assetId, seriesTypeKey, last); // NEW
                 }
             }
         });
