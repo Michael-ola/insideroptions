@@ -6,7 +6,7 @@ import { X } from "lucide-react";
 import clsx from "clsx";
 import { useDashboardContext } from "@/context/DashboardContext";
 import Button from "@/components/Button2";
-import { SeriesType } from "@/lib/models";
+import { SeriesType} from "@/lib/models";
 
 const styles = [
   {
@@ -29,6 +29,19 @@ const styles = [
   },
 ];
 
+const candlesTime = [
+  {id: "1",
+  time: "5",
+  
+  },
+  {id: "2",
+  time: "10"
+  },
+   {id: "3",
+  time: "15"
+  }
+]
+
 export default function GraphStyleModal() {
   const {
     openGraphStyleModal,
@@ -41,6 +54,8 @@ export default function GraphStyleModal() {
   // useEffect(() => {
   //   console.log("chartStyle updated:", chartStyle);
   // }, [chartStyle]);
+
+  const [selectTime, setSelectTime] = useState("5");
 
   const handleConfirm = () => {
     setChartStyle(selected);
@@ -95,6 +110,38 @@ export default function GraphStyleModal() {
                 </button>
               );
             })}
+          </div>
+          { selected === 'candles' &&(
+          <div className=" self-start">
+            <p className="pb-4 text-sm font-medium text-gray-300">Time frames</p>
+          </div>
+          )
+          }
+          <div className="flex justify-between gap-4 max-sm:w-full max-sm:flex-col mb-6 ">
+              {
+                    selected ==='candles' &&(
+                      <>
+                      {candlesTime.map((time)=>{
+                        const selectedGraphTime = selectTime === time.time;
+                        return(
+                          <button 
+                          key={time.id}
+                          onClick={()=> setSelectTime(time.time)}
+                          className= {clsx(
+                            "w-24 h-32 max-sm:w-full max-sm:h-14 flex flex-col items-center justify-center rounded-xl border border-[#1F2A32] px-2 py-3 transition backdrop max-sm:flex-row max-sm:gap-3",
+                            {
+                              "bg-[#79DA7E] text-black" :selectedGraphTime,
+                              "bg-[#141b23]/50 text-white hover:bg-[#1f2a32]/60": !selectedGraphTime
+                            }
+                          )}>
+                                {time.time}
+                                <p>sec</p>
+                          </button>
+                        )
+                      })}
+                      </>
+                    )
+                }
           </div>
 
           <p className="text-xs text-center text-neutral-400 mb-4">
