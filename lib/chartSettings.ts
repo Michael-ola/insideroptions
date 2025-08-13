@@ -33,15 +33,15 @@ export const chartOptions = {
         horzLines: { color: "transparent" },
     },
     rightPriceScale: {
-        visible: true,
+        visible: false,
         borderVisible: false,
         entireTextOnly: true,
         autoScale: true,
     },
     leftPriceScale: {
-        visible: true,
+        visible: false,
         borderVisible: false,
-        entireTextOnly: true,
+        entireTextOnly: false,
         autoScale: true,
     },
     crosshair: {
@@ -50,7 +50,7 @@ export const chartOptions = {
     },
     timeScale: {
         timeVisible: false,
-        rightOffset: 0,
+        rightOffset: 6,
         secondsVisible: false,
         fixLeftEdge: false,
         visible: false,
@@ -150,7 +150,12 @@ const createAndConfigureSeries = (
             return series;
         }
         case SeriesType.Area: {
-            const series = chartInstance.addSeries(AreaSeries);
+            const series = chartInstance.addSeries(AreaSeries, {
+                priceScaleId: 'overlay1',
+                color: '#00d435ff',
+                lineWidth: 1,
+                lineStyle: LineStyle.Dashed,
+            });
             series.applyOptions(areaChartOptions);
             return series;
         }

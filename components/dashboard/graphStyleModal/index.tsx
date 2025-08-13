@@ -6,8 +6,7 @@ import { X } from "lucide-react";
 import clsx from "clsx";
 import { useDashboardContext } from "@/context/DashboardContext";
 import Button from "@/components/Button2";
-import {SeriesType} from "@/lib/models";
-import { isCSSVariableToken } from "framer-motion";
+import { SeriesType } from "@/lib/models";
 
 const styles = [
   {
@@ -30,18 +29,6 @@ const styles = [
   },
 ];
 
-const candlesTime = [
-  {id:'1',
-  time: '5s'
-  },
-  {id:'2',
-  time: '10s'
-  },
-  {id:'3',
-  time: '15s'
-  },
-]
-
 export default function GraphStyleModal() {
   const {
     openGraphStyleModal,
@@ -59,7 +46,7 @@ export default function GraphStyleModal() {
     setChartStyle(selected);
     setOpenGraphStyleModal(false)
   };
-  const isCandle = selected === "candles"
+
   return (
     <div
       className={`fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4 ${
@@ -105,32 +92,21 @@ export default function GraphStyleModal() {
                     className="mb-2"
                   />
                   <span className="text-sm font-medium">{style.label}</span>
-                </button> 
-            );
+                </button>
+              );
             })}
           </div>
-          {
-              selected === "candles" && (
-                <div className="flex">
-                  {
-                    candlesTime.map((time)=>(
-                      <button className={`bg-[#79DA7E] p-4 mb-2 text-white transition-all duration-300 hover:bg-gradient-to-r hover:from-[#79DA7E] hover:to-[#b3ffb8] hover:text-black ${time.id ==='1'?'rounded-l-[12px]':time.id === '3'?'rounded-r-[12px]':'' }`}>{time.time}</button>
-                    ))
-                  }
-                  
-                </div>
-              )
-            }
-            
+
           <p className="text-xs text-center text-neutral-400 mb-4">
             InsiderOption LLC Provide different graph style to help you buy and
             sell better
           </p>
-          <button 
-          disabled = {isCandle}
-          className={`w-full mt-[8%] mb-[8%] max-sm:mb-[16%] flex items-center justify-center gap-4 bg-[#99E39E] text-black w-[148px] h-[44px] rounded-[12px] ${isCandle?"bg-gray-400 text-gray-200 cursor-not-allowed":"transition-all duration-300 hover:bg-gradient-to-r hover:from-[#99E39E] hover:to-[#b3ffb8] cursor-pointer"}`}>
+          <Button
+            onClick={handleConfirm}
+            className="w-full mt-[8%] mb-[8%] !bg-[#79da7e] max-sm:mb-[16%]"
+          >
             Confirm
-          </button>
+          </Button>
         </div>
       </div>
     </div>
