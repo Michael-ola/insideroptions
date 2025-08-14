@@ -22,6 +22,7 @@ import Loader from "@/components/Loader";
 import PortalWrapper from "@/components/PortalWrapper";
 import ConfirmModal from "@/components/ConfirmationModal";
 //import DashboardNotification from "@/components/Notification/DashboardNotification";
+import { History } from "@/components/autoTrade/TradeStatus";
 
 export default function DashboardPage() {
   const [openGraphStyleModal, setOpenGraphStyleModal] = useState(false);
@@ -34,6 +35,7 @@ export default function DashboardPage() {
   const [isAutoTrade, setIsAutoTrade] = useState<string>("");
   const [assetId, setAssetId] = useState<number | undefined>(1);
   const [showTradeStatus, setShowTradeStatus] = useState<boolean>(false);
+  const [activeAutoTrade, setActiveAutoTrade] = useState<History[] | []>([]);
   const [switchAssetManagerModal, setSwitchAssetManagerModal] =
     useState<boolean>(false);
   const [form, setForm] = useState<boolean>(false);
@@ -142,6 +144,8 @@ export default function DashboardPage() {
     setOpenProfileModal,
     assetId,
     setAssetId,
+    activeAutoTrade,
+    setActiveAutoTrade,
   };
 
   const [openNotifier, setOpenNotifier] = useState(false);
@@ -162,7 +166,8 @@ export default function DashboardPage() {
         <TradingChart />
         {selectedSideNavTab === "Auto trade" &&
           !showTradeStatus &&
-          !openAutoTrade && <AutoTradeButton />}
+          !openAutoTrade &&
+          activeAutoTrade.length > 0 && <AutoTradeButton />}
         <MobileButtons />
         <ZoomButton />
         <ControlPanel />

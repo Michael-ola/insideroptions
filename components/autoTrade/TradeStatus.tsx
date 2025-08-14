@@ -4,14 +4,15 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import euro from "@/lib/assets/Euro_Icons.png";
 import { AnimatedCircularProgress } from "./AnimatedCircle";
-import { getErrorMessage } from "@/lib/authUtils";
-import { toast } from "react-toastify";
+// import { getErrorMessage } from "@/lib/authUtils";
+// import { toast } from "react-toastify";
 import { apiClient } from "@/lib/api-client";
 import { useDashboardContext } from "@/context/DashboardContext";
-import Loader from "../Loader";
+// import Loader from "../Loader";
 import { Asset } from "./AutoTradeModal";
+import Loader from "../Loader";
 
-type History = {
+export type History = {
   id: string;
   entryPrice: number;
   assetId: number;
@@ -35,10 +36,9 @@ const TradeStatus: React.FC<TradeStatusProps> = ({
   onClose,
   handleViewChange,
 }) => {
-  const { traderData } = useDashboardContext();
+  const { activeAutoTrade } = useDashboardContext();
   const [reverse, setReverse] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [history, setHistory] = useState<History[]>([]);
   const [assets, setAssets] = useState<Asset[] | null>(null);
 
   useEffect(() => {
@@ -54,49 +54,34 @@ const TradeStatus: React.FC<TradeStatusProps> = ({
 
   useEffect(() => {
     getAssetLists();
-    fetchAutoTradeHistory();
+    const timers: NodeJS.Timeout[] = activeAutoTrade.map((tx: History) => {
+      const expiry = new Date(tx.expiryDate);
+      return setInterval(() => {
+        const now = new Date();
+        const diffMs = expiry.getTime() - now.getTime();
+        const totalSeconds = Math.max(Math.floor(diffMs / 1000), 0);
+
+        const mins = Math.floor(totalSeconds / 60);
+        const secs = totalSeconds % 60;
+
+        setCountdowns((prev) => ({
+          ...prev,
+          [tx.id]: { mins, secs },
+        }));
+      }, 1000);
+    });
+
+    return () => timers.forEach((t) => clearInterval(t));
   }, []);
 
   const getAssetLists = async () => {
+    setIsLoading(true);
     try {
       const res = await apiClient.get("/assets/");
       setAssets(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const realAccount = traderData?.accounts.find(
-    (account) => account.accountType === "INDIVIDUAL"
-  );
-
-  const fetchAutoTradeHistory = async () => {
-    try {
-      const res = await apiClient.get(`trades/auto-trades/${realAccount?.id}`);
-      setHistory(res.data);
-      const timers = res.data.map((tx: History) => {
-        const expiry = new Date(tx.expiryDate);
-        return setInterval(() => {
-          const now = new Date();
-          const diffMs = expiry.getTime() - now.getTime();
-          const totalSeconds = Math.max(Math.floor(diffMs / 1000), 0);
-
-          const mins = Math.floor(totalSeconds / 60);
-          const secs = totalSeconds % 60;
-
-          setCountdowns((prev) => ({
-            ...prev,
-            [tx.id]: { mins, secs },
-          }));
-        }, 1000);
-      });
-
       setIsLoading(false);
-      return () => timers.forEach((t: number) => clearInterval(t));
     } catch (error) {
-      const err = getErrorMessage(error);
       console.log(error);
-      toast.error(err);
       setIsLoading(false);
     }
   };
@@ -115,7 +100,7 @@ const TradeStatus: React.FC<TradeStatusProps> = ({
 
   return (
     <div className="w-full h-full px-6 space-y-6 text-white">
-      {history?.map((tx) => (
+      {activeAutoTrade?.map((tx) => (
         <div
           key={tx.id}
           className="w-full bg-[#0f1c1b] rounded-xl px-4 py-6 space-y-4"
@@ -143,7 +128,9 @@ const TradeStatus: React.FC<TradeStatusProps> = ({
 
           <div className="text-center">
             <p className="text-sm text-white/60">Traded balance:</p>
-            <p className="text-xl font-bold">${tx?.tradeProfit || "0.00"}</p>
+            <p className="text-xl font-bold">
+              ${tx?.tradeProfit?.toFixed(2) || "0.00"}
+            </p>
           </div>
 
           <div className="space-y-2 text-sm">
@@ -162,12 +149,13 @@ const TradeStatus: React.FC<TradeStatusProps> = ({
             <div className="flex justify-between text-white/60">
               <span>Profit limit</span>
               <span className="text-white font-semibold">
-                ${tx?.profitValue || "0.00"}
+                ${tx?.profitValue?.toFixed(2) || "0.00"}
               </span>
             </div>
           </div>
         </div>
       ))}
+
       <div className="w-full flex flex-col sm:flex-row justify-between gap-4">
         <button
           onClick={() => onClose()}

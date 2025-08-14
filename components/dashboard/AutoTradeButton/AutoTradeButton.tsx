@@ -2,7 +2,7 @@ import { useDashboardContext } from "@/context/DashboardContext";
 import React from "react";
 
 const AutoTradeButton = () => {
-  const { setOpenAutoTrade, setShowTradeStatus, setSelectedSideNavTab } =
+  const { setOpenAutoTrade, setShowTradeStatus, setSelectedSideNavTab, activeAutoTrade } =
     useDashboardContext();
   return (
     <div
@@ -15,7 +15,7 @@ const AutoTradeButton = () => {
     >
       View Auto Trade
       <div className="absolute w-2 h-2 p-2 -top-2 z-5 right-[10%] text-xs rounded-full bg-red-800 flex items-center justify-center">
-        1
+        {activeAutoTrade.length}
       </div>
     </div>
   );

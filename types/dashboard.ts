@@ -1,3 +1,4 @@
+import { History } from "@/components/autoTrade/TradeStatus";
 import { TraderDataType } from "./TraderDataType";
 import { SeriesType } from "@/lib/models";
 
@@ -48,4 +49,6 @@ export interface DashboardPropsType {
   setOpenProfileModal: (val: boolean) => void;
   assetId: number | undefined;
   setAssetId: (val: number | undefined) => void;
+  activeAutoTrade: History[] | [];
+  setActiveAutoTrade: (val: History[] | []) => void;
 }
