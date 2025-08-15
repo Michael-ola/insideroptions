@@ -83,7 +83,7 @@ export default function GraphStyleModal() {
         <h2 className="text-center text-xl font-semibold mb-6">Graph Style</h2>
 
         <div className="flex flex-col items-center mx-auto mt-[17%] w-[312px] max-sm:w-[90%] max-sm:mt-[25%]">
-          <div className="flex justify-between gap-4 mb-6 max-sm:flex-col max-sm:w-full">
+          <div className="flex justify-between gap-4 mb-6 max-sm:flex-row max-sm:w-full">
             {styles.map((style) => {
               const isSelected = selected === style.id;
               return (
@@ -91,7 +91,7 @@ export default function GraphStyleModal() {
                   key={style.id}
                   onClick={() => setSelected(style.id as SeriesType)}
                   className={clsx(
-                    "w-24 h-32 max-sm:w-full max-sm:h-16 flex flex-col items-center justify-center rounded-xl border border-[#1F2A32] px-2 py-3 transition backdrop-blur-md max-sm:flex-row max-sm:gap-3",
+                    "w-24 h-32 max-sm:w-full max-sm:h-30 flex flex-col items-center justify-center rounded-xl border border-[#1F2A32] px-2 py-3 transition backdrop-blur-md max-sm:flex-col max-sm:gap-3",
                     {
                       "bg-[#79DA7E] text-black": isSelected,
                       "bg-[#141b23]/50 text-white hover:bg-[#1f2a32]/60":
@@ -117,7 +117,7 @@ export default function GraphStyleModal() {
           </div>
           )
           }
-          <div className="flex justify-between gap-4 max-sm:w-full max-sm:flex-col mb-6 ">
+          <div className="flex justify-between gap-4 max-sm:w-full max-sm:flex-row mb-6 ">
               {
                     selected ==='candles' &&(
                       <>
@@ -128,7 +128,7 @@ export default function GraphStyleModal() {
                           key={time.id}
                           onClick={()=> setSelectTime(time.time)}
                           className= {clsx(
-                            "w-24 h-32 max-sm:w-full max-sm:h-14 flex flex-col items-center justify-center rounded-xl border border-[#1F2A32] px-2 py-3 transition backdrop max-sm:flex-row max-sm:gap-3",
+                            "w-24 h-32 max-sm:w-full max-sm:h-30 flex flex-col items-center justify-center rounded-xl border border-[#1F2A32] px-2 py-3 transition backdrop max-sm:flex-col",
                             {
                               "bg-[#79DA7E] text-black" :selectedGraphTime,
                               "bg-[#141b23]/50 text-white hover:bg-[#1f2a32]/60": !selectedGraphTime

@@ -149,7 +149,6 @@ const CI = ({
     },
   ];
 
-  // const mins = selectedTradeOption.split("/")[0];
   const perc = selectedTradeOption.split("/")[2].split("%")[0];
   const day = selectedTradeOption.split("/")[1].split("days")[0];
 

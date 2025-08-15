@@ -30,6 +30,7 @@ import Loader from "../Loader";
 import PortalWrapper from "../PortalWrapper";
 import { toast } from "react-toastify";
 import { getErrorMessage } from "@/lib/authUtils";
+import { TraderDataType } from "@/types/TraderDataType";
 
 export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
   const [view, setView] = useState<string>("Current Investment");
@@ -50,7 +51,9 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
     setShowTradeStatus,
     setOpenAutoTrade,
     traderData,
+    setTraderData,
     setAssetId,
+    setActiveAutoTrade,
   } = useDashboardContext();
   const [profitValue, setProfitValue] = useState<number | null>(null);
 
@@ -58,8 +61,35 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
     if (showTradeStatus) {
       return;
     }
+    fetchTrader();
     getAssetLists();
+    fetchAutoTradeHistory();
   }, []);
+
+  const fetchTrader = async () => {
+    setIsLoading(true);
+    try {
+      const res = await apiClient.get("/get-trader");
+      const data: TraderDataType = res.data;
+      setTraderData(data);
+    } catch (err) {
+      console.error("Failed to fetch trader data", err);
+      setIsLoading(false);
+    }
+  };
+
+  const fetchAutoTradeHistory = async () => {
+    try {
+      const res = await apiClient.get(`trades/auto-trades/${realAccount?.id}`);
+      setActiveAutoTrade(res.data);
+      setIsLoading(false);
+    } catch (error) {
+      const err = getErrorMessage(error);
+      console.log(error);
+      toast.error(err);
+      setIsLoading(false);
+    }
+  };
 
   const getAssetLists = async () => {
     setIsLoading(true);
@@ -104,6 +134,7 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
         profitValue,
       };
       await apiClient.post(`trades`, form);
+      fetchAutoTradeHistory();
       setAssetId(asset?.id);
       setIsSubmitting(false);
       setShowTradeStatus(false);
