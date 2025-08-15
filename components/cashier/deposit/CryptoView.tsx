@@ -4,9 +4,9 @@ import React, { useState } from "react";
 import { AlertCircle, Check, ChevronRight } from "lucide-react";
 import Image, { StaticImageData } from "next/image";
 import usdt from "@/lib/assets/usdt.png";
-import btc from "@/lib/assets/btc.png";
+// import btc from "@/lib/assets/btc.png";
 import trc20 from "@/lib/assets/trc20.png";
-import eth from "@/lib/assets/eth.png";
+// import eth from "@/lib/assets/eth.png";
 import { RiLoader4Line } from "@remixicon/react";
 import { CryptoData, ModalView } from "../cashierModal";
 import { apiClient } from "@/lib/api-client";
@@ -36,19 +36,19 @@ export const cryptoOptions: CryptoList[] = [
     icon: usdt,
     speed: "FASTEST",
   },
-  {
-    label: "BITCOIN (BTC)",
-    icon: btc,
-  },
+  // {
+  //   label: "BITCOIN (BTC)",
+  //   icon: btc,
+  // },
   {
     label: "USDT (TRC20)",
     icon: trc20,
     speed: "FAST",
   },
-  {
-    label: "ETHEREUM (ETH)",
-    icon: eth,
-  },
+  // {
+  //   label: "ETHEREUM (ETH)",
+  //   icon: eth,
+  // },
 ];
 
 const CryptoView = ({
@@ -67,10 +67,10 @@ const CryptoView = ({
     string,
     { type: string; onToken: string; label: string }
   > = {
-    "USDT (ERC20)": { type: "teth4", onToken: "ofcusdt", label: "ERC20" },
-    "USDT (TRC20)": { type: "ttrx4", onToken: "ofcusdt", label: "TRC20" },
-    "BITCOIN (BTC)": { type: "tbtc4", onToken: "ofcbtc", label: "BTC" },
-    "ETHEREUM (ETH)": { type: "teth4", onToken: "ofceth", label: "ETH" },
+    "USDT (ERC20)": { type: "hteth", onToken: "ofcusdt", label: "ERC20" },
+    "USDT (TRC20)": { type: "ttrx", onToken: "ofcusdt", label: "TRC20" },
+    // "BITCOIN (BTC)": { type: "tbtc4", onToken: "ofcbtc", label: "BTC" },
+    // "ETHEREUM (ETH)": { type: "hteth", onToken: "ofceth", label: "ETH" },
   };
 
   const realAccount = traderData?.accounts.find(
