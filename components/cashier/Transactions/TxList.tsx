@@ -9,17 +9,21 @@ import { ChevronRight } from "lucide-react";
 import { ModalView } from "../cashierModal";
 import filter from "@/lib/assets/Filter.png";
 import { Transaction } from "../cashierModal";
+import { format } from "date-fns";
+import Loader from "@/components/Loader";
 
 const TxList = ({
   handleViewChange,
   transactions,
   fetchMore,
   hasMore,
+  isLoadingTx,
 }: {
   handleViewChange: (view: ModalView) => void;
   transactions: Transaction[];
   fetchMore: () => void;
   hasMore: boolean;
+  isLoadingTx: boolean;
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -29,7 +33,7 @@ const TxList = ({
     { label: "Bank Withdrawal", src: withdraw },
     { label: "Deposit", src: btc },
     { label: "Withdrawal", src: btc },
-    { label: "Swap (Real – Profit)", src: swap },
+    { label: "Swap", src: swap },
   ];
 
   const handleScroll = () => {
@@ -45,6 +49,8 @@ const TxList = ({
       setTimeout(() => setLoading(false), 500);
     }
   };
+
+  if (isLoadingTx) return <Loader />;
 
   return (
     <div
@@ -70,7 +76,11 @@ const TxList = ({
               {(() => {
                 const icon = iconList.find(
                   (item) =>
-                    item.label === tx.type || tx.type.includes(item.label)
+                    item.label.toLowerCase() ===
+                      tx.transactionType.toLowerCase() ||
+                    tx.transactionType
+                      .toLowerCase()
+                      .includes(item.label.toLowerCase())
                 );
                 return icon ? (
                   <Image src={icon.src} alt={icon.label} priority />
@@ -78,37 +88,42 @@ const TxList = ({
               })()}
 
               <div className="flex-1">
-                <p className="text-white font-semibold">{tx.type}</p>
-                <p className="text-white/50 text-xs">{tx.pair}</p>
-                <p className="text-white/30 text-xs">Txn hash ID: {tx.id}</p>
+                <p className="text-white font-semibold">{tx.transactionType}</p>
+                <p className="text-white/50 text-xs">
+                  {tx.fromCurrency}/{tx.toCurrency}
+                </p>
+                <p className="text-white/30 text-xs">
+                  Txn hash ID: {tx.transactionReferenceId}
+                </p>
               </div>
 
               <div className="text-right">
                 <p
                   className={`font-bold text-sm ${
-                    tx.amount.includes("+") && tx.status === "confirmed"
+                    tx.totalAmountInUsd > 0 &&
+                    tx.transactionStatus === "confirmed"
                       ? "text-primary"
-                      : tx.amount.includes("+") && tx.status === "pending"
+                      : tx.totalAmountInUsd > 0 &&
+                        tx.transactionStatus === "pending"
                       ? "text-[#F49A47]"
                       : "text-[#F54B5F]"
                   }`}
                 >
-                  {tx.amount}
+                  {tx.totalAmountInUsd.toFixed(2)}
                 </p>
                 <span
                   className={`text-xs py-1 px-2 rounded-md capitalize ${
-                    tx.status === "confirmed"
+                    tx.transactionStatus.toLowerCase() === "confirmed"
                       ? "text-primary bg-primary/30"
-                      : tx.status === "pending"
+                      : tx.transactionStatus.toLowerCase() === "pending"
                       ? "text-[#F49A47] bg-[#F49A47]/20"
                       : "text-[#F54B5F] bg-[#F54B5F]/20"
                   }`}
                 >
-                  {tx.status}
+                  {tx.transactionStatus.toLowerCase()}
                 </span>
                 <p className="text-white/30 text-[10px]">
-                  {tx.date} <br />
-                  {tx.time}
+                  {format(new Date(tx.completedDate), "yyyy-MM-dd'T'HH:mm:ss")}
                 </p>
               </div>
             </div>

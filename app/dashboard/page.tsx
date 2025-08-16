@@ -10,7 +10,7 @@ import { DashboardPropsType } from "@/types/dashboard";
 import SideNav from "@/components/dashboard/sideNav";
 import TopNav from "@/components/dashboard/TopNav";
 import { apiClient } from "@/lib/api-client";
-import type { TraderDataType } from "@/types/TraderDataType";
+import type { Account, TraderDataType } from "@/types/TraderDataType";
 import TradingChart from "@/components/dashboard/tradingChart";
 import getBalanceAmount from "@/lib/getBalanceAmount";
 import AutoTradeButton from "@/components/dashboard/AutoTradeButton/AutoTradeButton";
@@ -62,6 +62,11 @@ export default function DashboardPage() {
       const res = await apiClient.get("/get-trader");
       const data: TraderDataType = res.data;
       setTraderData(data);
+      const realAccount = res.data?.accounts.find(
+        (account: Account) => account.accountType === "INDIVIDUAL"
+      );
+
+      fetchAutoTradeHistory(realAccount?.id);
       const accountBalance = getBalanceAmount(
         data.accounts,
         selectedAccount
@@ -86,6 +91,18 @@ export default function DashboardPage() {
     }
   };
 
+  const fetchAutoTradeHistory = async (id: number) => {
+    try {
+      const res = await apiClient.get(`trades/auto-trades/${id}`);
+      setActiveAutoTrade(res.data);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     const init = async () => {
       await Promise.all([fetchTrader(), fetchEURUSD()]);
@@ -102,6 +119,15 @@ export default function DashboardPage() {
     };
     init();
   }, []);
+
+  const canShowAutoTradeButton = () => {
+    return (
+      selectedSideNavTab === "Auto trade" &&
+      !openAutoTrade &&
+      !showTradeStatus &&
+      activeAutoTrade.length > 0
+    );
+  };
 
   const contextValue: DashboardPropsType = {
     openGraphStyleModal,
@@ -164,10 +190,7 @@ export default function DashboardPage() {
         </PortalWrapper> */}
         <AssetComponent />
         <TradingChart />
-        {selectedSideNavTab === "Auto trade" &&
-          !showTradeStatus &&
-          !openAutoTrade &&
-          activeAutoTrade.length > 0 && <AutoTradeButton />}
+        {canShowAutoTradeButton() && <AutoTradeButton />}
         <MobileButtons />
         <ZoomButton />
         <ControlPanel />

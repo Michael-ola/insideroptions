@@ -84,9 +84,7 @@ export default function AutoTradeModal({ onClose }: { onClose: () => void }) {
       setActiveAutoTrade(res.data);
       setIsLoading(false);
     } catch (error) {
-      const err = getErrorMessage(error);
       console.log(error);
-      toast.error(err);
       setIsLoading(false);
     }
   };
