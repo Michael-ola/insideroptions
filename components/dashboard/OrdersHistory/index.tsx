@@ -4,10 +4,18 @@ import Image from "next/image";
 import OrdersIcon from "../icons/OrdersIcon";
 import { motion } from "framer-motion";
 import PortalWrapper from "@/components/PortalWrapper";
-import ordersData from "@/data/orders/ordersData.json";
+// import ordersData from "@/data/orders/ordersData.json";
 import OrdersHistoryModal from "./OrdersHistoryModal";
-export default function OrdersModal({ onClose }: { onClose: () => void }) {
+import { useDashboardContext } from "@/context/DashboardContext";
+import { getOrderHistoryByAccountId } from "@/services/orderService";
+import { OrderItem } from "@/lib/models";
+
+
+const OrdersModal = ({ onClose }: { onClose: () => void }) => {
+  
   const [openModal, setOpenModal] = useState(false);
+  const { traderData } = useDashboardContext();
+  const [ordersData, setOrdersData] = useState<OrderItem[]>([]);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -16,7 +24,15 @@ export default function OrdersModal({ onClose }: { onClose: () => void }) {
     };
   }, []);
 
-  const hasData = ordersData.length > 0;
+  traderData?.accounts
+  .filter((account) => account.accountType === "INDIVIDUAL")
+  .forEach((account) => {
+    getOrderHistoryByAccountId(account.id)
+    .then((orderHistory) => {
+      console.log(orderHistory);
+      setOrdersData((prevData) => [...prevData, ...orderHistory]);
+    });
+  });
 
   return (
     <motion.div
@@ -45,7 +61,7 @@ export default function OrdersModal({ onClose }: { onClose: () => void }) {
         </div>
 
         <div className="flex-1 overflow-y-auto text-white px-6 pb-10 mt-4 space-y-5 custom-scrollbar">
-          {hasData ? (
+          {ordersData.length > 0 ? (
             ordersData.map((section, index) => (
               <div key={index}>
                 <div className="text-sm text-white/60 mb-2">{section.date}</div>
@@ -57,36 +73,36 @@ export default function OrdersModal({ onClose }: { onClose: () => void }) {
                   >
                     {/* Left: Caret + Info */}
                     <div className="flex items-center gap-2">
-                      {order.direction === "up" ? (
+                      {order.tradeType === "BUY" ? (
                         <ChevronUp className="text-green-400 w-6 h-6" />
                       ) : (
                         <ChevronDown className="text-red-400 w-6 h-6" />
                       )}
                       <div className="flex flex-col">
-                        <span className="text-md">{order.pair}</span>
+                        <span className="text-md">{order.assetId}</span>
                         <span className="text-sm text-white/40">
-                          {order.time}
+                          {order.initiatedDate}
                         </span>
-                        {order.assetRate && (
+                        {order.entryPrice && (
                           <span className="text-[10px] text-white/30">
-                            Asset rate: {order.assetRate}
+                            Entry price: {order.entryPrice}
                           </span>
                         )}
                       </div>
                     </div>
 
                     <div className="text-right">
-                      <div className="text-md">+${order.amount.toFixed(2)}</div>
+                      <div className="text-md">+${order.tradeAmount.toFixed(2)}</div>
                       <div className="text-white/40 text-sm">
-                        ${order.stake.toFixed(2)}
+                        ${order.tradeAmount.toFixed(2)}
                       </div>
                     </div>
 
-                    {order.closed && (
+                    {order.tradeProfit && (
                       <div className="ml-2 text-sm pl-7 pr-3 flex flex-col items-end gap-1 justify-center text-left py-1 h-16 bg-[#1c1216] relative -bottom-[9.8px] text-[#fff] border-l-2 border-b-2 border-[#2f2629]">
                         <span>Close</span>
                         <div className="text-green-400 text-sm">
-                          ${order.stake.toFixed(2)}
+                          ${order.tradeProfit.toFixed(2)}
                         </div>
                       </div>
                     )}
@@ -130,3 +146,5 @@ export default function OrdersModal({ onClose }: { onClose: () => void }) {
     </motion.div>
   );
 }
+
+export default OrdersModal;

@@ -114,3 +114,13 @@ export interface Trade {
   expiryDate: string; // ISO date string
   status: "OPEN" | "CLOSED" | string;
 }
+
+export interface OrderResponse {
+  date: string;
+  items: Trade[];
+}
+
+export interface OrderItem {
+  date: string;
+  items: Trade[];
+}

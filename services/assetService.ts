@@ -1,6 +1,5 @@
-import { Asset } from "@/lib/models";
 import { apiClient } from "../lib/api-client";
-import type { Price, PriceHistory } from "@/lib/models";
+import type { Price, PriceHistory, Asset } from "@/lib/models";
 
 export const fetchAssets = async () => {
   return apiClient.get<Asset[]>("/assets")
