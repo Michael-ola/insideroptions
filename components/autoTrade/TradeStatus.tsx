@@ -4,16 +4,13 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import euro from "@/lib/assets/Euro_Icons.png";
 import { AnimatedCircularProgress } from "./AnimatedCircle";
-// import { getErrorMessage } from "@/lib/authUtils";
-// import { toast } from "react-toastify";
 import { apiClient } from "@/lib/api-client";
 import { useDashboardContext } from "@/context/DashboardContext";
-// import Loader from "../Loader";
 import { Asset } from "./AutoTradeModal";
 import Loader from "../Loader";
 
 export type History = {
-  id: string;
+  id: number;
   entryPrice: number;
   assetId: number;
   duration: string;

@@ -15,6 +15,7 @@ import copyToClipboardFallback from "@/lib/copyToClipboard";
 import { useDashboardContext } from "@/context/DashboardContext";
 import ModalComponent from "../ModalComponent";
 import PortalWrapper from "@/components/PortalWrapper";
+import { apiClient } from "@/lib/api-client";
 
 type NavItem = {
   label: string;
@@ -78,6 +79,18 @@ const SideNav: React.FC<SideNavProps> = ({ isOpen, onClose }) => {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
+  const handleLogout = async () => {
+    try {
+      await apiClient.post(`auth/logout`);
+      localStorage.removeItem("token");
+      localStorage.removeItem("isAutoTrade");
+      window.location.href = "/login";
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <AnimatePresence>
@@ -168,7 +181,10 @@ const SideNav: React.FC<SideNavProps> = ({ isOpen, onClose }) => {
                     <Settings size={20} />
                     Settings
                   </button>
-                  <button className="flex gap-5 items-center pl-4 font-semibold text-sm text-red-500 hover:text-red-600 transition-all">
+                  <button
+                    onClick={handleLogout}
+                    className="flex gap-5 items-center pl-4 font-semibold text-sm text-red-500 hover:text-red-600 transition-all"
+                  >
                     <LogoutIcon className="w-5 h-5" />
                     <div>Log out</div>
                   </button>

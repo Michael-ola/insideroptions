@@ -9,9 +9,10 @@ import { apiClient } from "@/lib/api-client";
 import greenSwap from "@/lib/assets/green_swap.png";
 import Image from "next/image";
 import { useDashboardContext } from "@/context/DashboardContext";
+import { TraderDataType } from "@/types/TraderDataType";
 
 const SwapView = () => {
-  const { traderData } = useDashboardContext();
+  const { traderData, setTraderData } = useDashboardContext();
   const [source, setSource] = useState<"profit" | "referral" | "real">("real");
   const [target, setTarget] = useState<"profit" | "real">("profit");
   const [showFromDropdown, setShowFromDropdown] = useState<boolean>(false);
@@ -41,7 +42,11 @@ const SwapView = () => {
   const getFromAmount = () => {
     return (
       (percent / 100) *
-      (source === "profit" ? profitBalance : source === "real" ? realBalance : referralBalance)
+      (source === "profit"
+        ? profitBalance
+        : source === "real"
+        ? realBalance
+        : referralBalance)
     ).toFixed(2);
   };
 
@@ -49,7 +54,7 @@ const SwapView = () => {
     try {
       if (percent === 0) return;
       setIsSwapping(true);
-      const url = `/transactions/${traderData?.id}/swap`;
+      const url = `/transactions/${realAccount?.id}/swap`;
       const payload = {
         toBalance: target === "real" ? "REAL_BALANCE" : "PROFIT_BALANCE",
         fromBalance:
@@ -61,6 +66,10 @@ const SwapView = () => {
         percent: percent,
       };
       await apiClient.post(url, payload);
+      toast.success(
+        `Swapped ${getFromAmount()} from ${source.toUpperCase()} to ${target.toUpperCase()} Balance`
+      );
+      fetchTrader();
       setPercent(0);
       setIsSwapping(false);
     } catch (error) {
@@ -68,6 +77,16 @@ const SwapView = () => {
       toast.error(err);
       console.error(error);
       setIsSwapping(false);
+    }
+  };
+
+  const fetchTrader = async () => {
+    try {
+      const res = await apiClient.get("/get-trader");
+      const data: TraderDataType = res.data;
+      setTraderData(data);
+    } catch (err) {
+      console.error("Failed to fetch trader data", err);
     }
   };
 

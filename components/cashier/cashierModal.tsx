@@ -41,17 +41,27 @@ export type ModalView =
   | SelectedCrypto;
 
 export type Transaction = {
-  id: string;
+  id: number;
+  accountId: number;
+  transactionId: string;
+  transactionType: string;
+  fromCurrency: string;
+  toCurrency: string;
   type: string;
   pair: string;
-  amount: string;
-  status: string;
-  date: string;
-  time: string;
+  totalAmountInUsd: number;
+  transactionStatus: string;
+  isReversal: "Y" | "N";
+  transactionReferenceId: string;
+  isCryptoTransaction: "Y" | "N";
+  isReferralTransaction: "Y" | "N";
+  completedDate: Date;
+  initiatedDate: Date;
+  isAutomated: "Y" | "N";
 };
 
 export type CryptoData = {
-  id: string;
+  id: number;
   coin: string;
   depositAddress: string;
   redeemScript: string;
@@ -71,6 +81,7 @@ export default function CashierModal({ onClose }: { onClose: () => void }) {
   const [filters, setFilters] = useState<any>({});
   const [nextCursorId, setNextCursorId] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState<boolean>(true);
+  const [isLoadingTx, setIsLoadingTx] = useState<boolean>(false);
 
   useEffect(() => {
     if (view === "Transaction History" && transactions.length === 0) {
@@ -84,6 +95,10 @@ export default function CashierModal({ onClose }: { onClose: () => void }) {
     cursorId: string | null = null,
     append = false
   ) => {
+    console.log("filters", incomingFilters);
+    if (Object.keys(incomingFilters).length === 0) {
+      setIsLoadingTx(true);
+    }
     try {
       const query = new URLSearchParams();
 
@@ -112,8 +127,10 @@ export default function CashierModal({ onClose }: { onClose: () => void }) {
       setNextCursorId(data.nextCursorId);
       setHasMore(data.hasMore);
       setFilters(incomingFilters);
+      setIsLoadingTx(false);
     } catch (err) {
       console.error("Error fetching transactions", err);
+      setIsLoadingTx(false);
     }
   };
 
@@ -176,6 +193,7 @@ export default function CashierModal({ onClose }: { onClose: () => void }) {
             transactions={transactions}
             fetchMore={() => fetchTransactions(filters, nextCursorId, true)}
             hasMore={hasMore}
+            isLoadingTx={isLoadingTx}
           />
         );
 

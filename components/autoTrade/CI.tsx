@@ -11,6 +11,7 @@ import premium from "@/lib/assets/premium_lever.png";
 import TradeStatus from "./TradeStatus";
 import { Asset } from "./AutoTradeModal";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 
 export const plans = [
   {
@@ -77,7 +78,7 @@ const CI = ({
   setProfitValue: (val: number | null) => void;
   profitValue: number | null;
 }) => {
-  const { traderData } = useDashboardContext();
+  const { traderData, activeAutoTrade } = useDashboardContext();
 
   const plan = plans.find((plan) => plan.name === tradingPlan);
   const asset =
@@ -92,6 +93,9 @@ const CI = ({
   );
 
   const validationCheck = () => {
+    if (selectedBalance === "real" && activeAutoTrade.length === 2) {
+      return toast.error("Maximum of 2 Auto Trade reached");
+    }
     if (
       selectedBalance === "demo" &&
       demoAccount &&
@@ -158,8 +162,12 @@ const CI = ({
       setAmount(val);
     }
   };
-  const profit = (Number(amount) * Number(perc) * Number(day)) / 30 / 100;
-  setProfitValue(profit);
+  // const profit = (Number(amount) * Number(perc) * Number(day)) / 30 / 100;
+  // setProfitValue(profit);
+  useEffect(() => {
+    const profit = (Number(amount) * Number(perc) * Number(day)) / 30 / 100;
+    setProfitValue(profit);
+  }, [amount, perc, day]);
   const handleAutoTrade = () => {
     const val = validationCheck();
     if (val === true) {
@@ -333,10 +341,7 @@ const CI = ({
         </div>
       )}
       {showTradeStatus && (
-        <TradeStatus
-          onClose={onClose}
-          handleViewChange={handleViewChange}
-        />
+        <TradeStatus onClose={onClose} handleViewChange={handleViewChange} />
       )}
     </div>
   );
