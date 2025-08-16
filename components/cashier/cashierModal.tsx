@@ -89,6 +89,9 @@ export default function CashierModal({ onClose }: { onClose: () => void }) {
     }
   }, [view]);
 
+  const realAccount = traderData?.accounts.find(
+    (account) => account.accountType === "INDIVIDUAL"
+  );
   //Transaction functions
   const fetchTransactions = async (
     incomingFilters = filters,
@@ -116,7 +119,7 @@ export default function CashierModal({ onClose }: { onClose: () => void }) {
       if (cursorId) query.append("cursorId", cursorId);
 
       const res = await apiClient.get(
-        `/transactions/${traderData?.id}/search?${query.toString()}`
+        `/transactions/${realAccount?.id}/search?${query.toString()}`
       );
 
       const data = res.data;
