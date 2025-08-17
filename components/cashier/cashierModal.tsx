@@ -150,8 +150,7 @@ export default function CashierModal({ onClose }: { onClose: () => void }) {
     cursorId: string | null = null,
     append = false
   ) => {
-    console.log("filters", incomingFilters);
-    if (Object.keys(incomingFilters).length === 0 && !cursorId) {
+    if (!cursorId) {
       setIsLoadingTx(true);
     }
     try {
@@ -265,7 +264,6 @@ export default function CashierModal({ onClose }: { onClose: () => void }) {
           <TxFilters
             onApply={handleFilterApply}
             handleViewChange={handleViewChange}
-            transactions={transactions}
           />
         );
       default:
