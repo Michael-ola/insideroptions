@@ -29,19 +29,19 @@ const TxFilters = ({ onApply, handleViewChange, transactions }: Props) => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (selectedStatus || selectedCategory || (startDate && endDate)) {
+      if (selectedPreset || selectedStatus || selectedCategory || (startDate && endDate)) {
         handleApply();
       }
     }, 2000);
 
     return () => clearTimeout(timer);
-  }, [selectedStatus, selectedCategory, startDate, endDate]);
+  }, [selectedPreset, selectedStatus, selectedCategory, startDate, endDate]);
 
   const handleApply = () => {
     const filters = {
       status: selectedStatus,
       category: selectedCategory,
-      periodPreset: selectedPreset,
+      period: selectedPreset,
       from: startDate,
       to: endDate,
     };
