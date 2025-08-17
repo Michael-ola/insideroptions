@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { ModalView, Transaction } from "../cashierModal";
+import { ModalView } from "../cashierModal";
 import { ChevronRight } from "lucide-react";
 
 const statusOptions = ["Confirmed", "Pending", "Canceled"];
@@ -18,24 +18,13 @@ const periodPresets = [
 interface Props {
   handleViewChange: (view: ModalView) => void;
   onApply: (filters: any) => void;
-  transactions: Transaction[];
 }
-const TxFilters = ({ onApply, handleViewChange, transactions }: Props) => {
+const TxFilters = ({ onApply, handleViewChange }: Props) => {
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedPreset, setSelectedPreset] = useState<string | null>(null);
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (selectedPreset || selectedStatus || selectedCategory || (startDate && endDate)) {
-        handleApply();
-      }
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, [selectedPreset, selectedStatus, selectedCategory, startDate, endDate]);
 
   const handleApply = () => {
     const filters = {
@@ -47,6 +36,11 @@ const TxFilters = ({ onApply, handleViewChange, transactions }: Props) => {
     };
 
     onApply(filters);
+  };
+
+  const applyFilters = () => {
+    handleApply();
+    handleViewChange("Transaction History");
   };
 
   return (
@@ -147,7 +141,7 @@ const TxFilters = ({ onApply, handleViewChange, transactions }: Props) => {
       </div>
 
       <button
-        onClick={() => handleViewChange("Transaction History")}
+        onClick={applyFilters}
         disabled={!selectedStatus && !selectedPreset && !startDate && !endDate}
         className={`w-full py-2 rounded-xl mt-4 flex items-center justify-center gap-2 ${
           !selectedStatus && !selectedPreset && !startDate && !endDate
@@ -155,7 +149,7 @@ const TxFilters = ({ onApply, handleViewChange, transactions }: Props) => {
             : "bg-primary cursor-pointer text-black"
         }`}
       >
-        {transactions ? `Show Results (${transactions.length})` : "Results"}{" "}
+        Results
         <ChevronRight className="w-4 h4 text-black" />
       </button>
     </div>
