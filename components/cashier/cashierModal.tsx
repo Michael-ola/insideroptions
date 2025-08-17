@@ -120,10 +120,7 @@ export default function CashierModal({ onClose }: { onClose: () => void }) {
       startDate = formatDate(firstDayOfMonth, "start");
       endDate = formatDate(lastDayOfMonth, "end");
     } else if (range === "previous month") {
-      const firstPrevMonth = new Date(
-        now.getFullYear(),
-        now.getMonth() - 1,
-      );
+      const firstPrevMonth = new Date(now.getFullYear(), now.getMonth() - 1);
       const lastPrevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
       startDate = formatDate(firstPrevMonth, "start");
       endDate = formatDate(lastPrevMonth, "end");
