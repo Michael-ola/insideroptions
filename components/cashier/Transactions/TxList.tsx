@@ -50,6 +50,14 @@ const TxList = ({
     }
   };
 
+  const getSwapAccount = (account: string) => {
+    return account === "REAL_BALANCE"
+      ? "Real"
+      : account === "PROFIT_BALANCE"
+      ? "Profit"
+      : "Referral";
+  };
+
   if (isLoadingTx) return <Loader />;
 
   return (
@@ -67,7 +75,7 @@ const TxList = ({
         </div>
       </div>
       <div className="w-full h-full pb-6">
-        {transactions.length ? (
+        {!isLoadingTx && transactions.length ? (
           transactions.map((tx, i) => (
             <div
               key={i}
@@ -88,7 +96,13 @@ const TxList = ({
               })()}
 
               <div className="flex-1">
-                <p className="text-white font-semibold">{tx.transactionType}</p>
+                <p className="text-white font-semibold">
+                  {tx.transactionType}{" "}
+                  {tx.transactionType.toLowerCase() === "swap" &&
+                    `(${getSwapAccount(tx.fromAccount)} - ${getSwapAccount(
+                      tx.toAccount
+                    )})`}
+                </p>
                 <p className="text-white/50 text-xs">
                   {tx.fromCurrency}/{tx.toCurrency}
                 </p>
@@ -101,7 +115,7 @@ const TxList = ({
                 <p
                   className={`font-bold text-sm ${
                     tx.totalAmountInUsd > 0 &&
-                    tx.transactionStatus === "confirmed"
+                    tx.transactionStatus.toLowerCase() === "confirmed"
                       ? "text-primary"
                       : tx.totalAmountInUsd > 0 &&
                         tx.transactionStatus === "pending"
@@ -109,6 +123,7 @@ const TxList = ({
                       : "text-[#F54B5F]"
                   }`}
                 >
+                  {tx.totalAmountInUsd > 0 ? "+" : "-"}₦
                   {tx.totalAmountInUsd.toFixed(2)}
                 </p>
                 <span
