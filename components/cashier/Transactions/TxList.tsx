@@ -79,7 +79,7 @@ const TxList = ({
           transactions.map((tx, i) => (
             <div
               key={i}
-              className="flex gap-3 items-start border-b border-white/10 pb-2"
+              className="flex gap-3 items-start border-b border-white/10 pb-2 pt-1"
             >
               {(() => {
                 const icon = iconList.find(
@@ -106,9 +106,7 @@ const TxList = ({
                 <p className="text-white/50 text-xs">
                   {tx.fromCurrency}/{tx.toCurrency}
                 </p>
-                <p className="text-white/30 text-xs">
-                  Txn hash ID: {tx.transactionReferenceId}
-                </p>
+                <p className="text-white/30 text-xs">ID: {tx.transactionId}</p>
               </div>
 
               <div className="text-right">
@@ -123,7 +121,7 @@ const TxList = ({
                       : "text-[#F54B5F]"
                   }`}
                 >
-                  {tx.totalAmountInUsd > 0 ? "+" : "-"}₦
+                  {tx.totalAmountInUsd > 0 ? "+" : "-"}$
                   {tx.totalAmountInUsd.toFixed(2)}
                 </p>
                 <span
@@ -138,7 +136,8 @@ const TxList = ({
                   {tx.transactionStatus.toLowerCase()}
                 </span>
                 <p className="text-white/30 text-[10px]">
-                  {format(new Date(tx.completedDate), "yyyy-MM-dd'T'HH:mm:ss")}
+                  {format(new Date(tx.completedDate), "dd MMM, yyyy")} <br />
+                  {format(new Date(tx.completedDate), "hh:mm a")}
                 </p>
               </div>
             </div>
