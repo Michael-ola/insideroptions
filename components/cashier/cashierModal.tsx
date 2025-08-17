@@ -47,6 +47,8 @@ export type Transaction = {
   transactionType: string;
   fromCurrency: string;
   toCurrency: string;
+  fromAccount: string;
+  toAccount: string;
   type: string;
   pair: string;
   totalAmountInUsd: number;
@@ -99,7 +101,7 @@ export default function CashierModal({ onClose }: { onClose: () => void }) {
     append = false
   ) => {
     console.log("filters", incomingFilters);
-    if (Object.keys(incomingFilters).length === 0) {
+    if (Object.keys(incomingFilters).length === 0 && !cursorId) {
       setIsLoadingTx(true);
     }
     try {
