@@ -86,7 +86,7 @@ export default function CashierModal({ onClose }: { onClose: () => void }) {
   const [isLoadingTx, setIsLoadingTx] = useState<boolean>(false);
 
   useEffect(() => {
-    if (view === "Transaction History" && transactions.length === 0) {
+    if (view === "Transaction History" && transactions.length === 0 && Object.keys(filters).length === 0) {
       fetchTransactions({}, null, false);
     }
   }, [view]);
