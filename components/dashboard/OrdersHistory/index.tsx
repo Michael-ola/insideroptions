@@ -409,7 +409,7 @@ const OrdersModal = ({ onClose }: { onClose: () => void }) => {
 
                         <div className="flex flex-col">
                           <span className="text-md">
-                            {order.tradeId ?? order.raw?.pair ?? "—"}
+                            {order.raw.pair ?? "—"}
                           </span>
                           <span className="text-sm text-white/40">
                             {order.initiatedDate}
