@@ -30,7 +30,7 @@ export interface signUpResponse {
   lastName: string;
   role: string;
   createdAt: string;
-  updatedAt: string;  
+  updatedAt: string;
 }
 
 export interface EmailVerificationPayload {
@@ -78,13 +78,13 @@ export interface PriceHistory {
 }
 
 export enum SeriesType {
-  Area = 'area',
-  Candles = 'candles',
-  Lines = 'lines',
+  Area = "area",
+  Candles = "candles",
+  Lines = "lines",
 }
 
 export type Candle = {
-  time: number;       // UNIX timestamp in seconds (start of candle window)
+  time: number; // UNIX timestamp in seconds (start of candle window)
   open: number;
   high: number;
   low: number;

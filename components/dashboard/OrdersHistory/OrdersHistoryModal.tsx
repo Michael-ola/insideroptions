@@ -1,3 +1,4 @@
+// components/OrdersHistoryModal.tsx
 "use client";
 
 import React, { useEffect, useRef } from "react";
@@ -9,37 +10,78 @@ import ShareModal from "./ShareModal";
 import ReferralBanner from "./ReferralBanner";
 import Loader from "@/components/Loader";
 
-export type TradeResultModalProps = {
+export type OrdersHistoryModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  imageSrc?: string;
-  symbol?: string;
-  date?: string;
-  deal?: "buy" | "sell";
-  profit?: number;
-  openTime?: string;
-  openRate?: number;
-  amount?: number;
-  closeTime?: string;
-  closeRate?: number;
-  profitPercent?: number;
+  order?: any;
+};
+
+const pad = (n: number) => n.toString().padStart(2, "0");
+
+const ordinal = (n: number) => {
+  const s = ["th", "st", "nd", "rd"];
+  const v = n % 100;
+  return n + (s[(v - 20) % 10] || s[v] || s[0]);
+};
+
+const formatDateLabel = (dateStr: string) => {
+  try {
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) {
+      const maybe = String(dateStr).split("T")[0];
+      const d2 = new Date(maybe);
+      if (isNaN(d2.getTime())) return String(dateStr);
+      const day = d2.getDate();
+      const monthName = d2.toLocaleString("en-US", { month: "long" });
+      const year = d2.getFullYear();
+      return `${ordinal(day)} ${monthName} ${year}`;
+    }
+    const day = d.getDate();
+    const monthName = d.toLocaleString("en-US", { month: "long" });
+    const year = d.getFullYear();
+    return `${ordinal(day)} ${monthName} ${year}`;
+  } catch {
+    return String(dateStr);
+  }
+};
+
+const formatTimeOnly = (dateTimeStr: string) => {
+  if (!dateTimeStr) return "";
+  const timeOnlyRegex = /^\d{1,2}:\d{2}(:\d{2})?$/;
+  if (timeOnlyRegex.test(dateTimeStr)) {
+    const parts = dateTimeStr.split(":");
+    const hh = pad(Number(parts[0]));
+    const mm = pad(Number(parts[1] ?? 0));
+    const ss = pad(Number(parts[2] ?? 0));
+    return `${hh}:${mm}:${ss}`;
+  }
+
+  try {
+    const d = new Date(dateTimeStr);
+    if (!isNaN(d.getTime())) {
+      const hh = pad(d.getHours());
+      const mm = pad(d.getMinutes());
+      const ss = pad(d.getSeconds());
+      return `${hh}:${mm}:${ss}`;
+    }
+
+    if (String(dateTimeStr).includes("T")) {
+      const part = String(dateTimeStr).split("T")[1] ?? "";
+      const timePart = part.split(".")[0];
+      if (timeOnlyRegex.test(timePart)) return timePart;
+    }
+
+    return String(dateTimeStr);
+  } catch {
+    return String(dateTimeStr);
+  }
 };
 
 export default function OrdersHistoryModal({
   isOpen,
   onClose,
-  imageSrc = "/images/orderImage.png",
-  symbol = "EUR/USD",
-  date = "Apr 11, 2025",
-  deal = "buy",
-  profit = 1600.2,
-  openTime = "08:12:35",
-  openRate = 1.24326,
-  amount = 1000,
-  closeTime = "08:15:32",
-  closeRate = 1.243656,
-  profitPercent = 86,
-}: TradeResultModalProps) {
+  order,
+}: OrdersHistoryModalProps) {
   const modalRef = useRef<HTMLDivElement | null>(null);
   const [isShareOpen, setShareOpen] = React.useState(false);
   const [shareImage, setShareImage] = React.useState("");
@@ -51,53 +93,6 @@ export default function OrdersHistoryModal({
   useEffect(() => {
     isShareOpenRef.current = isShareOpen;
   }, [isShareOpen]);
-
-  // Function to trigger download
-  // const downloadImage = (dataUrl: string) => {
-  //   const link = document.createElement("a");
-  //   const fileName = `trade-result-${symbol.replace("/", "-")}-${date.replace(
-  //     /\s/g,
-  //     "-"
-  //   )}.png`;
-
-  //   link.href = dataUrl;
-  //   link.download = fileName;
-  //   document.body.appendChild(link);
-  //   link.click();
-  //   document.body.removeChild(link);
-  // };
-
-  const handleShareClick = async () => {
-    if (!captureRef.current) return;
-
-    setIsCapturing(true);
-
-    setTimeout(async () => {
-      try {
-        const canvas = await html2canvas(captureRef.current!, {
-          backgroundColor: null,
-          useCORS: true,
-          allowTaint: true,
-          logging: true,
-        });
-
-        const dataUrl = canvas.toDataURL("image/png");
-
-        // Download the image immediately
-        //downloadImage(dataUrl);
-
-        setShareImage(dataUrl);
-        setShareLink("https://example.com/trade/123");
-        setShareOpen(true);
-      } catch (error) {
-        console.error("Capture failed:", error);
-        setShareLink("https://example.com/trade/123");
-        setShareOpen(true);
-      } finally {
-        setIsCapturing(false);
-      }
-    }, 100);
-  };
 
   useEffect(() => {
     if (!isOpen) return;
@@ -124,7 +119,55 @@ export default function OrdersHistoryModal({
 
   if (!isOpen) return null;
 
+  // derive values from order (fall back to defaults)
+  const raw = order ?? {};
+  const symbol = raw.pair ?? (raw.assetId ? String(raw.assetId) : "EUR/USD");
+  const direction = (raw.direction ?? raw.tradeType ?? "down")
+    .toString()
+    .toLowerCase();
+  const deal = direction === "up" || direction === "buy" ? "buy" : "sell";
   const isBuy = deal === "buy";
+
+  const timeIso = raw.time ?? raw.initiatedDate ?? raw.createdAt ?? "";
+  const dateLabel = timeIso ? formatDateLabel(timeIso) : "—";
+  const timeOnly = timeIso ? formatTimeOnly(timeIso) : "";
+
+  const amount = Number(raw.stake ?? raw.amount ?? raw.tradeAmount ?? 0) || 0;
+  const profit = Number(raw.profit ?? raw.tradeProfit ?? 0) || 0;
+  const openRate =
+    Number(raw.openRate ?? raw.entryPrice ?? raw.openingRate ?? 0) || 0;
+  const closeTime = raw.closeTime ? formatTimeOnly(raw.closeTime) : "";
+  const closeRate = Number(raw.closeRate ?? raw.closingRate ?? 0) || 0;
+  const profitPercent = Number(raw.profitPercent ?? 0) || 0;
+
+  const handleShareClick = async () => {
+    if (!captureRef.current) return;
+
+    setIsCapturing(true);
+
+    setTimeout(async () => {
+      try {
+        const canvas = await html2canvas(captureRef.current!, {
+          backgroundColor: null,
+          useCORS: true,
+          allowTaint: true,
+          logging: true,
+        });
+
+        const dataUrl = canvas.toDataURL("image/png");
+
+        setShareImage(dataUrl);
+        setShareLink("https://example.com/trade/123");
+        setShareOpen(true);
+      } catch (error) {
+        console.error("Capture failed:", error);
+        setShareLink("https://example.com/trade/123");
+        setShareOpen(true);
+      } finally {
+        setIsCapturing(false);
+      }
+    }, 100);
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
@@ -150,13 +193,11 @@ export default function OrdersHistoryModal({
             className="relative rounded-xl overflow-hidden bg-[#161D1E] bg-opacity-80 border border-[#222829] shadow-lg"
           >
             <div className="relative w-full flex justify-center h-[130px] mb-4 overflow-hidden">
-              {true && (
-                <div className="text-white z-40 text-sm absolute top-4 mx-auto inline-block w-full text-center font-semibold">
-                  {symbol}
-                </div>
-              )}
+              <div className="text-white z-40 text-sm absolute top-4 mx-auto inline-block w-full text-center font-semibold">
+                {symbol}
+              </div>
               <Image
-                src={imageSrc}
+                src="/images/orderImage.png"
                 alt="trade graph"
                 fill
                 className="object-cover"
@@ -166,7 +207,7 @@ export default function OrdersHistoryModal({
             <div className="flex items-center px-4 justify-between mb-3">
               <div className="text-xs text-white">
                 <div className="font-normal text-[#9ea2ae] mb-1">Date</div>
-                {date}
+                {dateLabel}
               </div>
 
               <div className="flex items-center mx-auto">
@@ -210,7 +251,7 @@ export default function OrdersHistoryModal({
             <div className="grid grid-cols-3 gap-y-3 gap-x-4 text-sm px-4 pb-4 text-white/80">
               <div className="flex flex-col">
                 <span className="text-xs text-white/60 mb-1">Open time</span>
-                <span className="font-medium text-white">{openTime}</span>
+                <span className="font-medium text-white">{timeOnly}</span>
               </div>
               <div className="flex flex-col text-right">
                 <span className="text-xs text-white/60 mb-1">Open rate</span>
@@ -250,9 +291,7 @@ export default function OrdersHistoryModal({
             <Button
               className="!w-[80%] mx-auto"
               caret
-              onClick={() => {
-                onClose();
-              }}
+              onClick={() => onClose()}
             >
               Continue
             </Button>
