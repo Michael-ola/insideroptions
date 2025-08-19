@@ -51,7 +51,15 @@ const TxFilters = ({ onApply, handleViewChange }: Props) => {
           {periodPresets.map((preset) => (
             <button
               key={preset}
-              onClick={() => setSelectedPreset(preset)}
+              onClick={() => {
+                if (selectedPreset === preset) {
+                  setSelectedPreset(null);
+                  setStartDate(null);
+                  setEndDate(null);
+                } else {
+                  setSelectedPreset(preset);
+                }
+              }}
               className={`
                 px-3 py-2 rounded-md text-sm
                 ${
@@ -71,6 +79,7 @@ const TxFilters = ({ onApply, handleViewChange }: Props) => {
         <p className="text-white text-sm mb-2">Select period</p>
         <div className="flex gap-[10px]">
           <DatePicker
+            disabled={selectedPreset !== null}
             selected={startDate}
             onChange={(date) => setStartDate(date)}
             placeholderText="Start date"
@@ -83,7 +92,9 @@ const TxFilters = ({ onApply, handleViewChange }: Props) => {
           />
           <p>-</p>
           <DatePicker
+            disabled={selectedPreset !== null}
             selected={endDate}
+            minDate={new Date(startDate || "")}
             onChange={(date) => setEndDate(date)}
             placeholderText="End date"
             className={` px-3 py-2 rounded-[8px] text-sm w-full ${
@@ -102,7 +113,13 @@ const TxFilters = ({ onApply, handleViewChange }: Props) => {
           {statusOptions.map((status) => (
             <button
               key={status}
-              onClick={() => setSelectedStatus(status)}
+              onClick={() => {
+                if (selectedStatus === status) {
+                  setSelectedStatus(null);
+                } else {
+                  setSelectedStatus(status);
+                }
+              }}
               className={`
                 px-3 py-2 rounded-[8px] text-sm
                 ${
@@ -124,7 +141,13 @@ const TxFilters = ({ onApply, handleViewChange }: Props) => {
           {categoryOptions.map((cat) => (
             <button
               key={cat}
-              onClick={() => setSelectedCategory(cat)}
+              onClick={() => {
+                if (selectedCategory === cat) {
+                  setSelectedCategory(null);
+                } else {
+                  setSelectedCategory(cat);
+                }
+              }}
               className={`
                 px-3 py-2 rounded-[8px] text-sm
                 ${
@@ -142,9 +165,19 @@ const TxFilters = ({ onApply, handleViewChange }: Props) => {
 
       <button
         onClick={applyFilters}
-        disabled={!selectedStatus && !selectedPreset && !startDate && !endDate}
+        disabled={
+          !selectedStatus &&
+          !selectedPreset &&
+          !selectedCategory &&
+          !startDate &&
+          !endDate
+        }
         className={`w-full py-2 rounded-xl mt-4 flex items-center justify-center gap-2 ${
-          !selectedStatus && !selectedPreset && !startDate && !endDate
+          !selectedStatus &&
+          !selectedPreset &&
+          !selectedCategory &&
+          !startDate &&
+          !endDate
             ? "bg-secondary cursor-not-allowed"
             : "bg-primary cursor-pointer text-black"
         }`}

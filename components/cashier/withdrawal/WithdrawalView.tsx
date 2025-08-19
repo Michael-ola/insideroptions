@@ -10,6 +10,8 @@ import { cashierOptions } from "../CashierList";
 import { ModalView } from "../cashierModal";
 import { cryptoOptions } from "../deposit/CryptoView";
 import { useDashboardContext } from "@/context/DashboardContext";
+import candle from "@/lib/assets/green_candle.png";
+
 // import { RiLoader4Line } from "@remixicon/react";
 
 type Props = {
@@ -18,6 +20,7 @@ type Props = {
     React.SetStateAction<StaticImageData | string>
   >;
   setOpenOtp: (value: boolean) => void;
+  setConfirm: (value: boolean) => void;
 };
 
 const WithdrawalView = ({
@@ -29,6 +32,7 @@ const WithdrawalView = ({
   const bankTfRef = useRef(null);
   const { traderData } = useDashboardContext();
   const [agreed, setAgreed] = useState<boolean>(false);
+  const [confirm, setConfirm] = useState<boolean>(false)
 
   const [amount, setAmount] = useState<string | number>("");
   const [method, setMethod] = useState<"Bank Transfer" | "Crypto">(
@@ -55,6 +59,25 @@ const WithdrawalView = ({
     "Keystone Bank",
   ];
 
+    const tranferDetailsBank = [
+    { label: "Payment method", value: "Bank Transfer" },
+    { label: "Bank", value: `${selectedBank}` },
+    {
+      label: "Account name",
+      value: `${traderData?.firstName} ${traderData?.lastName}`,
+    },
+    { label: "Currency", value: "NGN" },
+    { label: "Exchange rate", value: "₦1,500" },
+    { label: "Receiving amount", value: `₦${amount}` },
+  ];
+
+  const tranferDetailsCrypto = [
+    { label: "Payment method", value: `${selectedCrypto}`},
+    { label: "Network",value: `${selectedCrypto}`},
+    { label: "Address",value: `${accountOrAddress}`},
+    { label: "Currency", value: "USD" },
+    { label: "Receiving amount", value: `$${amount}` },
+  ];
   const realAccount = traderData?.accounts.find(
     (account) => account.accountType === "INDIVIDUAL"
   );
@@ -82,7 +105,100 @@ const WithdrawalView = ({
   }, [isOpen, showDropdown]);
 
   return (
-    <div className="w-full h-full space-y-6 text-white p-4 overflow-y-auto custom-scrollbar">
+    <>
+      {confirm? (
+        method === "Bank Transfer"?(
+       <div className="sm:space-y-8 px-8 pt-6 overflow-y-auto custom-scrollbar">
+          <div className="space-y-6 py-6 rounded-xl border border-[#FFFFFF]/5">
+            <Image
+              src={candle}
+              alt="Light stick"
+              priority
+              className="mx-auto"
+            />
+            <div className="text-center text-gray-400 text-sm space-y-2">
+              <p>Confirm Payment</p>
+              <p className="text-3xl">₦{amount}</p>
+            </div>
+            <hr className="text-gray-700/50" />
+            <div className="text-gray-400 text-xs space-y-2 px-6">
+              {tranferDetailsBank.map((detail, index) => (
+                <div key={index} className="flex justify-between">
+                  <span>{detail.label}</span>
+                  <span className="text-white">{detail.value}</span>
+                </div>
+              ))}
+            </div>
+            <hr className="text-gray-700/50" />
+            <p className="text-xs text-gray-400 text-center">
+              Please review the information carefully and make sure everything
+              is correct before submitting.
+            </p>
+          </div>
+          <button
+            onClick={()=>setOpenOtp(true)}
+            className={`w-full text-center py-3 rounded-xl text-[#545c5c] font-medium text-sm flex items-center justify-center gap-3 ${
+              !confirm || !amount
+                ? "bg-[#171f24] cursor-not-allowed"
+                : "bg-[#74d67f] text-black cursor-pointer"
+            }`}
+            // disabled={isSubmitting}
+          >
+            {/* {" "}
+            {isSubmitting && (
+              <RiLoader4Line className="size-5 mr-2 animate-spin" />
+            )}{" "} */}
+            Continue <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+        ):(
+        <div className="sm:space-y-8 px-8 pt-6 overflow-y-auto custom-scrollbar">
+          <div className="space-y-6 py-6 rounded-xl border border-[#FFFFFF]/5">
+            <Image
+              src={candle}
+              alt="Light stick"
+              priority
+              className="mx-auto"
+            />
+            <div className="text-center text-gray-400 text-sm space-y-2">
+              <p>Confirm Payment</p>
+              <p className="text-3xl">${amount}</p>
+            </div>
+            <hr className="text-gray-700/50" />
+            <div className="text-gray-400 text-xs space-y-2 px-6">
+              {tranferDetailsCrypto.map((detail, index) => (
+                <div key={index} className="flex justify-between">
+                  <span>{detail.label}</span>
+                  <span className="text-white">{detail.value}</span>
+                </div>
+              ))}
+            </div>
+            <hr className="text-gray-700/50" />
+            <p className="text-xs text-gray-400 text-center">
+              Please review the information carefully and make sure everything
+              is correct before submitting.
+            </p>
+          </div>
+          <button
+            onClick={()=>setOpenOtp(true)}
+            className={`w-full text-center py-3 rounded-xl text-[#545c5c] font-medium text-sm flex items-center justify-center gap-3 ${
+              !confirm || !amount
+                ? "bg-[#171f24] cursor-not-allowed"
+                : "bg-[#74d67f] text-black cursor-pointer"
+            }`}
+            // disabled={isSubmitting}
+          >
+            {/* {" "}
+            {isSubmitting && (
+              <RiLoader4Line className="size-5 mr-2 animate-spin" />
+            )}{" "} */}
+            Continue <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+      )
+        
+      ): (
+      <div className="w-full h-full space-y-6 text-white p-4 overflow-y-auto custom-scrollbar">
       {realAccount && realAccount?.accountBalance < 1 && (
         <div className="bg-[#79DA7E]/3 p-6 rounded-xl border border-white/3">
           <div className="flex items-start gap-3">
@@ -297,7 +413,7 @@ const WithdrawalView = ({
 
       <button
         disabled={!agreed}
-        onClick={() => setOpenOtp(true)}
+        onClick={() => setConfirm(true)}
         className={`w-full text-center py-3 rounded-xl text-[#545c5c]  font-medium text-sm transition-opacity flex items-center justify-center gap-3 ${
           !agreed
             ? "bg-[#171f24] cursor-not-allowed"
@@ -310,7 +426,10 @@ const WithdrawalView = ({
         Continue <ChevronRight className="w-4 h-4" />
       </button>
     </div>
-  );
+      )}
+    </>
+    
+  )
 };
 
 export default WithdrawalView;
